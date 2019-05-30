@@ -5,7 +5,6 @@ class ContactRepositoty {
         return arrayListOf(
             Contact(1, "Chandler Bing", "chandler"),
             Contact(2, "Ross Galler", "ross")
-
         )
     }
 }

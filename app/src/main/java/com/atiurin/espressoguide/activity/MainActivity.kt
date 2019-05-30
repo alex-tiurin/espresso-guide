@@ -15,9 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.atiurin.espressoguide.data.ContactRepositoty
 import android.content.Intent
-import com.atiurin.espressoguide.R
+import android.os.Handler
 import com.atiurin.espressoguide.RecyclerAdapter
+import com.atiurin.espressoguide.data.Contact
 import com.atiurin.espressoguide.managers.AccountManager
+import java.lang.Thread.sleep
+import android.R
+import android.os.Message
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -49,9 +53,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
-
+        var contacts = ArrayList<Contact>()
         //recycler
-        val contacts = ContactRepositoty().getAll()
+
+
         viewManager = LinearLayoutManager(this)
         viewAdapter = RecyclerAdapter(contacts)
 
@@ -66,6 +71,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             // specify an viewAdapter (see also next example)
             adapter = viewAdapter
         }
+        var mHandler = object : Handler() {
+            override fun handleMessage(msg: Message) {
+                super.handleMessage(msg)
+
+                viewAdapter.notifyDataSetChanged()
+                this.sendEmptyMessageDelayed(0, 1000)
+            }
+        }
+
+        Thread{
+            sleep(5000)
+            contacts = ContactRepositoty().getAll()
+            mHandler.post {  "TestMessage"}
+        }.start()
 //        recyclerView.addOnItemTouchListener(RecyclerView.OnItemTouchListener(){} )
     }
 
