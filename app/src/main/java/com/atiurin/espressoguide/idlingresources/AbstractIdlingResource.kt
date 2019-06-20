@@ -1,13 +1,14 @@
 package com.atiurin.espressoguide.idlingresources
 
 import androidx.annotation.Nullable
+import androidx.annotation.VisibleForTesting
 import androidx.test.espresso.IdlingResource
 import java.util.concurrent.atomic.AtomicBoolean
 import androidx.test.espresso.IdlingResource.ResourceCallback
 
 
-
-object SingletonIdlingResource : IdlingResource {
+@VisibleForTesting
+abstract class AbstractIdlingResource : IdlingResource {
     @Nullable
     @Volatile
     private var mCallback: ResourceCallback? = null

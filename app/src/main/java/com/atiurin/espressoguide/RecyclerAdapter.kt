@@ -5,14 +5,19 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.atiurin.espressoguide.data.Contact
 
-class RecyclerAdapter(private val myDataset: ArrayList<Contact>) :
+class RecyclerAdapter(private var myDataset: ArrayList<Contact>, val listener: OnItemClickListener) :
     RecyclerView.Adapter<RecyclerAdapter.MyViewHolder>() {
+
+    interface OnItemClickListener {
+        fun onItemClick(item: Contact)
+    }
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -20,14 +25,17 @@ class RecyclerAdapter(private val myDataset: ArrayList<Contact>) :
     // Each data item is just a string in this case that is shown in a TextView.
     class MyViewHolder(val view: LinearLayout) : RecyclerView.ViewHolder(view)
 
+    open fun updateData(data: ArrayList<Contact>) {
+        myDataset = data
+    }
 
     // Create new views (invoked by the layout manager)
-    override fun onCreateViewHolder(parent: ViewGroup,
-                                    viewType: Int): RecyclerAdapter.MyViewHolder {
-        // create a new view
-
-           val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.list_item, parent, false) as LinearLayout
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): RecyclerAdapter.MyViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.list_item, parent, false) as LinearLayout
 
 
 
@@ -39,6 +47,7 @@ class RecyclerAdapter(private val myDataset: ArrayList<Contact>) :
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
+        holder.view.setOnClickListener { listener.onItemClick(myDataset.get(position)) }
         val tvTitle = holder.view.findViewById(R.id.tv_title) as TextView
         val avatar = holder.view.findViewById(R.id.avatar) as CircleImageView
         tvTitle.text = myDataset[position].name
@@ -49,7 +58,7 @@ class RecyclerAdapter(private val myDataset: ArrayList<Contact>) :
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = myDataset.size
 
-    fun getDrawableByName(name: String, context: Context) : Drawable{
+    fun getDrawableByName(name: String, context: Context): Drawable {
         val resources = context.getResources()
         val resourceId = resources.getIdentifier(
             name, "drawable",

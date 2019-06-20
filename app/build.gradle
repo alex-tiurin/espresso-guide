@@ -34,6 +34,7 @@ dependencies {
     implementation 'androidx.test.espresso:espresso-idling-resource:3.1.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:core:1.0.0'
+    implementation "io.reactivex.rxjava2:rxjava:2.2.8"
 
     // AndroidJUnitRunner and JUnit Rules
     androidTestImplementation 'androidx.test:runner:1.1.0'
@@ -51,6 +52,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-accessibility:3.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-web:3.1.0'
     androidTestImplementation 'androidx.test.espresso.idling:idling-concurrent:3.1.0'
+
 
     // The following Espresso dependency can be either "implementation"
     // or "androidTestImplementation", depending on whether you want the

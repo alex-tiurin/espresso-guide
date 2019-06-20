@@ -6,6 +6,7 @@ import android.view.Gravity
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.atiurin.espressoguide.R
 import com.atiurin.espressoguide.managers.AccountManager
@@ -19,6 +20,8 @@ class LoginActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        val bar = supportActionBar
+        bar!!.title = "Login or Sign Up"
 
         etUserName = findViewById(R.id.et_username)
         etPassword = findViewById(R.id.et_password)

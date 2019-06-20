@@ -15,23 +15,26 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.atiurin.espressoguide.data.ContactRepositoty
 import android.content.Intent
-import android.os.Handler
 import com.atiurin.espressoguide.RecyclerAdapter
 import com.atiurin.espressoguide.data.Contact
 import com.atiurin.espressoguide.managers.AccountManager
-import java.lang.Thread.sleep
-import android.R
-import android.os.Message
+import com.atiurin.espressoguide.R
+import io.reactivex.Observable
+import kotlin.collections.ArrayList
+import com.atiurin.espressoguide.MyApplication
+import android.view.View
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    private lateinit var viewAdapter: RecyclerAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
+    private val onItemClickListener: View.OnClickListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        MyApplication.context = applicationContext
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.setTitle(R.string.title_friends_list)
         setSupportActionBar(toolbar)
@@ -53,12 +56,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
-        var contacts = ArrayList<Contact>()
-        //recycler
-
 
         viewManager = LinearLayoutManager(this)
-        viewAdapter = RecyclerAdapter(contacts)
+
+
+        viewAdapter = RecyclerAdapter(ArrayList<Contact>(),object : RecyclerAdapter.OnItemClickListener {
+            override fun onItemClick(contact: Contact) {
+                val intent = Intent(applicationContext, ChatActivity::class.java)
+                intent.putExtra("name", contact.name)
+                intent.putExtra("avatar", contact.avatar)
+                startActivity(intent)
+            }
+        })
 
         recyclerView = findViewById<RecyclerView>(R.id.recycler_view).apply {
             // use this setting to improve performance if you know that changes
@@ -71,25 +80,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             // specify an viewAdapter (see also next example)
             adapter = viewAdapter
         }
-        var mHandler = object : Handler() {
-            override fun handleMessage(msg: Message) {
-                super.handleMessage(msg)
-
-                viewAdapter.notifyDataSetChanged()
-                this.sendEmptyMessageDelayed(0, 1000)
-            }
-        }
-
-        Thread{
-            sleep(5000)
-            contacts = ContactRepositoty().getAll()
-            mHandler.post {  "TestMessage"}
-        }.start()
-//        recyclerView.addOnItemTouchListener(RecyclerView.OnItemTouchListener(){} )
     }
 
     override fun onBackPressed() {
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        val drawerLayout: DrawerLayout = findViewById(com.atiurin.espressoguide.R.id.drawer_layout)
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
@@ -108,7 +102,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_settings -> {
+                val intent = Intent(applicationContext, ChatActivity::class.java)
+                startActivity(intent)
+                true
+            }
             R.id.action_logout -> {
                 AccountManager(applicationContext).logout()
                 val intent = Intent(applicationContext, LoginActivity::class.java)
@@ -119,14 +117,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        ContactRepositoty().getAll(viewAdapter)
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_home -> {
             }
             R.id.nav_gallery -> {
-                val intent = Intent(applicationContext, ChatActivity::class.java)
-                startActivity(intent)
+
             }
             R.id.nav_slideshow -> {
 
