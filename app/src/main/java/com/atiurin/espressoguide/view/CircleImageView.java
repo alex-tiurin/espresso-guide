@@ -1,4 +1,4 @@
-package com.atiurin.espressoguide;
+package com.atiurin.espressoguide.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -29,6 +29,7 @@ import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatImageView;
+import com.atiurin.espressoguide.R;
 
 @SuppressWarnings("UnusedDeclaration")
 public class CircleImageView extends AppCompatImageView {

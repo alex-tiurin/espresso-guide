@@ -1,51 +1,95 @@
 package com.atiurin.espressoguide.activity
 
-import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.TextView
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import com.atiurin.espressoguide.CircleImageView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.atiurin.espressoguide.view.CircleImageView
 import com.atiurin.espressoguide.R
-import com.atiurin.espressoguide.managers.AccountManager
+import com.atiurin.espressoguide.adapters.MessageAdapter
+import com.atiurin.espressoguide.data.entities.Contact
+import com.atiurin.espressoguide.data.entities.Message
+import com.atiurin.espressoguide.data.repositories.CURRENT_USER
+import com.atiurin.espressoguide.data.repositories.ContactRepositoty
+import com.atiurin.espressoguide.data.repositories.MessageRepository
+
+const val INTENT_CONTACT_ID_EXTRA_NAME = "contactId"
 
 class ChatActivity : AppCompatActivity(){
-
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var viewAdapter: MessageAdapter
+    private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var contact: Contact
+    private val onItemClickListener: View.OnClickListener? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
+        val context = this
+        //TOOLBAR
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.title = ""
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-
+        window.statusBarColor = getColor(R.color.colorPrimaryDark)
         val mIntent = intent
         val title = findViewById<TextView>(R.id.toolbar_title)
-        title.text = mIntent.getStringExtra("name")
+        val contactId = mIntent.getIntExtra(INTENT_CONTACT_ID_EXTRA_NAME, -1)
+        if (contactId < 0){
+            Log.d("EspressoGuide", "Something goes wrong!")
+        }
+        contact = ContactRepositoty.getContact(contactId)
+        title.text = contact.name
         val avatar = findViewById<CircleImageView>(R.id.toolbar_avatar)
-        avatar.setImageDrawable(getDrawable(R.drawable.chandler))
+        avatar.setImageDrawable(getDrawable(contact.avatar))
+        //message input area
+        val messageInput = findViewById<EditText>(R.id.message_input_text)
+        val sendBtn = findViewById<ImageView>(R.id.send_button)
+        val attachBtn = findViewById<ImageView>(R.id.attach_button)
+        sendBtn.setOnClickListener(
+            object: View.OnClickListener{
+                override fun onClick(v: View?) {
+                    if (messageInput.text.isEmpty()){
+                        Toast.makeText(context, "Type message text", Toast.LENGTH_LONG).show()
+                    }else{
+                        val mes = Message(CURRENT_USER.id, contactId, messageInput.text.toString(), 0, CURRENT_USER.name)
+                        val curMessages = MessageRepository.messages
+                        curMessages.add(mes)
+                        updateAdapter(curMessages)
+                    }
+                }
+        })
+        //recycler view and adapter
+        viewManager = LinearLayoutManager(this)
+        viewAdapter = MessageAdapter(
+            ArrayList<Message>(),
+            object : MessageAdapter.OnItemClickListener {
+                override fun onItemClick(message: Message) {
+                    Log.w("EspressoGuid", "Clicked message ${message.text}")
+                }
+            })
+        recyclerView = findViewById<RecyclerView>(R.id.messages_list).apply {
+            setHasFixedSize(true)
+            layoutManager = viewManager
+            adapter = viewAdapter
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_settings -> true
-            R.id.action_logout -> {
-                AccountManager(applicationContext).logout()
-                val intent = Intent(applicationContext, LoginActivity::class.java)
-                startActivity(intent)
+            R.id.action_clear -> {
+                updateAdapter(ArrayList())
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -55,5 +99,17 @@ class ChatActivity : AppCompatActivity(){
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewAdapter.updateData(MessageRepository.messages)
+        viewAdapter.notifyDataSetChanged()
+    }
+
+    private fun updateAdapter(list: ArrayList<Message>){
+        MessageRepository.messages = list
+        viewAdapter.updateData(list)
+        viewAdapter.notifyDataSetChanged()
     }
 }
