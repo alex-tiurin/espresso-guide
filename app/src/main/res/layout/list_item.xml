@@ -52,7 +52,8 @@
             </LinearLayout>
     </LinearLayout>
     <View style="@style/Divider"
-              android:background="#8E8E8E"/>
+          android:layout_marginLeft="16dp"
+          android:background="#8E8E8E"/>
 
 
 </LinearLayout>

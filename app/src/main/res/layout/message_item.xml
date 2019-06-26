@@ -30,6 +30,7 @@
 
                 <TextView
                         android:id="@+id/author"
+                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
@@ -41,6 +42,7 @@
                         android:id="@+id/messageText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="20sp"
                         android:layout_marginEnd="5dp"/>
                        </LinearLayout>
 

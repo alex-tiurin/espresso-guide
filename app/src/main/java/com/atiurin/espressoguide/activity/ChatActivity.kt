@@ -1,6 +1,7 @@
 package com.atiurin.espressoguide.activity
 
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -51,19 +52,7 @@ class ChatActivity : AppCompatActivity(){
         val messageInput = findViewById<EditText>(R.id.message_input_text)
         val sendBtn = findViewById<ImageView>(R.id.send_button)
         val attachBtn = findViewById<ImageView>(R.id.attach_button)
-        sendBtn.setOnClickListener(
-            object: View.OnClickListener{
-                override fun onClick(v: View?) {
-                    if (messageInput.text.isEmpty()){
-                        Toast.makeText(context, "Type message text", Toast.LENGTH_LONG).show()
-                    }else{
-                        val mes = Message(CURRENT_USER.id, contactId, messageInput.text.toString(), 0, CURRENT_USER.name)
-                        val curMessages = MessageRepository.messages
-                        curMessages.add(mes)
-                        updateAdapter(curMessages)
-                    }
-                }
-        })
+
         //recycler view and adapter
         viewManager = LinearLayoutManager(this)
         viewAdapter = MessageAdapter(
@@ -78,6 +67,21 @@ class ChatActivity : AppCompatActivity(){
             layoutManager = viewManager
             adapter = viewAdapter
         }
+        sendBtn.setOnClickListener(
+            object: View.OnClickListener{
+                override fun onClick(v: View?) {
+                    if (messageInput.text.isEmpty()){
+                        Toast.makeText(context, "Type message text", Toast.LENGTH_LONG).show()
+                    }else{
+                        val mes = Message(CURRENT_USER.id, contactId, messageInput.text.toString(), 0, CURRENT_USER.name)
+                        val curMessages = MessageRepository.messages
+                        curMessages.add(mes)
+                        updateAdapter(curMessages)
+                        messageInput.setText("")
+                        recyclerView.smoothScrollToPosition(viewAdapter.itemCount - 1)
+                    }
+                }
+            })
 
     }
 

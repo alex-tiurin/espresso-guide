@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.core.view.get
 import androidx.recyclerview.widget.RecyclerView
 import com.atiurin.espressoguide.R
@@ -45,6 +46,8 @@ class MessageAdapter(private var messages: ArrayList<Message>, val listener: OnI
         authorName.text = message.authorName
         if (message.authorId == CURRENT_USER.id){
             val view = holder.view.get(0)
+            val cardView = view.findViewById<CardView>(R.id.card_view)
+            cardView.setCardBackgroundColor(view.context.resources.getColor(R.color.colorLight))
             val layoutParams = view.layoutParams
             if (layoutParams is LinearLayout.LayoutParams){
                 layoutParams.gravity = Gravity.RIGHT
