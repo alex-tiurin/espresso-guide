@@ -10,14 +10,12 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import android.view.Menu
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.atiurin.espressoguide.data.repositories.ContactRepositoty
 import android.content.Intent
 import com.atiurin.espressoguide.adapters.ContactAdapter
 import com.atiurin.espressoguide.data.entities.Contact
-import com.atiurin.espressoguide.managers.AccountManager
 import com.atiurin.espressoguide.R
 import kotlin.collections.ArrayList
 import com.atiurin.espressoguide.MyApplication
@@ -64,7 +62,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             })
 
-        recyclerView = findViewById<RecyclerView>(R.id.recycler_view).apply {
+        recyclerView = findViewById<RecyclerView>(R.id.recycler_friends).apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter

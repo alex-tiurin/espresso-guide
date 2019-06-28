@@ -14,7 +14,7 @@ val CONTACTS =  arrayListOf(
     Contact(5, "Phoebe Buffay", "Smelly cat, smelly cat..",Avatars.PHOEBE.drawable),
     Contact(6, "Monica Geller", "I need to clean up",Avatars.MONICA.drawable),
     Contact(7, "Gunther", "They were on break :(",Avatars.GUNTHER.drawable),
-    Contact(7, "Janice","Oh. My. God", Avatars.JANICE.drawable)
+    Contact(8, "Janice","Oh. My. God", Avatars.JANICE.drawable)
 )
 
 enum class Avatars(val drawable: Int){
