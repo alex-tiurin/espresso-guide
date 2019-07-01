@@ -20,16 +20,23 @@ import com.atiurin.espressoguide.R
 import kotlin.collections.ArrayList
 import com.atiurin.espressoguide.MyApplication
 import android.view.View
+import com.atiurin.espressoguide.managers.AccountManager
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: ContactAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var accountManager: AccountManager
     private val onItemClickListener: View.OnClickListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        accountManager = AccountManager(applicationContext)
+        if (!accountManager.isLogedIn()){
+            val intent = Intent(applicationContext, LoginActivity::class.java)
+            startActivity(intent)
+        }
         setContentView(R.layout.activity_main)
         MyApplication.context = applicationContext
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -86,16 +93,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_home -> {
+            R.id.nav_messages -> {
             }
-            R.id.nav_gallery -> {
+            R.id.nav_profile -> {
 
             }
-            R.id.nav_slideshow -> {
-
-            }
-            R.id.nav_tools -> {
-
+            R.id.nav_logout -> {
+                accountManager.logout()
+                val intent = Intent(applicationContext, LoginActivity::class.java)
+                startActivity(intent)
             }
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)

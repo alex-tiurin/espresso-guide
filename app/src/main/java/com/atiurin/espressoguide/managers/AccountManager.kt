@@ -7,6 +7,7 @@ class AccountManager(val context: Context){
     val PASSWORD_KEY = "password"
 
     fun login(user: String, password: String) : Boolean{
+//        Thread.sleep(3000)
         val expectedUserName = "joey"
         val expectedPassword = "1234"
         var success = false

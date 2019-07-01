@@ -5,7 +5,7 @@ import com.atiurin.espressoguide.data.entities.Contact
 import com.atiurin.espressoguide.data.entities.Message
 import com.atiurin.espressoguide.data.entities.User
 
-val CURRENT_USER = User(1, "Joey Tribbiani", Avatars.JOEY.drawable)
+val CURRENT_USER = User(1, "Joey Tribbiani", Avatars.JOEY.drawable, "joey", "1234")
 
 val CONTACTS =  arrayListOf(
     Contact(2, "Chandler Bing", "Joey doesn't share food!",Avatars.CHANDLER.drawable),

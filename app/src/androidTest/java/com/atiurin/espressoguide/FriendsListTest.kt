@@ -1,5 +1,6 @@
 package com.atiurin.espressoguide
 
+import android.content.Intent
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
@@ -13,8 +14,9 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
 import com.atiurin.espressoguide.activity.MainActivity
-import com.atiurin.espressoguide.idlingresources.AbstractIdlingResource
+import com.atiurin.espressoguide.data.repositories.CURRENT_USER
 import com.atiurin.espressoguide.idlingresources.ContactsIdlingResource
+import com.atiurin.espressoguide.managers.AccountManager
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import org.junit.After
@@ -26,11 +28,15 @@ class FriendsListTest{
     private val idlingRes = ContactsIdlingResource.getInstanceFromTest()
 
     @Rule @JvmField
-    val mActivityRule = ActivityTestRule(MainActivity::class.java)
+    val mActivityRule = ActivityTestRule(MainActivity::class.java,false, false)
 
     @Before
     fun registerResource(){
+        AccountManager(getInstrumentation().targetContext).login(CURRENT_USER.login, CURRENT_USER.password)
+        val intent = Intent(getInstrumentation().targetContext, MainActivity::class.java)
+        mActivityRule.launchActivity(intent)
         IdlingRegistry.getInstance().register(idlingRes)
+
     }
 
     @Test
