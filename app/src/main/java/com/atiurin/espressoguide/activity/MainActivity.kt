@@ -22,6 +22,7 @@ import com.atiurin.espressoguide.MyApplication
 import android.view.View
 import android.widget.Toast
 import com.atiurin.espressoguide.managers.AccountManager
+import com.atiurin.espressoguide.view.CircleImageView
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -45,6 +46,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
+        val navigationAvatar = navView.getHeaderView(0).findViewById<CircleImageView>(R.id.navigation_user_avatar)
+        navigationAvatar.setOnClickListener {
+            startActivity(Intent(applicationContext, ProfileActivity::class.java))
+        }
+
         val toggle = ActionBarDrawerToggle(
             this, drawerLayout, toolbar,
             R.string.navigation_drawer_open,
@@ -54,6 +60,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
+
+
         viewManager = LinearLayoutManager(this)
         viewAdapter = ContactAdapter(ArrayList<Contact>(),
             object : ContactAdapter.OnItemClickListener {
@@ -71,6 +79,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+
+    }
     override fun onBackPressed() {
         val drawerLayout: DrawerLayout = findViewById(com.atiurin.espressoguide.R.id.drawer_layout)
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {

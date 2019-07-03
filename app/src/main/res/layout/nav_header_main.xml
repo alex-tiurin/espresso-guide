@@ -20,9 +20,10 @@
             app:civ_border_width="1dp"
             app:civ_border_color="@android:color/background_light"
             android:contentDescription="@string/nav_header_desc"
-            android:id="@+id/imageView"/>
+            android:id="@+id/navigation_user_avatar"/>
 
     <TextView
+            android:id="@+id/navigation_user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
