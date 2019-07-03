@@ -20,6 +20,7 @@ import com.atiurin.espressoguide.R
 import kotlin.collections.ArrayList
 import com.atiurin.espressoguide.MyApplication
 import android.view.View
+import android.widget.Toast
 import com.atiurin.espressoguide.managers.AccountManager
 
 
@@ -42,12 +43,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.setTitle(R.string.title_friends_list)
         setSupportActionBar(toolbar)
-
-        val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
@@ -93,10 +88,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_messages -> {
+            R.id.nav_settings -> {
+                Snackbar.make(recyclerView, "Settings not implemented", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+            }
+            R.id.nav_saved_messages->{
+                Snackbar.make(recyclerView, "Saved messages not implemented", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
             }
             R.id.nav_profile -> {
-
+                Toast.makeText(this, "Profile not implemented", Toast.LENGTH_LONG).show()
             }
             R.id.nav_logout -> {
                 accountManager.logout()
