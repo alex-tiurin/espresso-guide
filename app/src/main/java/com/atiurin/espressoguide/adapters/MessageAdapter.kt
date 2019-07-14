@@ -43,7 +43,6 @@ class MessageAdapter(private var messages: ArrayList<Message>, val listener: OnI
         val authorName = holder.view.findViewById(R.id.author) as TextView
         val message = messages[position]
         messageText.text = message.text
-        authorName.text = message.authorName
         if (message.authorId == CURRENT_USER.id){
             val view = holder.view.get(0)
             val cardView = view.findViewById<CardView>(R.id.card_view)

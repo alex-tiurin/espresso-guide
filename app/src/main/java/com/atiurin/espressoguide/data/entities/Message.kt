@@ -2,6 +2,4 @@ package com.atiurin.espressoguide.data.entities
 
 data class Message(val authorId: Int,
                    val receiverId: Int,
-                   val text: String,
-                   val chatId: Int,
-                   val authorName: String)
+                   val text: String)

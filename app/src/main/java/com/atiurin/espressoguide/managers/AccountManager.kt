@@ -3,21 +3,23 @@ package com.atiurin.espressoguide.managers
 import android.content.Context
 
 class AccountManager(val context: Context){
-    val USER_KEY = "username"
-    val PASSWORD_KEY = "password"
+    companion object {
+        private const val expectedUserName = "joey"
+        private const val expectedPassword = "1234"
+        private const val USER_KEY = "username"
+        private const val PASSWORD_KEY = "password"
+    }
 
     fun login(user: String, password: String) : Boolean{
 //        Thread.sleep(3000)
-        val expectedUserName = "joey"
-        val expectedPassword = "1234"
         var success = false
-        if ((user == expectedUserName) &&(password == expectedPassword)){
+        // there should be some network request to app server
+        if ((user == Companion.expectedUserName) &&(password == expectedPassword)){
             success = true
             with(PrefsManager(context)){
                 savePref(USER_KEY, user)
                 savePref(PASSWORD_KEY, password)
             }
-
         }
         return success
     }
@@ -39,5 +41,4 @@ class AccountManager(val context: Context){
             remove(PASSWORD_KEY)
         }
     }
-
 }

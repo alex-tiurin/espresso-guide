@@ -73,7 +73,7 @@ class ChatActivity : AppCompatActivity(){
                     if (messageInput.text.isEmpty()){
                         Toast.makeText(context, "Type message text", Toast.LENGTH_LONG).show()
                     }else{
-                        val mes = Message(CURRENT_USER.id, contactId, messageInput.text.toString(), 0, CURRENT_USER.name)
+                        val mes = Message(CURRENT_USER.id, contactId, messageInput.text.toString())
                         val curMessages = MessageRepository.messages
                         curMessages.add(mes)
                         updateAdapter(curMessages)
@@ -106,7 +106,7 @@ class ChatActivity : AppCompatActivity(){
 
     override fun onResume() {
         super.onResume()
-        viewAdapter.updateData(MessageRepository.messages)
+        viewAdapter.updateData(MessageRepository.getChatMessages(contact.id))
         viewAdapter.notifyDataSetChanged()
     }
 

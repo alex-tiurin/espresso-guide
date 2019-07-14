@@ -30,10 +30,10 @@ enum class Avatars(val drawable: Int){
 
 
 val MESSAGES =  arrayListOf(
-    Message(1, 2, "HI Chandler", 0, "Joey"),
-    Message(2, 1, "Hey Ross", 0, "Chandler"),
-    Message(2, 1, "Message 2", 0,"Chandler"),
-    Message(1, 2, "Message 3", 0, "Joey"),
-    Message(2, 1, "Message 4", 0, "Chandler"),
-    Message(1, 2, "Message 5", 0, "Joey")
+    Message(1, 2, "What's up Chandler"),
+    Message(2, 1, "Hi Joey"),
+    Message(1, 2, "Let's drink coffee"),
+    Message(2, 1, "Ok"),
+    Message(1, 3, "Do u wanna coffee?"),
+    Message(3, 1, "yep, let's go")
 )

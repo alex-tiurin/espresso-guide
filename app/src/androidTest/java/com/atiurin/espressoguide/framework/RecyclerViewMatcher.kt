@@ -1,6 +1,5 @@
-package com.atiurin.espressoguide
+package com.atiurin.espressoguide.framework
 
-import android.content.res.Resources
 import android.util.SparseArray
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +9,6 @@ import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
 import java.util.ArrayList
-import android.R.attr.description
 
 
 class RecyclerViewMatcher(val recyclerViewMatcher: Matcher<View>) {
@@ -82,8 +80,10 @@ class RecyclerViewMatcher(val recyclerViewMatcher: Matcher<View>) {
             if (recyclerViewMatcher.matches(childView)) {
                 val recyclerView = childView as RecyclerView
                 this.recyclerView = recyclerView//для описания ошибки
-                val viewHolderMatcher: Matcher<RecyclerView.ViewHolder> = viewHolderMatcher(itemMatcher)
-                val matchedItems: List<MatchedItem> = itemsMatching(recyclerView, viewHolderMatcher, 1)
+                val viewHolderMatcher: Matcher<RecyclerView.ViewHolder> =
+                    viewHolderMatcher(itemMatcher)
+                val matchedItems: List<MatchedItem> =
+                    itemsMatching(recyclerView, viewHolderMatcher, 1)
                 if (matchedItems.isEmpty()) return null
                 return recyclerView.findViewHolderForAdapterPosition(matchedItems[0].position)?.itemView
             }

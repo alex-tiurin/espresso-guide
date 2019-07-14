@@ -1,13 +1,10 @@
 package com.atiurin.espressoguide.adapters
 
-import android.content.Context
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.atiurin.espressoguide.MyApplication.context
 import com.atiurin.espressoguide.R
 import com.atiurin.espressoguide.data.entities.Contact
 import com.atiurin.espressoguide.view.CircleImageView
@@ -35,7 +32,7 @@ class ContactAdapter(private var mDataset: ArrayList<Contact>, val listener: OnI
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.view.setOnClickListener { listener.onItemClick(mDataset.get(position)) }
-        val tvTitle = holder.view.findViewById(R.id.tv_title) as TextView
+        val tvTitle = holder.view.findViewById(R.id.tv_name) as TextView
         val avatar = holder.view.findViewById(R.id.avatar) as CircleImageView
         val status = holder.view.findViewById(R.id.tv_status) as TextView
         tvTitle.text = mDataset[position].name

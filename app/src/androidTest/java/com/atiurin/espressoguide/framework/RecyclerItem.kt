@@ -1,4 +1,4 @@
-package com.atiurin.espressoguide
+package com.atiurin.espressoguide.framework
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -14,16 +14,18 @@ open class RecyclerItem(private val recyclerViewMatcher: Matcher<View>, private 
         }
     }
 
-    fun scrollToItem() : RecyclerItem{
+    fun scrollToItem() : RecyclerItem = apply {
         onView(recyclerViewMatcher).perform(RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(itemViewMatcher))
-        return this
     }
 
-    fun getItem() : Matcher<View> {
+    fun click() = apply { this.get().click() }
+
+    fun isDisplayed() = apply { this.get().isDisplayed() }
+
+    private fun get() : Matcher<View> {
         return withRecyclerView(recyclerViewMatcher).atItem(itemViewMatcher)
     }
 
-    fun getChildMatcher(childMatcher: Matcher<View>): Matcher<View> {
-        return withRecyclerView(recyclerViewMatcher).atItemChild(itemViewMatcher, childMatcher)
-    }
+    fun getChildMatcher(childMatcher: Matcher<View>)= withRecyclerView(recyclerViewMatcher)
+            .atItemChild(itemViewMatcher, childMatcher)
 }
