@@ -42,15 +42,15 @@ class AdvancedEspressoTest {
 
     @Test
     fun advancedSendMessageWithSteps(){
-        FriendsListPage.openChat("Janice")
-        ChatPage.clearHistory()
-                .sendMessage("message1")
+        FriendsListPage().openChat("Janice")
+        ChatPage().clearHistory()
+                .sendMessage("message2")
     }
 
     @Test
     fun advancedSendMessageWithPageObject() {
-        val messageText = "message1"
-        FriendsListPage().getListItem("Janice").click()
+        val messageText = "message3"
+        FriendsListPage().getListItem("Chandler Bing").click()
         val chatPage = ChatPage()
         chatPage.openOptionsMenu()
         chatPage.clearHistoryBtn.click()
@@ -64,8 +64,8 @@ class AdvancedEspressoTest {
 
     @Test
     fun advancedTestSendMessageToJanice() {
-        val messageText = "message1"
-        val itemMatcher = hasDescendant(allOf(withId(R.id.tv_name), withText("Janice")))
+        val messageText = "message4"
+        val itemMatcher = hasDescendant(allOf(withId(R.id.tv_name), withText("Ross Geller")))
         onView(withId(R.id.recycler_friends))
             .perform(
                 RecyclerViewActions

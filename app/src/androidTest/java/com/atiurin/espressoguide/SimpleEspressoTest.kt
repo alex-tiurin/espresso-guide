@@ -59,7 +59,7 @@ class SimpleEspressoTest{
     @Test
     fun testSendMessageToJanice(){
         val messageText = "message2"
-        onView(withText("Janice")).perform(click())
+        onView(withText("Rachel Green")).perform(click())
         openActionBarOverflowOrOptionsMenu(getInstrumentation().context)
         onView(withText("Clear history")).perform(click())
         onView(withId(R.id.message_input_text)).perform(typeText(messageText))

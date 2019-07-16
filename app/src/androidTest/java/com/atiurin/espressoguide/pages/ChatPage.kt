@@ -11,7 +11,9 @@ import org.hamcrest.Matchers
 
 class ChatPage : Page {
     override fun assertPageDisplayed() {
-        list.isDisplayed()
+        step("Assert friends list page displayed"){
+            list.isDisplayed()
+        }
     }
 
     val list = withId(R.id.messages_list)
@@ -19,7 +21,7 @@ class ChatPage : Page {
     val inputMessageText = withId(R.id.message_input_text)
     val sendMessageBtn = withId(R.id.send_button)
 
-    fun getListItem(text: String): ChatRecyclerItem{
+    fun getListItem(text: String): ChatRecyclerItem {
         return ChatRecyclerItem(
             list,
             ViewMatchers.hasDescendant(
@@ -35,30 +37,26 @@ class ChatPage : Page {
         val text = getChildMatcher(withId(R.id.messageText))
     }
 
-    companion object {
-        fun sendMessage(text: String) = apply {
-            step("Send message with text '$text"){
-                val chatPage = ChatPage()
-                chatPage.inputMessageText.typeText(text)
-                chatPage.sendMessageBtn.click()
-                chatPage.getListItem(text).text
-                    .isDisplayed()
-                    .hasText(text)
-            }
-        }
-
-        fun clearHistory() = apply {
-            step("Clear chat history"){
-                val chatPage = ChatPage()
-                chatPage.openOptionsMenu()
-                chatPage.clearHistoryBtn.click()
-            }
-        }
-
-        fun assertMessageDisplayed(text: String){
-            ChatPage().getListItem(text).text
+    fun sendMessage(text: String) = apply {
+        step("Send message with text '$text") {
+            inputMessageText.typeText(text)
+            sendMessageBtn.click()
+            getListItem(text).text
                 .isDisplayed()
                 .hasText(text)
         }
+    }
+
+    fun clearHistory() = apply {
+        step("Clear chat history") {
+            openOptionsMenu()
+            clearHistoryBtn.click()
+        }
+    }
+
+    fun assertMessageDisplayed(text: String) {
+        getListItem(text).text
+            .isDisplayed()
+            .hasText(text)
     }
 }
