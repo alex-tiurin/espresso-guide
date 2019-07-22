@@ -17,8 +17,9 @@ object MessageRepository {
         return messages
     }
 
-
-
+    fun searchMessage(author: Int, recipient: Int, text: String) : Message?{
+        return messages.find { it.authorId == author &&  it.receiverId == recipient && it.text == text }
+    }
 
 
     fun getChatMessages(contactId: Int): ArrayList<Message>{
