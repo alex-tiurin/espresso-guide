@@ -14,7 +14,8 @@ import androidx.test.rule.ActivityTestRule
 import com.atiurin.espressoguide.activity.MainActivity
 import com.atiurin.espressoguide.data.repositories.CURRENT_USER
 import com.atiurin.espressoguide.framework.*
-import com.atiurin.espressoguide.idlingresources.ContactsIdlingResource
+import com.atiurin.espressoguide.idlingresources.resources.ContactsIdlingResource
+import com.atiurin.espressoguide.idlingresources.resources.ChatIdlingResource
 import com.atiurin.espressoguide.managers.AccountManager
 import com.atiurin.espressoguide.pages.ChatPage
 import com.atiurin.espressoguide.pages.FriendsListPage
@@ -26,7 +27,7 @@ import org.junit.Test
 
 class AdvancedEspressoTest {
     private val idlingRes = ContactsIdlingResource.getInstanceFromTest()
-
+    private val idlingRes2 = ChatIdlingResource.getInstanceFromTest()
     @Rule
     @JvmField
     val mActivityRule = ActivityTestRule(MainActivity::class.java, false, false)
@@ -36,7 +37,7 @@ class AdvancedEspressoTest {
         AccountManager(getInstrumentation().targetContext).login(CURRENT_USER.login, CURRENT_USER.password)
         val intent = Intent(getInstrumentation().targetContext, MainActivity::class.java)
         mActivityRule.launchActivity(intent)
-        IdlingRegistry.getInstance().register(idlingRes)
+        IdlingRegistry.getInstance().register(idlingRes,idlingRes2)
 
     }
 
@@ -84,7 +85,7 @@ class AdvancedEspressoTest {
                 RecyclerViewActions
                     .scrollTo<RecyclerView.ViewHolder>(hasDescendant(withText(messageText)))
             )
-        onView(withText(messageText)).check(matches(isDisplayed()))
+        onView(allOf(withText(messageText), withId(R.id.message_text))).check(matches(isDisplayed()))
         Thread.sleep(1000)
     }
 

@@ -1,7 +1,6 @@
 package com.atiurin.espressoguide.activity
 
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import androidx.core.view.GravityCompat
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -12,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.atiurin.espressoguide.data.repositories.ContactRepositoty
 import android.content.Intent
 import com.atiurin.espressoguide.adapters.ContactAdapter
 import com.atiurin.espressoguide.data.entities.Contact
@@ -21,16 +19,23 @@ import kotlin.collections.ArrayList
 import com.atiurin.espressoguide.MyApplication
 import android.view.View
 import android.widget.Toast
+import com.atiurin.espressoguide.async.ContactsPresenter
+import com.atiurin.espressoguide.async.ContactsProvider
+import com.atiurin.espressoguide.idlingresources.resources.ChatIdlingResource
+import com.atiurin.espressoguide.idlingresources.resources.ContactsIdlingResource
 import com.atiurin.espressoguide.managers.AccountManager
 import com.atiurin.espressoguide.view.CircleImageView
 
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, ContactsProvider{
+
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: ContactAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var accountManager: AccountManager
     private val onItemClickListener: View.OnClickListener? = null
+    private val contactsPresenter = ContactsPresenter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,18 +76,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     startActivity(intent)
                 }
             })
-
         recyclerView = findViewById<RecyclerView>(R.id.recycler_friends).apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
         }
+        contactsPresenter.getAllContacts()
     }
 
-    override fun onStart() {
-        super.onStart()
-
-    }
     override fun onBackPressed() {
         val drawerLayout: DrawerLayout = findViewById(com.atiurin.espressoguide.R.id.drawer_layout)
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -92,9 +93,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        ContactRepositoty.getAll(viewAdapter)
+    override fun onContactsLoaded(contacts: ArrayList<Contact>) {
+        viewAdapter.updateData(contacts)
+        viewAdapter.notifyDataSetChanged()
+        ContactsIdlingResource.getInstanceFromApp()?.setIdleState(true)
+    }
+
+    override fun onFailedToLoadContacts(message: String?) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

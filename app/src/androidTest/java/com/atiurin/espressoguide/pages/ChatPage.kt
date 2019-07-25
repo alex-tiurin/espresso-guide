@@ -26,7 +26,7 @@ class ChatPage : Page {
             list,
             ViewMatchers.hasDescendant(
                 Matchers.allOf(
-                    withId(R.id.messageText),
+                    withId(R.id.message_text),
                     withText(text)
                 )
             )
@@ -34,7 +34,7 @@ class ChatPage : Page {
     }
 
     class ChatRecyclerItem(list: Matcher<View>, item: Matcher<View>) : RecyclerItem(list, item) {
-        val text = getChildMatcher(withId(R.id.messageText))
+        val text = getChildMatcher(withId(R.id.message_text))
     }
 
     fun sendMessage(text: String) = apply {

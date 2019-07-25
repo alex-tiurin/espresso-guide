@@ -4,7 +4,6 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.view.get
@@ -39,7 +38,7 @@ class MessageAdapter(private var messages: ArrayList<Message>, val listener: OnI
         holder.view.setOnClickListener {
             listener.onItemClick(messages.get(position))
         }
-        val messageText = holder.view.findViewById(R.id.messageText) as TextView
+        val messageText = holder.view.findViewById(R.id.message_text) as TextView
         val authorName = holder.view.findViewById(R.id.author) as TextView
         val message = messages[position]
         messageText.text = message.text

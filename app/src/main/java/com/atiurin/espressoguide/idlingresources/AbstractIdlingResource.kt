@@ -6,8 +6,6 @@ import androidx.test.espresso.IdlingResource
 import java.util.concurrent.atomic.AtomicBoolean
 import androidx.test.espresso.IdlingResource.ResourceCallback
 
-
-@VisibleForTesting
 abstract class AbstractIdlingResource : IdlingResource {
     @Nullable
     @Volatile
