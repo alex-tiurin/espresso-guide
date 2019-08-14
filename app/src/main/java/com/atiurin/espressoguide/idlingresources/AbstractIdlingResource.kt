@@ -26,7 +26,7 @@ abstract class AbstractIdlingResource : IdlingResource {
     fun setIdleState(isIdleNow: Boolean) {
         mIsIdleNow.set(isIdleNow)
         if (isIdleNow && mCallback != null) {
-            mCallback!!.onTransitionToIdle()
+            mCallback?.onTransitionToIdle()
         }
     }
 }

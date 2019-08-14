@@ -14,7 +14,7 @@ open class Holder<out T>(private val constructor: () -> T) {
         return when {
             instance != null -> instance
             else -> synchronized(this) {
-                if (instance == null) instance = constructor()
+                instance = constructor()
                 instance
             }
         }

@@ -40,7 +40,7 @@ class RecyclerViewMatcher(val recyclerViewMatcher: Matcher<View>) {
     open fun atItemChild(itemMatcher: Matcher<View>, childMatcher: Matcher<View>): Matcher<View> {
         return object : TypeSafeMatcher<View>() {
             var itemView : View? = null
-            var searchedView: View? = null
+            var childView: View? = null
             override fun describeTo(description: Description?) {
                 if (recyclerView == null) {
                     description?.appendText("No matching recycler view with : [$recyclerViewMatcher]. ")
@@ -52,7 +52,7 @@ class RecyclerViewMatcher(val recyclerViewMatcher: Matcher<View>) {
                     return
                 }
                 description?.appendText("Found recycler view item matches : [$itemMatcher]. ")
-                if (searchedView == null){
+                if (childView == null){
                     description?.appendText("No matching item child view with : [$childMatcher]")
                     return
                 }
@@ -63,13 +63,13 @@ class RecyclerViewMatcher(val recyclerViewMatcher: Matcher<View>) {
                 if (itemView != null) {
                     for (childView in TreeIterables.breadthFirstViewTraversal(itemView)) {
                         if (childMatcher.matches(childView)) {
-                            searchedView = childView
+                            this.childView = childView
                             break
                         }
                     }
                 }
-                return if (searchedView != null) {
-                    searchedView == view
+                return if (childView != null) {
+                    childView == view
                 } else false
             }
         }

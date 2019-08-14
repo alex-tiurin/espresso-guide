@@ -8,15 +8,16 @@ import com.atiurin.espressoguide.R
 import com.atiurin.espressoguide.framework.*
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers
+import org.hamcrest.Matchers.allOf
 
 class ChatPage : Page {
-    override fun assertPageDisplayed() {
-        step("Assert friends list page displayed"){
+    override fun assertPageDisplayed() = apply{
+        step("Assert friends list page displayed") {
             list.isDisplayed()
         }
     }
 
-    val list = withId(R.id.messages_list)
+    private val list = withId(R.id.messages_list)
     val clearHistoryBtn = withText("Clear history")
     val inputMessageText = withId(R.id.message_input_text)
     val sendMessageBtn = withId(R.id.send_button)
@@ -31,6 +32,10 @@ class ChatPage : Page {
                 )
             )
         )
+    }
+
+    fun getName(name: String): Matcher<View> {
+        return allOf(withId(R.id.toolbar_title), withText(name))
     }
 
     class ChatRecyclerItem(list: Matcher<View>, item: Matcher<View>) : RecyclerItem(list, item) {

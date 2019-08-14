@@ -1,6 +1,7 @@
 package com.atiurin.espressoguide.async
 
 import com.atiurin.espressoguide.data.entities.Contact
+import com.atiurin.espressoguide.idlingresources.IdlingHelper
 import com.atiurin.espressoguide.idlingresources.resources.ChatIdlingResource
 import com.atiurin.espressoguide.idlingresources.resources.ContactsIdlingResource
 import kotlinx.coroutines.CoroutineScope
@@ -16,8 +17,7 @@ class ContactsPresenter <T : ContactsProvider>(
     protected lateinit var scope: PresenterCoroutineScope
 
     fun getAllContacts() {
-        val idling = ContactsIdlingResource.getInstanceFromApp()
-        idling?.setIdleState(false)
+        IdlingHelper.ifAllowed { ContactsIdlingResource.getInstanceFromApp()?.setIdleState(false) }
         scope = PresenterCoroutineScope(coroutineContext)
         scope.launch {
             GetContacts()(

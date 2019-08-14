@@ -1,18 +1,20 @@
 package com.atiurin.espressoguide.pages
 
 import android.view.View
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.*
 import com.atiurin.espressoguide.R
+import com.atiurin.espressoguide.data.Tags
 import com.atiurin.espressoguide.framework.*
 import org.hamcrest.Matcher
+import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
 
 class FriendsListPage : Page {
-    val list = withId(R.id.recycler_friends)
+    val list = withTagValue(`is`(Tags.CONTACTS_LIST))
 
-    override fun assertPageDisplayed() {
+    override fun assertPageDisplayed() = apply {
         step("Assert friends list page displayed"){
             list.isDisplayed()
         }

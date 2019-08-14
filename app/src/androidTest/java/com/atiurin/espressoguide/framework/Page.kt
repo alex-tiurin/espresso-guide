@@ -4,9 +4,9 @@ import androidx.test.espresso.Espresso
 import androidx.test.platform.app.InstrumentationRegistry
 
 interface Page{
-    fun assertPageDisplayed()
+    fun assertPageDisplayed() : Page
 
-    fun openOptionsMenu(){
+    fun openOptionsMenu() = apply {
         Espresso.openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().context)
     }
 }

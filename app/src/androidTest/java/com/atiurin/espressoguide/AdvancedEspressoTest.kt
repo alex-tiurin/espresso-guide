@@ -32,11 +32,12 @@ class AdvancedEspressoTest {
     @JvmField
     val mActivityRule = ActivityTestRule(MainActivity::class.java, false, false)
 
+
+
     @Before
     fun registerResource() {
         AccountManager(getInstrumentation().targetContext).login(CURRENT_USER.login, CURRENT_USER.password)
-        val intent = Intent(getInstrumentation().targetContext, MainActivity::class.java)
-        mActivityRule.launchActivity(intent)
+        mActivityRule.launchActivity(Intent())
         IdlingRegistry.getInstance().register(idlingRes,idlingRes2)
 
     }
@@ -53,10 +54,11 @@ class AdvancedEspressoTest {
         val messageText = "message3"
         FriendsListPage().getListItem("Chandler Bing").click()
         val chatPage = ChatPage()
-        chatPage.openOptionsMenu()
-        chatPage.clearHistoryBtn.click()
-        chatPage.inputMessageText.typeText(messageText)
+        chatPage.getName("Janice").isDisplayed()
         chatPage.sendMessageBtn.click()
+        chatPage.clearHistoryBtn.click()
+        chatPage.openOptionsMenu()
+        chatPage.inputMessageText.typeText(messageText)
         chatPage.getListItem(messageText).text
             .isDisplayed()
             .hasText(messageText)
@@ -66,12 +68,12 @@ class AdvancedEspressoTest {
     @Test
     fun advancedTestSendMessageToJanice() {
         val messageText = "message4"
-        val itemMatcher = hasDescendant(allOf(withId(R.id.tv_name), withText("Ross Geller")))
+        val itemMatcher = hasDescendant(allOf(withId(R.id.tv_name), withText("Janice")))
         onView(withId(R.id.recycler_friends))
-            .perform(
-                RecyclerViewActions
-                    .scrollTo<RecyclerView.ViewHolder>(itemMatcher)
-            )
+//            .perform(
+//                RecyclerViewActions
+//                    .scrollTo<RecyclerView.ViewHolder>(itemMatcher)
+//            )
             .perform(
                 RecyclerViewActions
                     .actionOnItem<RecyclerView.ViewHolder>(itemMatcher, click())
@@ -87,6 +89,13 @@ class AdvancedEspressoTest {
             )
         onView(allOf(withText(messageText), withId(R.id.message_text))).check(matches(isDisplayed()))
         Thread.sleep(1000)
+    }
+
+    @Test
+    fun testRecyclerView(){
+        onView(withRecyclerView(withId(R.id.recycler_friends)).atItem(hasDescendant(withText("UNAGI")))).
+            perform(click())
+        Thread.sleep(2000)
     }
 
     @After

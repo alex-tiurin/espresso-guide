@@ -21,13 +21,14 @@ import android.view.View
 import android.widget.Toast
 import com.atiurin.espressoguide.async.ContactsPresenter
 import com.atiurin.espressoguide.async.ContactsProvider
-import com.atiurin.espressoguide.idlingresources.resources.ChatIdlingResource
+import com.atiurin.espressoguide.data.Tags
+import com.atiurin.espressoguide.idlingresources.IdlingHelper
 import com.atiurin.espressoguide.idlingresources.resources.ContactsIdlingResource
 import com.atiurin.espressoguide.managers.AccountManager
 import com.atiurin.espressoguide.view.CircleImageView
 
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, ContactsProvider{
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, ContactsProvider {
 
 
     private lateinit var recyclerView: RecyclerView
@@ -40,7 +41,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         accountManager = AccountManager(applicationContext)
-        if (!accountManager.isLogedIn()){
+        if (!accountManager.isLogedIn()) {
             val intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
         }
@@ -81,6 +82,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             layoutManager = viewManager
             adapter = viewAdapter
         }
+        recyclerView.tag = Tags.CONTACTS_LIST
         contactsPresenter.getAllContacts()
     }
 
@@ -96,7 +98,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onContactsLoaded(contacts: ArrayList<Contact>) {
         viewAdapter.updateData(contacts)
         viewAdapter.notifyDataSetChanged()
-        ContactsIdlingResource.getInstanceFromApp()?.setIdleState(true)
+        IdlingHelper.ifAllowed { ContactsIdlingResource.getInstanceFromApp()?.setIdleState(true) }
     }
 
     override fun onFailedToLoadContacts(message: String?) {
@@ -110,7 +112,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Snackbar.make(recyclerView, "Settings not implemented", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }
-            R.id.nav_saved_messages->{
+            R.id.nav_saved_messages -> {
                 Snackbar.make(recyclerView, "Saved messages not implemented", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }
