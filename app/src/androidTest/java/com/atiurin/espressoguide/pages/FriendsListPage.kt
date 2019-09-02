@@ -7,6 +7,9 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import com.atiurin.espressoguide.R
 import com.atiurin.espressoguide.data.Tags
 import com.atiurin.espressoguide.framework.*
+import com.atiurin.espressopageobject.extensions.hasText
+import com.atiurin.espressopageobject.extensions.isDisplayed
+import com.atiurin.espressopageobject.recyclerview.RecyclerViewItem
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
@@ -32,7 +35,7 @@ class FriendsListPage : Page {
         )
     }
 
-    class FriendRecyclerItem(list: Matcher<View>, item: Matcher<View>) : RecyclerItem(list, item) {
+    class FriendRecyclerItem(list: Matcher<View>, item: Matcher<View>) : RecyclerViewItem(list, item) {
         val name = getChildMatcher(withId(R.id.tv_name))
         val status = getChildMatcher(withId(R.id.tv_status))
     }

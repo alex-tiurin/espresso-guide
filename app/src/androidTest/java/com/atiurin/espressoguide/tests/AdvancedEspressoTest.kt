@@ -1,29 +1,32 @@
-package com.atiurin.espressoguide
+package com.atiurin.espressoguide.tests
 
 import android.content.Intent
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
+import androidx.test.espresso.AmbiguousViewMatcherException
+import androidx.test.espresso.Espresso.*
 import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
+import com.atiurin.espressoguide.R
 import com.atiurin.espressoguide.activity.MainActivity
 import com.atiurin.espressoguide.data.repositories.CURRENT_USER
-import com.atiurin.espressoguide.framework.*
 import com.atiurin.espressoguide.idlingresources.resources.ContactsIdlingResource
 import com.atiurin.espressoguide.idlingresources.resources.ChatIdlingResource
 import com.atiurin.espressoguide.managers.AccountManager
 import com.atiurin.espressoguide.pages.ChatPage
 import com.atiurin.espressoguide.pages.FriendsListPage
+import com.atiurin.espressopageobject.extensions.*
+import com.atiurin.espressopageobject.recyclerview.withRecyclerView
 import org.hamcrest.Matchers.allOf
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
+import ru.tinkoff.allure.android.FailshotRule
+import ru.tinkoff.allure.model.AllureConfig
 
 class AdvancedEspressoTest {
     private val idlingRes = ContactsIdlingResource.getInstanceFromTest()
@@ -32,52 +35,70 @@ class AdvancedEspressoTest {
     @JvmField
     val mActivityRule = ActivityTestRule(MainActivity::class.java, false, false)
 
+    @Rule @JvmField val failshot = FailshotRule()
+    companion object {
+        @BeforeClass @JvmStatic
+        fun beforeClass(){
+            ViewActionsConfig.beforeAction = {
+                Log.d("Espresso", "take screenshot")
+            }
 
+            ViewActionsConfig.afterAction = {
+                Log.d("Espresso", "made action")
+            }
+            AllureConfig.failExceptions.addAll(mutableListOf(NoMatchingViewException::class.java, AmbiguousViewMatcherException::class.java))
+        }
+    }
 
     @Before
     fun registerResource() {
         AccountManager(getInstrumentation().targetContext).login(CURRENT_USER.login, CURRENT_USER.password)
         mActivityRule.launchActivity(Intent())
         IdlingRegistry.getInstance().register(idlingRes,idlingRes2)
-
     }
 
     @Test
     fun advancedSendMessageWithSteps(){
         FriendsListPage().openChat("Janice")
         ChatPage().clearHistory()
-                .sendMessage("message2")
+                  .sendMessage("message2")
+    }
+
+    @Test
+    fun friendsItemCheck(){
+//        Thread.sleep(2000)
+        FriendsListPage().assertName("Janice")
+                         .assertStatus("Janice","Oh. My. God")
+//        Thread.sleep(2000)
     }
 
     @Test
     fun advancedSendMessageWithPageObject() {
         val messageText = "message3"
-        FriendsListPage().getListItem("Chandler Bing").click()
+        FriendsListPage().getListItem("Janice").click()
         val chatPage = ChatPage()
         chatPage.getName("Janice").isDisplayed()
-        chatPage.sendMessageBtn.click()
-        chatPage.clearHistoryBtn.click()
         chatPage.openOptionsMenu()
+        chatPage.clearHistoryBtn.click()
         chatPage.inputMessageText.typeText(messageText)
+        chatPage.sendMessageBtn.click()
         chatPage.getListItem(messageText).text
             .isDisplayed()
             .hasText(messageText)
         Thread.sleep(1000)
     }
 
+    @Ignore
     @Test
     fun advancedTestSendMessageToJanice() {
         val messageText = "message4"
         val itemMatcher = hasDescendant(allOf(withId(R.id.tv_name), withText("Janice")))
         onView(withId(R.id.recycler_friends))
-//            .perform(
-//                RecyclerViewActions
-//                    .scrollTo<RecyclerView.ViewHolder>(itemMatcher)
-//            )
             .perform(
                 RecyclerViewActions
                     .actionOnItem<RecyclerView.ViewHolder>(itemMatcher, click())
             )
+
         openActionBarOverflowOrOptionsMenu(getInstrumentation().context)
         onView(withText("Clear history")).perform(click())
         onView(withId(R.id.message_input_text)).perform(typeText(messageText))
@@ -93,9 +114,11 @@ class AdvancedEspressoTest {
 
     @Test
     fun testRecyclerView(){
-        onView(withRecyclerView(withId(R.id.recycler_friends)).atItem(hasDescendant(withText("UNAGI")))).
-            perform(click())
-        Thread.sleep(2000)
+
+        ru.tinkoff.allure.step("fail step"){
+            onView(withRecyclerView(withId(R.id.recycler_friends)).atItem(hasDescendant(withText("23123 123 12")))).
+                perform(click())
+        }
     }
 
     @After

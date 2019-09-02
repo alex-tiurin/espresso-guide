@@ -1,4 +1,4 @@
-package com.atiurin.espressoguide
+package com.atiurin.espressoguide.tests
 
 import android.content.Intent
 import androidx.test.espresso.Espresso.onView
@@ -10,6 +10,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
+import com.atiurin.espressoguide.R
 import com.atiurin.espressoguide.activity.MainActivity
 import com.atiurin.espressoguide.data.repositories.CURRENT_USER
 import com.atiurin.espressoguide.idlingresources.resources.ContactsIdlingResource

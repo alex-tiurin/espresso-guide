@@ -6,6 +6,11 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.atiurin.espressoguide.R
 import com.atiurin.espressoguide.framework.*
+import com.atiurin.espressopageobject.extensions.click
+import com.atiurin.espressopageobject.extensions.hasText
+import com.atiurin.espressopageobject.extensions.isDisplayed
+import com.atiurin.espressopageobject.extensions.typeText
+import com.atiurin.espressopageobject.recyclerview.RecyclerViewItem
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers
 import org.hamcrest.Matchers.allOf
@@ -38,7 +43,7 @@ class ChatPage : Page {
         return allOf(withId(R.id.toolbar_title), withText(name))
     }
 
-    class ChatRecyclerItem(list: Matcher<View>, item: Matcher<View>) : RecyclerItem(list, item) {
+    class ChatRecyclerItem(list: Matcher<View>, item: Matcher<View>) : RecyclerViewItem(list, item) {
         val text = getChildMatcher(withId(R.id.message_text))
     }
 

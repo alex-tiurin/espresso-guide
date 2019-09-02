@@ -1,5 +1,7 @@
 package com.atiurin.espressoguide
 
+import com.atiurin.espressoguide.tests.AdvancedEspressoTest
+import com.atiurin.espressoguide.tests.SimpleEspressoTest
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
 

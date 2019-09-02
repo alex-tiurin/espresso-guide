@@ -1,19 +1,12 @@
-package com.atiurin.espressoguide
+package com.atiurin.espressoguide.tests
 
-import android.content.Intent
 import android.util.Log
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
-import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.typeText
-import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.rule.ActivityTestRule
+import com.atiurin.espressoguide.R
 import com.atiurin.espressoguide.activity.MainActivity
 import com.atiurin.espressoguide.framework.CustomActivityTestRule
 import org.junit.*
