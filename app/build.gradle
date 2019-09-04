@@ -73,7 +73,7 @@ dependencies {
     androidTestImplementation 'com.google.code.gson:gson:2.8.5'
 
     //espresso-page-object
-    androidTestImplementation 'com.atiurin.espresso:espressopageobject:0.1.2'
+    androidTestImplementation 'com.atiurin.espresso:espressopageobject:+'
 }
 
 tasks.withType(Test) {
