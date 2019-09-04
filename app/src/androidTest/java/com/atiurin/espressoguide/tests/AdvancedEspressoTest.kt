@@ -25,8 +25,8 @@ import com.atiurin.espressopageobject.extensions.*
 import com.atiurin.espressopageobject.recyclerview.withRecyclerView
 import org.hamcrest.Matchers.allOf
 import org.junit.*
+import ru.tinkoff.allure.AllureConfig
 import ru.tinkoff.allure.android.FailshotRule
-import ru.tinkoff.allure.model.AllureConfig
 
 class AdvancedEspressoTest {
     private val idlingRes = ContactsIdlingResource.getInstanceFromTest()
