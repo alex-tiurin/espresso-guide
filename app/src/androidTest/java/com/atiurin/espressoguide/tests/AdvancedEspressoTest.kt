@@ -77,7 +77,7 @@ class AdvancedEspressoTest {
         val messageText = "message3"
         FriendsListPage().getListItem("Janice").click()
         val chatPage = ChatPage()
-        chatPage.getName("Janice").isDisplayed()
+        chatPage.getTitle("Janice").isDisplayed()
         chatPage.openOptionsMenu()
         chatPage.clearHistoryBtn.click()
         chatPage.inputMessageText.typeText(messageText)
