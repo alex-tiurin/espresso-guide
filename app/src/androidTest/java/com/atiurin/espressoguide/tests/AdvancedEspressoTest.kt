@@ -114,9 +114,8 @@ class AdvancedEspressoTest {
 
     @Test
     fun testRecyclerView(){
-
         ru.tinkoff.allure.step("fail step"){
-            onView(withRecyclerView(withId(R.id.recycler_friends)).atItem(hasDescendant(withText("23123 123 12")))).
+            onView(withRecyclerView(withId(R.id.recycler_friends)).atItem(hasDescendant(withText("Failed test")))).
                 perform(click())
         }
     }
@@ -125,6 +124,4 @@ class AdvancedEspressoTest {
     fun unregisterResource() {
         IdlingRegistry.getInstance().unregister(idlingRes)
     }
-
-
 }
