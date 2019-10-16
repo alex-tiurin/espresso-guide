@@ -23,15 +23,15 @@ class ChatPage : Page {
     }
 
     private val list = withId(R.id.messages_list)
-    val clearHistoryBtn = withText("Clear history")
-    val inputMessageText = withId(R.id.message_input_text)
-    val sendMessageBtn = withId(R.id.send_button)
+    private val clearHistoryBtn = withText("Clear history")
+    private val inputMessageText = withId(R.id.message_input_text)
+    private val sendMessageBtn = withId(R.id.send_button)
 
-    fun getListItem(text: String): ChatRecyclerItem {
+    private fun getListItem(text: String): ChatRecyclerItem {
         return ChatRecyclerItem(
             list,
             ViewMatchers.hasDescendant(
-                Matchers.allOf(
+                allOf(
                     withId(R.id.message_text),
                     withText(text)
                 )
@@ -39,11 +39,11 @@ class ChatPage : Page {
         )
     }
 
-    fun getTitle(title: String): Matcher<View> {
+    private fun getTitle(title: String): Matcher<View> {
         return allOf(withId(R.id.toolbar_title), withText(title))
     }
 
-    class ChatRecyclerItem(list: Matcher<View>, item: Matcher<View>) : RecyclerViewItem(list, item) {
+    private class ChatRecyclerItem(list: Matcher<View>, item: Matcher<View>) : RecyclerViewItem(list, item) {
         val text = getChildMatcher(withId(R.id.message_text))
     }
 

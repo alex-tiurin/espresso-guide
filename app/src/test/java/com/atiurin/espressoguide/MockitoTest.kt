@@ -15,7 +15,7 @@ class MockitoTest{
         val mockLoader = Mockito.mock(MessageLoader::class.java)
         Mockito.`when`(mockLoader.load()).thenReturn(messages)
         MessageRepository.loadMessages(mockLoader)
-        val actualCount = MessageRepository.getMessagesCount()
+        val actualCount = MessageRepository.getChatMessagesCount()
         Assert.assertEquals("Expected messages count is 1 " +
                 "but actual count is $actualCount",
             1, actualCount)

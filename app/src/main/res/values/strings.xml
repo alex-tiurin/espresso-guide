@@ -14,5 +14,6 @@
     <string name="menu_profile">My Profile</string>
     <string name="menu_logout">Logout</string>
 
-    <string name="title_friends_list">Friends</string>
+    <string name="title_friends_list">F.R.I.E.N.D.S</string>
+    <string name="login_help">User: \'joey\',  Password: \'1234\'</string>
 </resources>

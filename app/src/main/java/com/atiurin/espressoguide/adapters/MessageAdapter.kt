@@ -18,6 +18,7 @@ class MessageAdapter(private var messages: ArrayList<Message>, val listener: OnI
 
     interface OnItemClickListener {
         fun onItemClick(item: Message)
+        fun onItemLongClick(item: Message)
     }
     class MessageViewHolder(val view: LinearLayout) : RecyclerView.ViewHolder(view)
 
@@ -36,14 +37,18 @@ class MessageAdapter(private var messages: ArrayList<Message>, val listener: OnI
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         holder.view.setOnClickListener {
-            listener.onItemClick(messages.get(position))
+            listener.onItemClick(messages[position])
+        }
+        holder.view.setOnLongClickListener {
+            listener.onItemLongClick(messages[position])
+            true
         }
         val messageText = holder.view.findViewById(R.id.message_text) as TextView
         val authorName = holder.view.findViewById(R.id.author) as TextView
         val message = messages[position]
         messageText.text = message.text
         if (message.authorId == CURRENT_USER.id){
-            val view = holder.view.get(0)
+            val view = holder.view[0]
             val cardView = view.findViewById<CardView>(R.id.card_view)
             cardView.setCardBackgroundColor(view.context.resources.getColor(R.color.colorLight))
             val layoutParams = view.layoutParams

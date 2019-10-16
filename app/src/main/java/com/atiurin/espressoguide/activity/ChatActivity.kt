@@ -1,7 +1,6 @@
 package com.atiurin.espressoguide.activity
 
 import android.os.Bundle
-import android.text.Editable
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -19,10 +18,11 @@ import com.atiurin.espressoguide.data.entities.Message
 import com.atiurin.espressoguide.data.repositories.CURRENT_USER
 import com.atiurin.espressoguide.data.repositories.ContactRepositoty
 import com.atiurin.espressoguide.data.repositories.MessageRepository
+import com.google.android.material.snackbar.Snackbar
 
 const val INTENT_CONTACT_ID_EXTRA_NAME = "contactId"
 
-class ChatActivity : AppCompatActivity(){
+class ChatActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: MessageAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -41,7 +41,7 @@ class ChatActivity : AppCompatActivity(){
         val mIntent = intent
         val title = findViewById<TextView>(R.id.toolbar_title)
         val contactId = mIntent.getIntExtra(INTENT_CONTACT_ID_EXTRA_NAME, -1)
-        if (contactId < 0){
+        if (contactId < 0) {
             Log.d("EspressoGuide", "Something goes wrong!")
         }
         contact = ContactRepositoty.getContact(contactId)
@@ -56,10 +56,14 @@ class ChatActivity : AppCompatActivity(){
         //recycler view and adapter
         viewManager = LinearLayoutManager(this)
         viewAdapter = MessageAdapter(
-            ArrayList<Message>(),
+            ArrayList(),
             object : MessageAdapter.OnItemClickListener {
                 override fun onItemClick(message: Message) {
                     Log.w("EspressoGuid", "Clicked message ${message.text}")
+                }
+
+                override fun onItemLongClick(message: Message) {
+                    Log.w("EspressoGuid", "Long Clicked message ${message.text}")
                 }
             })
         recyclerView = findViewById<RecyclerView>(R.id.messages_list).apply {
@@ -67,21 +71,22 @@ class ChatActivity : AppCompatActivity(){
             layoutManager = viewManager
             adapter = viewAdapter
         }
-        sendBtn.setOnClickListener(
-            object: View.OnClickListener{
-                override fun onClick(v: View?) {
-                    if (messageInput.text.isEmpty()){
-                        Toast.makeText(context, "Type message text", Toast.LENGTH_LONG).show()
-                    }else{
-                        val mes = Message(CURRENT_USER.id, contactId, messageInput.text.toString())
-                        val curMessages = MessageRepository.messages
-                        curMessages.add(mes)
-                        updateAdapter(curMessages)
-                        messageInput.setText("")
-                        recyclerView.smoothScrollToPosition(viewAdapter.itemCount - 1)
-                    }
-                }
-            })
+        sendBtn.setOnClickListener {
+            if (messageInput.text.isEmpty()) {
+                Toast.makeText(context, "Type message text", Toast.LENGTH_LONG).show()
+            } else {
+                val mes = Message(CURRENT_USER.id, contactId, messageInput.text.toString())
+                val chatMessages = MessageRepository.getChatMessages(contactId)
+                chatMessages.add(mes)
+                updateAdapter(chatMessages)
+                messageInput.setText("")
+                recyclerView.smoothScrollToPosition(viewAdapter.itemCount - 1)
+            }
+        }
+        attachBtn.setOnClickListener{
+            Snackbar.make(recyclerView, "Attach not implemented", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -92,6 +97,7 @@ class ChatActivity : AppCompatActivity(){
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_clear -> {
+                MessageRepository.clearChatMessages(contact.id)
                 updateAdapter(ArrayList())
                 true
             }
@@ -110,8 +116,7 @@ class ChatActivity : AppCompatActivity(){
         viewAdapter.notifyDataSetChanged()
     }
 
-    private fun updateAdapter(list: ArrayList<Message>){
-        MessageRepository.messages = list
+    private fun updateAdapter(list: ArrayList<Message>) {
         viewAdapter.updateData(list)
         viewAdapter.notifyDataSetChanged()
     }

@@ -10,14 +10,14 @@ class SimpleUnitTest {
 
     @Before
     fun clearRepository(){
-        MessageRepository.clearMessages()
+        MessageRepository.clearChatMessages()
     }
     @Test
     fun testAddNewMessage() {
         val message = Message(1, 2, "new message")
-        val initialCount = MessageRepository.getMessagesCount()
-        MessageRepository.addMessage(message)
-        val actualCount = MessageRepository.getMessagesCount()
+        val initialCount = MessageRepository.getChatMessagesCount()
+        MessageRepository.addChatMessage(message)
+        val actualCount = MessageRepository.getChatMessagesCount()
         Assert.assertEquals(
             "Expected messages count is ${initialCount + 1} " +
                     "but actual count is $actualCount",
@@ -27,7 +27,7 @@ class SimpleUnitTest {
     @Test
     fun testSearchAddedMessage() {
         val message = Message(1, 3, "add message")
-        MessageRepository.addMessage(message)
+        MessageRepository.addChatMessage(message)
         val searchedMessage = MessageRepository.searchMessage(message.authorId, message.receiverId, message.text)
         Assert.assertEquals("Expected message aren't the same as found one", message, searchedMessage)
     }
@@ -36,8 +36,8 @@ class SimpleUnitTest {
     fun testSearchRightMessage() {
         val expectedMessage = Message(1, 3, "add message")
         val message2 = Message(2, 3, "another message")
-        MessageRepository.addMessage(expectedMessage)
-        MessageRepository.addMessage(message2)
+        MessageRepository.addChatMessage(expectedMessage)
+        MessageRepository.addChatMessage(message2)
         val searchedMessage = MessageRepository.searchMessage(
             expectedMessage.authorId,
             expectedMessage.receiverId,
@@ -49,8 +49,8 @@ class SimpleUnitTest {
     fun testDemoAssertionFailed() {
         val expectedMessage = Message(1, 3, "add message")
         val message2 = Message(2, 3, "another message")
-        MessageRepository.addMessage(expectedMessage)
-        MessageRepository.addMessage(message2)
+        MessageRepository.addChatMessage(expectedMessage)
+        MessageRepository.addChatMessage(message2)
         val searchedMessage = MessageRepository.searchMessage(
             expectedMessage.authorId,
             expectedMessage.receiverId,
@@ -61,9 +61,9 @@ class SimpleUnitTest {
     @Test
     fun testClearAllMessages() {
         val message = Message(1, 2, "new message")
-        MessageRepository.addMessage(message)
-        MessageRepository.clearMessages()
-        val actualCount = MessageRepository.getMessagesCount()
+        MessageRepository.addChatMessage(message)
+        MessageRepository.clearChatMessages()
+        val actualCount = MessageRepository.getChatMessagesCount()
         Assert.assertEquals(
             "Expected messages count is 0 but actual count is $actualCount",
             0, actualCount

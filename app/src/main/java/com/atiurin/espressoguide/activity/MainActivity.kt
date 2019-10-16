@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(intent)
         }
         setContentView(R.layout.activity_main)
-        MyApplication.context = applicationContext
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         toolbar.setTitle(R.string.title_friends_list)
         setSupportActionBar(toolbar)
@@ -117,7 +116,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .setAction("Action", null).show()
             }
             R.id.nav_profile -> {
-                Toast.makeText(this, "Profile not implemented", Toast.LENGTH_LONG).show()
+                startActivity(Intent(applicationContext, ProfileActivity::class.java))
             }
             R.id.nav_logout -> {
                 accountManager.logout()

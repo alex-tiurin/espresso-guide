@@ -19,14 +19,13 @@ import com.atiurin.espressoguide.data.repositories.CURRENT_USER
 import com.atiurin.espressoguide.idlingresources.resources.ContactsIdlingResource
 import com.atiurin.espressoguide.idlingresources.resources.ChatIdlingResource
 import com.atiurin.espressoguide.managers.AccountManager
-import com.atiurin.espressoguide.pages.ChatPage
-import com.atiurin.espressoguide.pages.FriendsListPage
 import com.atiurin.espressopageobject.extensions.*
 import com.atiurin.espressopageobject.recyclerview.withRecyclerView
 import org.hamcrest.Matchers.allOf
 import org.junit.*
 import ru.tinkoff.allure.AllureConfig
 import ru.tinkoff.allure.android.FailshotRule
+import ru.tinkoff.allure.annotations.DisplayName
 
 class AdvancedEspressoTest {
     private val idlingRes = ContactsIdlingResource.getInstanceFromTest()
@@ -57,40 +56,10 @@ class AdvancedEspressoTest {
         IdlingRegistry.getInstance().register(idlingRes,idlingRes2)
     }
 
-    @Test
-    fun advancedSendMessageWithSteps(){
-        FriendsListPage().openChat("Janice")
-        ChatPage().clearHistory()
-                  .sendMessage("message2")
-    }
-
-    @Test
-    fun friendsItemCheck(){
-//        Thread.sleep(2000)
-        FriendsListPage().assertName("Janice")
-                         .assertStatus("Janice","Oh. My. God")
-//        Thread.sleep(2000)
-    }
-
-    @Test
-    fun advancedSendMessageWithPageObject() {
-        val messageText = "message3"
-        FriendsListPage().getListItem("Janice").click()
-        val chatPage = ChatPage()
-        chatPage.getTitle("Janice").isDisplayed()
-        chatPage.openOptionsMenu()
-        chatPage.clearHistoryBtn.click()
-        chatPage.inputMessageText.typeText(messageText)
-        chatPage.sendMessageBtn.click()
-        chatPage.getListItem(messageText).text
-            .isDisplayed()
-            .hasText(messageText)
-        Thread.sleep(1000)
-    }
-
+    //clear espresso test. it is hard to be maintained
     @Ignore
     @Test
-    fun advancedTestSendMessageToJanice() {
+    fun clearEspressoTestWithRecyclerViewActions() {
         val messageText = "message4"
         val itemMatcher = hasDescendant(allOf(withId(R.id.tv_name), withText("Janice")))
         onView(withId(R.id.recycler_friends))
@@ -113,7 +82,7 @@ class AdvancedEspressoTest {
     }
 
     @Test
-    fun testRecyclerView(){
+    fun shouldBeFailed(){
         ru.tinkoff.allure.step("fail step"){
             onView(withRecyclerView(withId(R.id.recycler_friends)).atItem(hasDescendant(withText("Failed test")))).
                 perform(click())
@@ -122,6 +91,6 @@ class AdvancedEspressoTest {
 
     @After
     fun unregisterResource() {
-        IdlingRegistry.getInstance().unregister(idlingRes)
+        IdlingRegistry.getInstance().unregister(idlingRes, idlingRes2)
     }
 }

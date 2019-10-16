@@ -5,39 +5,41 @@ import com.atiurin.espressoguide.data.loaders.MessageLoader
 
 
 object MessageRepository {
-    var messages : ArrayList<Message>
+    var messages : HashMap<Int, List<Message>>
 
     init {
         messages = loadMessages(MessageLoader())
     }
 
     fun loadMessages(loader: MessageLoader)
-            : ArrayList<Message>{
+            : HashMap<Int, List<Message>>{
         messages = loader.load()
         return messages
     }
 
-    fun searchMessage(author: Int, recipient: Int, text: String) : Message?{
-        return messages.find { it.authorId == author &&  it.receiverId == recipient && it.text == text }
+    fun searchMessage(contactId: Int, author: Int, recipient: Int, text: String) : Message?{
+        return messages[contactId]?.find { it.authorId == author &&  it.receiverId == recipient && it.text == text }
     }
-
 
     fun getChatMessages(contactId: Int): ArrayList<Message>{
-        return ArrayList(messages.filter {message ->
-            (message.authorId == contactId && message.receiverId == CURRENT_USER.id) ||
-                    (message.authorId == CURRENT_USER.id && message.receiverId == contactId)
-        })
+        val chatMessages = messages[contactId]
+        if (chatMessages== null){
+            messages[contactId] = ArrayList()
+        }
+        return messages[contactId] as ArrayList<Message>
     }
 
-    fun clearMessages(){
-        messages.clear()
+    fun clearChatMessages(contactId: Int){
+        getChatMessages(contactId).clear()
     }
 
-    fun addMessage(message: Message){
-        messages.add(message)
+    fun addChatMessage(contactId: Int, message: Message){
+        getChatMessages(contactId).add(message)
     }
 
-    fun getMessagesCount() : Int{
-        return messages.size
+    fun getChatMessagesCount(contactId: Int) : Int{
+        return getChatMessages(contactId).size
     }
+
+
 }

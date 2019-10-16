@@ -4,7 +4,7 @@ import com.atiurin.espressoguide.data.entities.Message
 import com.atiurin.espressoguide.data.repositories.MESSAGES
 
 open class MessageLoader{
-    open fun load() : ArrayList<Message>{
+    open fun load() : HashMap<Int, List<Message>>{
         return MESSAGES
     }
 }

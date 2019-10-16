@@ -15,7 +15,7 @@ import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
 
 class FriendsListPage : Page {
-    val list = withTagValue(`is`(Tags.CONTACTS_LIST))
+    private val list = withTagValue(`is`(Tags.CONTACTS_LIST))
 
     override fun assertPageDisplayed() = apply {
         step("Assert friends list page displayed"){
@@ -23,19 +23,16 @@ class FriendsListPage : Page {
         }
     }
 
-    fun getListItem(title: String): FriendRecyclerItem {
+    private fun getListItem(title: String): FriendRecyclerItem {
         return FriendRecyclerItem(
             list,
             hasDescendant(
-                allOf(
-                    ViewMatchers.withId(R.id.tv_name),
-                    ViewMatchers.withText(title)
-                )
+                allOf(withId(R.id.tv_name),withText(title))
             )
         )
     }
 
-    class FriendRecyclerItem(list: Matcher<View>, item: Matcher<View>) : RecyclerViewItem(list, item) {
+    private class FriendRecyclerItem(list: Matcher<View>, item: Matcher<View>) : RecyclerViewItem(list, item) {
         val name = getChildMatcher(withId(R.id.tv_name))
         val status = getChildMatcher(withId(R.id.tv_status))
     }
