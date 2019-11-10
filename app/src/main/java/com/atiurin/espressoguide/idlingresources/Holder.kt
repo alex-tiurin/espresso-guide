@@ -13,7 +13,7 @@ open class Holder<out T>(private val constructor: () -> T) {
     fun getInstanceFromTest(): T? {
         return when {
             instance != null -> instance
-            else -> synchronized(this) {
+            else -> {
                 instance = constructor()
                 instance
             }

@@ -39,10 +39,10 @@ class SimpleEspressoTest{
 
     /**
      *   bad approach: chandler could be invisible (out of screen)
-         in this case test will fail, see better way in [AdvancedEspressoTest]
+         in this case test will fail, look at better way in [AdvancedEspressoTest]
      */
     @Test
-    fun testSendMessageToChandler(){
+    fun simpleEspressoTest_SendStringMessage(){
         val messageText = "message1"
         onView(withText("Chandler Bing")).perform(click())
         openActionBarOverflowOrOptionsMenu(getInstrumentation().context)
@@ -53,8 +53,8 @@ class SimpleEspressoTest{
     }
 
     @Test
-    fun testSendMessageToJanice(){
-        val messageText = "message2"
+    fun simpleEspressoTest_SendNumbers(){
+        val messageText = "1234567890"
         onView(withText("Rachel Green")).perform(click())
         openActionBarOverflowOrOptionsMenu(getInstrumentation().context)
         onView(withText("Clear history")).perform(click())

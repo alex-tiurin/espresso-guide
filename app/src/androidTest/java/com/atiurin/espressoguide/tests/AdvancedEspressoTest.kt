@@ -56,8 +56,11 @@ class AdvancedEspressoTest {
         IdlingRegistry.getInstance().register(idlingRes,idlingRes2)
     }
 
-    //clear espresso test. it is hard to be maintained
-    @Ignore
+    /**
+     *  clear espresso test. it is hard to be maintained
+     *  Look at better approach [DemoEspressoTest]
+     */
+//    @Ignore
     @Test
     fun clearEspressoTestWithRecyclerViewActions() {
         val messageText = "message4"
@@ -81,8 +84,9 @@ class AdvancedEspressoTest {
         Thread.sleep(1000)
     }
 
+    @Ignore
     @Test
-    fun shouldBeFailed(){
+    fun ignoredTest(){
         ru.tinkoff.allure.step("fail step"){
             onView(withRecyclerView(withId(R.id.recycler_friends)).atItem(hasDescendant(withText("Failed test")))).
                 perform(click())

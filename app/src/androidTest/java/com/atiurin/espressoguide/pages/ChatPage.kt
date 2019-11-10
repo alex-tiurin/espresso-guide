@@ -39,11 +39,18 @@ class ChatPage : Page {
         )
     }
 
+    private fun getListItemAtPosition(position: Int): ChatRecyclerItem {
+        return ChatRecyclerItem(list, position)
+    }
+
     private fun getTitle(title: String): Matcher<View> {
         return allOf(withId(R.id.toolbar_title), withText(title))
     }
 
-    private class ChatRecyclerItem(list: Matcher<View>, item: Matcher<View>) : RecyclerViewItem(list, item) {
+    private class ChatRecyclerItem : RecyclerViewItem {
+        constructor(list: Matcher<View>, item: Matcher<View>) : super(list, item)
+        constructor(list: Matcher<View>, position: Int) : super(list, position)
+
         val text = getChildMatcher(withId(R.id.message_text))
     }
 
@@ -65,8 +72,16 @@ class ChatPage : Page {
     }
 
     fun assertMessageDisplayed(text: String) {
-        getListItem(text).text
-            .isDisplayed()
-            .hasText(text)
+        step("Assert message with text is displayed"){
+            getListItem(text).text
+                .isDisplayed()
+                .hasText(text)
+        }
+    }
+
+    fun assertMessageTextAtPosition(position: Int, text: String) = apply {
+        step("Assert message at position $position has text '$text' and displayed"){
+            getListItemAtPosition(position).text.isDisplayed().hasText(text)
+        }
     }
 }

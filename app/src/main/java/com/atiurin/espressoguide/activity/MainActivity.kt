@@ -66,7 +66,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         navView.setNavigationItemSelectedListener(this)
 
-
         viewManager = LinearLayoutManager(this)
         viewAdapter = ContactAdapter(ArrayList<Contact>(),
             object : ContactAdapter.OnItemClickListener {
@@ -97,7 +96,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onContactsLoaded(contacts: ArrayList<Contact>) {
         viewAdapter.updateData(contacts)
         viewAdapter.notifyDataSetChanged()
-        IdlingHelper.ifAllowed { ContactsIdlingResource.getInstanceFromApp()?.setIdleState(true) }
+        IdlingHelper.ifAllowed {
+            ContactsIdlingResource.getInstanceFromApp()
+                ?.setIdleState(true)
+        }
     }
 
     override fun onFailedToLoadContacts(message: String?) {

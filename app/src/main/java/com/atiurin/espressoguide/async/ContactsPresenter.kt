@@ -1,6 +1,8 @@
 package com.atiurin.espressoguide.async
 
+import androidx.test.espresso.IdlingResource
 import com.atiurin.espressoguide.data.entities.Contact
+import com.atiurin.espressoguide.idlingresources.AbstractIdlingResource
 import com.atiurin.espressoguide.idlingresources.IdlingHelper
 import com.atiurin.espressoguide.idlingresources.resources.ChatIdlingResource
 import com.atiurin.espressoguide.idlingresources.resources.ContactsIdlingResource
@@ -17,7 +19,11 @@ class ContactsPresenter <T : ContactsProvider>(
     protected lateinit var scope: PresenterCoroutineScope
 
     fun getAllContacts() {
-        IdlingHelper.ifAllowed { ContactsIdlingResource.getInstanceFromApp()?.setIdleState(false) }
+        IdlingHelper.ifAllowed {
+            ContactsIdlingResource.getInstanceFromApp()
+                ?.setIdleState(false)
+        }
+
         scope = PresenterCoroutineScope(coroutineContext)
         scope.launch {
             GetContacts()(
