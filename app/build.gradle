@@ -11,7 +11,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "ru.tinkoff.allure.android.AllureAndroidRunner"
+        testInstrumentationRunner "io.qameta.allure.espresso.AllureAndroidRunner"
     }
 
     buildTypes {
@@ -71,6 +71,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso.idling:idling-concurrent:3.2.0'
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
     androidTestImplementation 'com.google.code.gson:gson:2.8.5'
+    androidTestImplementation "io.qameta.allure:allure-android-commons:2.0.0"
+    androidTestImplementation "io.qameta.allure:allure-android-model:2.0.0"
+    androidTestImplementation "io.qameta.allure:allure-espresso:2.0.0"
 
     //espresso-page-object
     androidTestImplementation 'com.atiurin.espresso:espressopageobject:0.1.9'

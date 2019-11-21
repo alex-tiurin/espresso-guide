@@ -55,7 +55,7 @@ class ChatPage : Page {
     }
 
     fun sendMessage(text: String) = apply {
-        step("Send message with text '$text") {
+        step("Send message with text '$text'") {
             inputMessageText.typeText(text)
             sendMessageBtn.click()
             getListItem(text).text

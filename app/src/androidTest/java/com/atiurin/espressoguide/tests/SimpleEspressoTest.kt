@@ -20,29 +20,32 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class SimpleEspressoTest{
+class SimpleEspressoTest : BaseTest() {
     private val idlingRes = ContactsIdlingResource.getInstanceFromTest()
 
-    @Rule @JvmField
-    val mActivityRule = ActivityTestRule(MainActivity::class.java,false, false)
+    @Rule
+    @JvmField
+    val mActivityRule = ActivityTestRule(MainActivity::class.java, false, false)
 
     @Before
-    fun registerResource(){
+    fun registerResource() {
         //make login into app before test start and activity launched
         //to be sure that user is logged in when test start
-        AccountManager(getInstrumentation().targetContext).login(CURRENT_USER.login, CURRENT_USER.password)
-        val intent = Intent(getInstrumentation().targetContext, MainActivity::class.java)
-        mActivityRule.launchActivity(intent)
+        AccountManager(getInstrumentation().targetContext).login(
+            CURRENT_USER.login,
+            CURRENT_USER.password
+        )
+        mActivityRule.launchActivity(Intent())
         IdlingRegistry.getInstance().register(idlingRes)
 
     }
 
     /**
      *   bad approach: chandler could be invisible (out of screen)
-         in this case test will fail, look at better way in [AdvancedEspressoTest]
+    in this case test will fail, look at better way in [AdvancedEspressoTest]
      */
     @Test
-    fun simpleEspressoTest_SendStringMessage(){
+    fun simpleEspressoTest_SendStringMessage() {
         val messageText = "message1"
         onView(withText("Chandler Bing")).perform(click())
         openActionBarOverflowOrOptionsMenu(getInstrumentation().context)
@@ -53,7 +56,7 @@ class SimpleEspressoTest{
     }
 
     @Test
-    fun simpleEspressoTest_SendNumbers(){
+    fun simpleEspressoTest_SendNumbers() {
         val messageText = "1234567890"
         onView(withText("Rachel Green")).perform(click())
         openActionBarOverflowOrOptionsMenu(getInstrumentation().context)
@@ -64,7 +67,7 @@ class SimpleEspressoTest{
     }
 
     @After
-    fun unregisterResource(){
+    fun unregisterResource() {
         IdlingRegistry.getInstance().unregister(idlingRes)
     }
 }

@@ -21,39 +21,26 @@ import com.atiurin.espressoguide.idlingresources.resources.ChatIdlingResource
 import com.atiurin.espressoguide.managers.AccountManager
 import com.atiurin.espressopageobject.extensions.*
 import com.atiurin.espressopageobject.recyclerview.withRecyclerView
+import io.qameta.allure.android.step
+import io.qameta.allure.espresso.FailshotRule
 import org.hamcrest.Matchers.allOf
 import org.junit.*
-import ru.tinkoff.allure.AllureConfig
-import ru.tinkoff.allure.android.FailshotRule
-import ru.tinkoff.allure.annotations.DisplayName
 
-class AdvancedEspressoTest {
+class AdvancedEspressoTest : BaseTest() {
     private val idlingRes = ContactsIdlingResource.getInstanceFromTest()
     private val idlingRes2 = ChatIdlingResource.getInstanceFromTest()
     @Rule
     @JvmField
     val mActivityRule = ActivityTestRule(MainActivity::class.java, false, false)
 
-    @Rule @JvmField val failshot = FailshotRule()
-    companion object {
-        @BeforeClass @JvmStatic
-        fun beforeClass(){
-            ViewActionsConfig.beforeAction = {
-                Log.d("Espresso", "take screenshot")
-            }
-
-            ViewActionsConfig.afterAction = {
-                Log.d("Espresso", "made action")
-            }
-            AllureConfig.failExceptions.addAll(mutableListOf(NoMatchingViewException::class.java, AmbiguousViewMatcherException::class.java))
-        }
-    }
-
     @Before
     fun registerResource() {
-        AccountManager(getInstrumentation().targetContext).login(CURRENT_USER.login, CURRENT_USER.password)
+        AccountManager(getInstrumentation().targetContext).login(
+            CURRENT_USER.login,
+            CURRENT_USER.password
+        )
         mActivityRule.launchActivity(Intent())
-        IdlingRegistry.getInstance().register(idlingRes,idlingRes2)
+        IdlingRegistry.getInstance().register(idlingRes, idlingRes2)
     }
 
     /**
@@ -80,16 +67,22 @@ class AdvancedEspressoTest {
                 RecyclerViewActions
                     .scrollTo<RecyclerView.ViewHolder>(hasDescendant(withText(messageText)))
             )
-        onView(allOf(withText(messageText), withId(R.id.message_text))).check(matches(isDisplayed()))
+        onView(
+            allOf(
+                withText(messageText),
+                withId(R.id.message_text)
+            )
+        ).check(matches(isDisplayed()))
         Thread.sleep(1000)
     }
 
     @Ignore
     @Test
-    fun ignoredTest(){
-        ru.tinkoff.allure.step("fail step"){
-            onView(withRecyclerView(withId(R.id.recycler_friends)).atItem(hasDescendant(withText("Failed test")))).
-                perform(click())
+    fun ignoredTest() {
+        step("fail step") {
+            onView(withRecyclerView(withId(R.id.recycler_friends)).atItem(hasDescendant(withText("Failed test")))).perform(
+                click()
+            )
         }
     }
 
@@ -97,4 +90,6 @@ class AdvancedEspressoTest {
     fun unregisterResource() {
         IdlingRegistry.getInstance().unregister(idlingRes, idlingRes2)
     }
+
+
 }

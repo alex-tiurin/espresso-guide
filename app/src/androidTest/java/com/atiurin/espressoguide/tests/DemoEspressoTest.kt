@@ -1,25 +1,18 @@
 package com.atiurin.espressoguide.tests
 
 import android.content.Intent
-import android.util.Log
 import androidx.test.espresso.IdlingRegistry
-import androidx.test.internal.runner.listener.InstrumentationResultPrinter
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import com.atiurin.espressoguide.activity.MainActivity
 import com.atiurin.espressoguide.data.repositories.CURRENT_USER
-import com.atiurin.espressoguide.idlingresources.resources.ChatIdlingResource
 import com.atiurin.espressoguide.idlingresources.resources.ContactsIdlingResource
 import com.atiurin.espressoguide.managers.AccountManager
 import com.atiurin.espressoguide.pages.ChatPage
 import com.atiurin.espressoguide.pages.FriendsListPage
-import com.atiurin.espressopageobject.extensions.ViewActionsConfig
-import com.atiurin.espressopageobject.extensions.ViewAssertionsConfig
-import junit.textui.ResultPrinter
 import org.junit.*
-import ru.tinkoff.allure.android.deviceScreenshot
 
-class DemoEspressoTest {
+class DemoEspressoTest : BaseTest() {
     companion object {
         @BeforeClass
         @JvmStatic
@@ -29,15 +22,19 @@ class DemoEspressoTest {
         }
     }
 
+    @get:Rule
+    val mActivityRule = ActivityTestRule(
+        MainActivity::class.java,
+        false,
+        false
+    )
+
     private val contactsIdlingResource = ContactsIdlingResource.getInstanceFromTest()
-
-    @Rule
-    @JvmField
-    val mActivityRule = ActivityTestRule(MainActivity::class.java, false, false)
-
 
     @Before
     fun registerResource() {
+        //make login into app before test start and activity launched
+        //to be sure that user is logged in when test starts
         AccountManager(InstrumentationRegistry.getInstrumentation().targetContext).login(
             CURRENT_USER.login,
             CURRENT_USER.password
