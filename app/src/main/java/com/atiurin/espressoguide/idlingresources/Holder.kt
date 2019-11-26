@@ -6,7 +6,6 @@ import com.atiurin.espressoguide.MyApplication
 
 open class Holder<out T>(private val constructor: () -> T) {
 
-    @Volatile
     private var instance: T? = null
 
     @VisibleForTesting

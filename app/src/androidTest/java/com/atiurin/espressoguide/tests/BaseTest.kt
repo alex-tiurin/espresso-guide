@@ -1,12 +1,11 @@
 package com.atiurin.espressoguide.tests
 
-import android.util.Log
-import com.atiurin.espressopageobject.extensions.ViewActionsConfig
-import com.atiurin.espressopageobject.extensions.ViewAssertionsConfig
+import com.atiurin.espressoguide.framework.ScreenshotLifecycleListener
+import com.atiurin.espressopageobject.core.action.ViewActionLifecycle
+import com.atiurin.espressopageobject.core.assertion.ViewAssertionLifecycle
 import io.qameta.allure.espresso.FailshotRule
 import io.qameta.allure.espresso.LogcatClearRule
 import io.qameta.allure.espresso.LogcatDumpRule
-import io.qameta.allure.espresso.deviceScreenshot
 import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.rules.RuleChain
@@ -23,17 +22,9 @@ abstract class BaseTest {
         @BeforeClass
         @JvmStatic
         fun beforeClass(){
-            ViewActionsConfig.beforeAction = {
-                Log.d("Espresso", "take screenshot before action")
-                //attach screenshot to allure report and map it to current step
-                deviceScreenshot("Action ${ViewActionsConfig.currentEspressoAction?.type}")
-            }
-
-            ViewAssertionsConfig.beforeAssertion = {
-                Log.d("Espresso", "take screenshot before assertion")
-                //attach screenshot to allure report and map it to current step
-                deviceScreenshot("Assertion ${ViewAssertionsConfig.currentEspressoAssertion?.type}")
-            }
+            val listener = ScreenshotLifecycleListener()
+            ViewActionLifecycle.addListener(listener)
+            ViewAssertionLifecycle.addListener(listener)
         }
     }
 

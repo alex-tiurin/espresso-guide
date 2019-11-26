@@ -57,3 +57,9 @@ class FriendsListPage : Page {
         }
     }
 }
+
+fun FriendsListPage (init: FriendsListPage.() -> Unit): FriendsListPage{
+    val page = FriendsListPage()
+    page.init()
+    return page
+}

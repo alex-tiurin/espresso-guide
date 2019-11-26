@@ -16,7 +16,7 @@ import org.hamcrest.Matchers
 import org.hamcrest.Matchers.allOf
 
 class ChatPage : Page {
-    override fun assertPageDisplayed() = apply{
+    override fun assertPageDisplayed() = apply {
         step("Assert friends list page displayed") {
             list.isDisplayed()
         }
@@ -71,8 +71,8 @@ class ChatPage : Page {
         }
     }
 
-    fun assertMessageDisplayed(text: String) {
-        step("Assert message with text is displayed"){
+    fun assertMessageDisplayed(text: String) = apply {
+        step("Assert message with text is displayed") {
             getListItem(text).text
                 .isDisplayed()
                 .hasText(text)
@@ -80,8 +80,14 @@ class ChatPage : Page {
     }
 
     fun assertMessageTextAtPosition(position: Int, text: String) = apply {
-        step("Assert message at position $position has text '$text' and displayed"){
+        step("Assert message at position $position has text '$text' and displayed") {
             getListItemAtPosition(position).text.isDisplayed().hasText(text)
         }
     }
+}
+
+fun ChatPage(init: ChatPage.() -> Unit): ChatPage {
+    val page = ChatPage()
+    page.init()
+    return page
 }

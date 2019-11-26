@@ -10,6 +10,8 @@ import com.atiurin.espressoguide.idlingresources.resources.ContactsIdlingResourc
 import com.atiurin.espressoguide.managers.AccountManager
 import com.atiurin.espressoguide.pages.ChatPage
 import com.atiurin.espressoguide.pages.FriendsListPage
+import com.atiurin.espressopageobject.core.action.ViewActionConfig
+import com.atiurin.espressopageobject.core.assertion.ViewAssertionConfig
 import org.junit.*
 
 class DemoEspressoTest : BaseTest() {
@@ -17,8 +19,8 @@ class DemoEspressoTest : BaseTest() {
         @BeforeClass
         @JvmStatic
         fun switchOffFailureHandler() {
-//            ViewActionsConfig.allowedExceptions.clear()// disable failure handler
-//            ViewAssertionsConfig.allowedExceptions.clear()// disable failure handler
+            ViewActionConfig.allowedExceptions.clear()// disable failure handler
+            ViewAssertionConfig.allowedExceptions.clear()// disable failure handler
         }
     }
 
@@ -54,7 +56,8 @@ class DemoEspressoTest : BaseTest() {
     fun sendMessage() {
         FriendsListPage().openChat("Janice")
         ChatPage().clearHistory()
-            .sendMessage("test message")
+                  .sendMessage("test message")
+
     }
 
     @Test
@@ -62,11 +65,13 @@ class DemoEspressoTest : BaseTest() {
         val firstMessage = "first message"
         val secondMessage = "second message"
         FriendsListPage().openChat("Janice")
-        ChatPage().clearHistory()
-            .sendMessage(firstMessage)
-            .sendMessage(secondMessage)
-            .assertMessageTextAtPosition(0, firstMessage)
-            .assertMessageTextAtPosition(1, secondMessage)
+        ChatPage {
+            clearHistory()
+            sendMessage(firstMessage)
+            sendMessage(secondMessage)
+            assertMessageTextAtPosition(0, firstMessage)
+            assertMessageTextAtPosition(1, secondMessage)
+        }
     }
 
     @Test
@@ -74,11 +79,13 @@ class DemoEspressoTest : BaseTest() {
         val firstMessage = "first message"
         val secondMessage = "second message"
         FriendsListPage().openChat("Janice")
-        ChatPage().clearHistory()
-            .sendMessage(firstMessage)
-            .sendMessage(secondMessage)
-            .assertMessageTextAtPosition(0, secondMessage)
-            .assertMessageTextAtPosition(1, firstMessage)
+        ChatPage {
+            clearHistory()
+            sendMessage(firstMessage)
+            sendMessage(secondMessage)
+            assertMessageTextAtPosition(0, secondMessage)
+            assertMessageTextAtPosition(1, firstMessage)
+        }
     }
 
     @After
