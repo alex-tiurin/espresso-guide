@@ -22,8 +22,7 @@ import android.widget.Toast
 import com.atiurin.espressoguide.async.ContactsPresenter
 import com.atiurin.espressoguide.async.ContactsProvider
 import com.atiurin.espressoguide.data.Tags
-import com.atiurin.espressoguide.idlingresources.IdlingHelper
-import com.atiurin.espressoguide.idlingresources.resources.ContactsIdlingResource
+import com.atiurin.espressoguide.idlingresources.idling
 import com.atiurin.espressoguide.managers.AccountManager
 import com.atiurin.espressoguide.view.CircleImageView
 
@@ -96,10 +95,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onContactsLoaded(contacts: ArrayList<Contact>) {
         viewAdapter.updateData(contacts)
         viewAdapter.notifyDataSetChanged()
-        IdlingHelper.ifAllowed {
-            ContactsIdlingResource.getInstanceFromApp()
-                ?.setIdleState(true)
-        }
+        idling { contactsIdling.setIdleState(true) }
     }
 
     override fun onFailedToLoadContacts(message: String?) {

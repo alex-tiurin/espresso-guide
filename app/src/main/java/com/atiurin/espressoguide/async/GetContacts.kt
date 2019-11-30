@@ -5,10 +5,9 @@ import com.atiurin.espressoguide.data.repositories.CONTACTS
 import kotlinx.coroutines.delay
 
 class GetContacts : UseCase<ArrayList<Contact>, UseCase.None>() {
-
     override suspend fun run(params: None): Either<Exception, ArrayList<Contact>> {
         return try {
-            delay(3000)
+//            delay(200)
             val contacts = CONTACTS
             Success(contacts)
         } catch (e: Exception) {

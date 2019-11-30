@@ -12,16 +12,18 @@ import com.atiurin.espressopageobject.extensions.isDisplayed
 import com.atiurin.espressopageobject.extensions.typeText
 import com.atiurin.espressopageobject.recyclerview.RecyclerViewItem
 import org.hamcrest.Matcher
-import org.hamcrest.Matchers
 import org.hamcrest.Matchers.allOf
 
 class ChatPage : Page {
+    constructor(action: ChatPage.() -> Unit){
+        this.action()
+    }
+    constructor()
     override fun assertPageDisplayed() = apply {
         step("Assert friends list page displayed") {
             list.isDisplayed()
         }
     }
-
     private val list = withId(R.id.messages_list)
     private val clearHistoryBtn = withText("Clear history")
     private val inputMessageText = withId(R.id.message_input_text)
@@ -81,13 +83,10 @@ class ChatPage : Page {
 
     fun assertMessageTextAtPosition(position: Int, text: String) = apply {
         step("Assert message at position $position has text '$text' and displayed") {
-            getListItemAtPosition(position).text.isDisplayed().hasText(text)
+            getListItemAtPosition(position).text
+                .hasText(text)
+                .isDisplayed()
         }
     }
 }
 
-fun ChatPage(init: ChatPage.() -> Unit): ChatPage {
-    val page = ChatPage()
-    page.init()
-    return page
-}

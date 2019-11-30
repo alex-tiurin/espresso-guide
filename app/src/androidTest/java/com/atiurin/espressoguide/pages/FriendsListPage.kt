@@ -1,8 +1,6 @@
 package com.atiurin.espressoguide.pages
 
 import android.view.View
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.atiurin.espressoguide.R
 import com.atiurin.espressoguide.data.Tags
@@ -10,12 +8,15 @@ import com.atiurin.espressoguide.framework.*
 import com.atiurin.espressopageobject.extensions.hasText
 import com.atiurin.espressopageobject.extensions.isDisplayed
 import com.atiurin.espressopageobject.recyclerview.RecyclerViewItem
-import junit.framework.Assert.assertTrue
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
 
 class FriendsListPage : Page {
+    constructor(action: FriendsListPage.() -> Unit){
+        this.action()
+    }
+    constructor()
     private val list = withTagValue(`is`(Tags.CONTACTS_LIST))
 
     override fun assertPageDisplayed() = apply {
@@ -56,10 +57,4 @@ class FriendsListPage : Page {
             getListItem(nameText).name.hasText(nameText)
         }
     }
-}
-
-fun FriendsListPage (init: FriendsListPage.() -> Unit): FriendsListPage{
-    val page = FriendsListPage()
-    page.init()
-    return page
 }

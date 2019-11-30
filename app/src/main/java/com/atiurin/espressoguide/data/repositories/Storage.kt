@@ -39,5 +39,9 @@ val MESSAGES = hashMapOf<Int, List<Message>>(
     3 to arrayListOf(
         Message(1, 3, "Do u wanna coffee?"),
         Message(3, 1, "yep, let's go")
+    ),
+    8 to arrayListOf(
+        Message(8, 1, "We are neighbours!"),
+        Message(1, 8, "oh my God")
     )
 )
