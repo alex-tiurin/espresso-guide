@@ -5,6 +5,7 @@ import com.atiurin.espressoguide.framework.ScreenshotLifecycleListener
 import com.atiurin.espressoguide.framework.getDefaultIdlingScope
 import com.atiurin.espressoguide.idlingresources.idling
 import com.atiurin.espressoguide.idlingresources.idlingContainer
+import com.atiurin.espressopageobject.core.action.ViewActionLifecycle
 import com.atiurin.espressopageobject.core.assertion.ViewAssertionLifecycle
 import io.qameta.allure.espresso.FailshotRule
 import io.qameta.allure.espresso.LogcatClearRule

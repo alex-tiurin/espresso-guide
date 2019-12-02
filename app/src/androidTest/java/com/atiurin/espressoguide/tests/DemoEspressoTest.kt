@@ -11,7 +11,9 @@ import com.atiurin.espressoguide.managers.AccountManager
 import com.atiurin.espressoguide.pages.ChatPage
 import com.atiurin.espressoguide.pages.FriendsListPage
 import com.atiurin.espressopageobject.core.action.ViewActionConfig
+import com.atiurin.espressopageobject.core.action.ViewActionLifecycle
 import com.atiurin.espressopageobject.core.assertion.ViewAssertionConfig
+import com.atiurin.espressopageobject.core.assertion.ViewAssertionLifecycle
 import org.junit.*
 
 class DemoEspressoTest : BaseTest() {
@@ -19,8 +21,8 @@ class DemoEspressoTest : BaseTest() {
         @BeforeClass
         @JvmStatic
         fun switchOffFailureHandler() {
-//            ViewActionConfig.allowedExceptions.clear()// disable failure handler
-//            ViewAssertionConfig.allowedExceptions.clear()// disable failure handler
+            ViewActionConfig.allowedExceptions.clear()// disable failure handler
+            ViewAssertionConfig.allowedExceptions.clear()// disable failure handler
         }
     }
 
@@ -50,7 +52,7 @@ class DemoEspressoTest : BaseTest() {
     fun sendMessage() {
         FriendsListPage().openChat("Ross Geller")
         ChatPage().clearHistory()
-                  .sendMessage("test message")
+            .sendMessage("test message")
     }
 
     @Test
@@ -71,7 +73,9 @@ class DemoEspressoTest : BaseTest() {
     fun specialFailedTestForAllureReport() {
         val firstMessage = "first message"
         val secondMessage = "second message"
-        FriendsListPage().openChat("Janice")
+        FriendsListPage {
+            openChat("Janice")
+        }
         ChatPage {
             clearHistory()
             sendMessage(firstMessage)

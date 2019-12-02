@@ -7,7 +7,7 @@ import kotlinx.coroutines.delay
 class GetContacts : UseCase<ArrayList<Contact>, UseCase.None>() {
     override suspend fun run(params: None): Either<Exception, ArrayList<Contact>> {
         return try {
-//            delay(200)
+            delay(200)
             val contacts = CONTACTS
             Success(contacts)
         } catch (e: Exception) {
