@@ -31,8 +31,8 @@ class DemoEspressoTest : BaseTest() {
 
     @Before
     fun backgroundLogin() {
-        //make login into app before test start and activity launched
-        //to be sure that user is logged in when test starts
+        //make login into app before test starts and activity is launched
+        //to make sure that user is logged in when test starts
         AccountManager(InstrumentationRegistry.getInstrumentation().targetContext).login(
             CURRENT_USER.login,
             CURRENT_USER.password
@@ -69,6 +69,9 @@ class DemoEspressoTest : BaseTest() {
         }
     }
 
+    /**
+     * Test should fail
+     */
     @Test
     fun specialFailedTestForAllureReport() {
         val firstMessage = "first message"

@@ -16,7 +16,7 @@ import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.rules.RuleChain
 
-abstract class BaseTest {
+abstract class  BaseTest {
 
     //attach screenshot to allure report in case of failure
     @get:Rule

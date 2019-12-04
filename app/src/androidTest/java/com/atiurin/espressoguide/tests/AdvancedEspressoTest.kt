@@ -67,7 +67,6 @@ class AdvancedEspressoTest : BaseTest() {
                 withId(R.id.message_text)
             )
         ).check(matches(isDisplayed()))
-        Thread.sleep(1000)
     }
 
     @Ignore

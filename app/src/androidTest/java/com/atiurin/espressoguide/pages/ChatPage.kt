@@ -15,15 +15,10 @@ import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 
 class ChatPage : Page {
-    constructor(action: ChatPage.() -> Unit){
+    constructor(action: ChatPage.() -> Unit) {
         this.action()
     }
     constructor()
-    override fun assertPageDisplayed() = apply {
-        step("Assert friends list page displayed") {
-            list.isDisplayed()
-        }
-    }
     private val list = withId(R.id.messages_list)
     private val clearHistoryBtn = withText("Clear history")
     private val inputMessageText = withId(R.id.message_input_text)
@@ -54,6 +49,12 @@ class ChatPage : Page {
         constructor(list: Matcher<View>, position: Int) : super(list, position)
 
         val text = getChildMatcher(withId(R.id.message_text))
+    }
+
+    override fun assertPageDisplayed() = apply {
+        step("Assert friends list page displayed") {
+            list.isDisplayed()
+        }
     }
 
     fun sendMessage(text: String) = apply {
