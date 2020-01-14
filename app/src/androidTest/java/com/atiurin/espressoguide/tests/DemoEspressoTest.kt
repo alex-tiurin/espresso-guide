@@ -50,8 +50,9 @@ class DemoEspressoTest : BaseTest() {
 
     @Test
     fun sendMessage() {
-        FriendsListPage().openChat("Ross Geller")
-        ChatPage().clearHistory()
+        val chatPage = FriendsListPage().openChat("Ross Geller")
+        chatPage
+            .clearHistory()
             .sendMessage("test message")
     }
 

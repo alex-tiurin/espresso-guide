@@ -23,8 +23,8 @@ class FriendsListPage : Page {
 
     private val list = withTagValue(`is`(Tags.CONTACTS_LIST))
 
-    override fun assertPageDisplayed() = apply {
-        step("Assert friends list page displayed") {
+    override fun assertPageDisplayed(): FriendsListPage {
+        return step("Assert friends list page displayed") {
             list.isDisplayed()
         }
     }
@@ -44,21 +44,21 @@ class FriendsListPage : Page {
         val status = getChildMatcher(withId(R.id.tv_status))
     }
 
-    fun openChat(name: String) = apply {
-        step("Open chat with friend '$name'") {
+    fun openChat(name: String): ChatPage {
+        return step(description = "Open chat with friend '$name'") {
             getListItem(name).click()
             ChatPage().assertPageDisplayed()
         }
     }
 
-    fun assertStatus(name: String, status: String) = apply {
-        step("Assert friend with name '$name' has status '$status'") {
+    fun assertStatus(name: String, status: String): FriendsListPage {
+        return step("Assert friend with name '$name' has status '$status'") {
             getListItem(name).status.hasText(status)
         }
     }
 
-    fun assertName(nameText: String) = apply {
-        step("Assert friend name '$nameText' in the right place") {
+    fun assertName(nameText: String): FriendsListPage {
+        return step("Assert friend name '$nameText' in the right place") {
             getListItem(nameText).name.hasText(nameText)
         }
     }
