@@ -18,7 +18,9 @@ class ChatPage : Page {
     constructor(action: ChatPage.() -> Unit) {
         this.action()
     }
+
     constructor()
+
     private val list = withId(R.id.messages_list)
     private val clearHistoryBtn = withText("Clear history")
     private val inputMessageText = withId(R.id.message_input_text)
@@ -51,14 +53,14 @@ class ChatPage : Page {
         val text = getChildMatcher(withId(R.id.message_text))
     }
 
-    override fun assertPageDisplayed() : ChatPage {
-        return step("Assert friends list page displayed") {
+    override fun assertPageDisplayed() = apply {
+        step("Assert friends list page displayed") {
             list.isDisplayed()
         }
     }
 
-    fun sendMessage(text: String) : ChatPage {
-        return step("Send message with text '$text'") {
+    fun sendMessage(text: String) = apply {
+        step("Send message with text '$text'") {
             inputMessageText.typeText(text)
             sendMessageBtn.click()
             getListItem(text).text
@@ -67,23 +69,23 @@ class ChatPage : Page {
         }
     }
 
-    fun clearHistory(): ChatPage {
-        return step("Clear chat history") {
+    fun clearHistory() = apply {
+        step("Clear chat history") {
             openOptionsMenu()
             clearHistoryBtn.click()
         }
     }
 
-    fun assertMessageDisplayed(text: String) : ChatPage {
-       return step("Assert message with text is displayed") {
+    fun assertMessageDisplayed(text: String) = apply {
+        step("Assert message with text is displayed") {
             getListItem(text).text
                 .isDisplayed()
                 .hasText(text)
         }
     }
 
-    fun assertMessageTextAtPosition(position: Int, text: String): ChatPage {
-        return step("Assert message at position $position has text '$text' and displayed") {
+    fun assertMessageTextAtPosition(position: Int, text: String) = apply {
+        step("Assert message at position $position has text '$text' and displayed") {
             getListItemAtPosition(position).text
                 .hasText(text)
                 .isDisplayed()

@@ -15,6 +15,8 @@ import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
 
 class FriendsListPage : Page {
+    lateinit var chatPage: ChatPage
+
     constructor(action: FriendsListPage.() -> Unit) {
         this.action()
     }
@@ -22,12 +24,6 @@ class FriendsListPage : Page {
     constructor()
 
     private val list = withTagValue(`is`(Tags.CONTACTS_LIST))
-
-    override fun assertPageDisplayed(): FriendsListPage {
-        return step("Assert friends list page displayed") {
-            list.isDisplayed()
-        }
-    }
 
     private fun getListItem(title: String): FriendRecyclerItem {
         return FriendRecyclerItem(
@@ -44,21 +40,28 @@ class FriendsListPage : Page {
         val status = getChildMatcher(withId(R.id.tv_status))
     }
 
-    fun openChat(name: String): ChatPage {
-        return step(description = "Open chat with friend '$name'") {
-            getListItem(name).click()
-            ChatPage().assertPageDisplayed()
+    override fun assertPageDisplayed() = apply {
+        step("Assert friends list page displayed") {
+            list.isDisplayed()
         }
     }
 
-    fun assertStatus(name: String, status: String): FriendsListPage {
-        return step("Assert friend with name '$name' has status '$status'") {
+    fun openChat(name: String): ChatPage {
+        step("Open chat with friend '$name'") {
+            getListItem(name).click()
+            chatPage = ChatPage().assertPageDisplayed()
+        }
+        return chatPage
+    }
+
+    fun assertStatus(name: String, status: String) = apply {
+        step("Assert friend with name '$name' has status '$status'") {
             getListItem(name).status.hasText(status)
         }
     }
 
-    fun assertName(nameText: String): FriendsListPage {
-        return step("Assert friend name '$nameText' in the right place") {
+    fun assertName(nameText: String) = apply {
+        step("Assert friend name '$nameText' in the right place") {
             getListItem(nameText).name.hasText(nameText)
         }
     }
