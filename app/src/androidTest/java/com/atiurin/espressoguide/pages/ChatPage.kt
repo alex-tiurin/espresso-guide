@@ -5,7 +5,9 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.atiurin.espressoguide.R
+import com.atiurin.espressoguide.data.entities.Contact
 import com.atiurin.espressoguide.framework.*
+import com.atiurin.espressoguide.framework.reporting.step
 import com.atiurin.espressopageobject.extensions.click
 import com.atiurin.espressopageobject.extensions.hasText
 import com.atiurin.espressopageobject.extensions.isDisplayed
@@ -14,12 +16,11 @@ import com.atiurin.espressopageobject.recyclerview.RecyclerViewItem
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 
-class ChatPage : Page {
-    constructor(action: ChatPage.() -> Unit) {
-        this.action()
-    }
+class ChatPage(private val contact: Contact, block: ChatPage.() -> Unit = {}) : Page {
 
-    constructor()
+    inline operator fun invoke(crossinline block: ChatPage.() -> Unit) {
+        this.block()
+    }
 
     private val list = withId(R.id.messages_list)
     private val clearHistoryBtn = withText("Clear history")
@@ -54,7 +55,8 @@ class ChatPage : Page {
     }
 
     override fun assertPageDisplayed() = apply {
-        step("Assert friends list page displayed") {
+        step("Assert chat with contact '${contact.name}' is displayed") {
+            getTitle(contact.name).isDisplayed()
             list.isDisplayed()
         }
     }
@@ -90,6 +92,10 @@ class ChatPage : Page {
                 .hasText(text)
                 .isDisplayed()
         }
+    }
+
+    init {
+        this.block()
     }
 }
 

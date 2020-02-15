@@ -1,11 +1,10 @@
 package com.atiurin.espressoguide.tests
 
 import androidx.test.espresso.IdlingRegistry
-import com.atiurin.espressoguide.framework.ScreenshotLifecycleListener
+import com.atiurin.espressoguide.framework.reporting.ScreenshotLifecycleListener
 import com.atiurin.espressoguide.framework.getDefaultIdlingScope
 import com.atiurin.espressoguide.idlingresources.idling
 import com.atiurin.espressoguide.idlingresources.idlingContainer
-import com.atiurin.espressopageobject.core.action.ViewActionLifecycle
 import com.atiurin.espressopageobject.core.assertion.ViewAssertionLifecycle
 import io.qameta.allure.espresso.FailshotRule
 import io.qameta.allure.espresso.LogcatClearRule
@@ -16,7 +15,7 @@ import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.rules.RuleChain
 
-abstract class  BaseTest {
+abstract class BaseTest {
 
     //attach screenshot to allure report in case of failure
     @get:Rule
@@ -39,11 +38,12 @@ abstract class  BaseTest {
     @Before
     fun registerIdling() {
         idlingContainer.set(getDefaultIdlingScope())
-        idling { IdlingRegistry.getInstance().register(contactsIdling) }
+        IdlingRegistry.getInstance().register(idlingContainer.get().contactsIdling)
     }
 
     @After
     fun unregisterIdling() {
+        // you can get `contactsIdling` object in 2 ways
         idling { IdlingRegistry.getInstance().unregister(contactsIdling) }
     }
 }

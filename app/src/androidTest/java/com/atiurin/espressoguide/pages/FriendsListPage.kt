@@ -4,24 +4,18 @@ import android.view.View
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.atiurin.espressoguide.R
 import com.atiurin.espressoguide.data.Tags
+import com.atiurin.espressoguide.data.entities.Contact
 import com.atiurin.espressoguide.framework.*
-import com.atiurin.espressoguide.tests.BaseTest
+import com.atiurin.espressoguide.framework.reporting.step
 import com.atiurin.espressopageobject.extensions.hasText
 import com.atiurin.espressopageobject.extensions.isDisplayed
 import com.atiurin.espressopageobject.recyclerview.RecyclerViewItem
-import com.google.common.reflect.TypeResolver
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
 
-class FriendsListPage : Page {
+class FriendsListPage(action: FriendsListPage.() -> Unit = {}) : Page {
     lateinit var chatPage: ChatPage
-
-    constructor(action: FriendsListPage.() -> Unit) {
-        this.action()
-    }
-
-    constructor()
 
     private val list = withTagValue(`is`(Tags.CONTACTS_LIST))
 
@@ -46,10 +40,10 @@ class FriendsListPage : Page {
         }
     }
 
-    fun openChat(name: String): ChatPage {
-        step("Open chat with friend '$name'") {
-            getListItem(name).click()
-            chatPage = ChatPage().assertPageDisplayed()
+    fun openChat(contact: Contact): ChatPage {
+        step("Open chat with friend '${contact.name}'") {
+            getListItem(contact.name).click()
+            chatPage = ChatPage(contact).assertPageDisplayed()
         }
         return chatPage
     }
@@ -64,5 +58,9 @@ class FriendsListPage : Page {
         step("Assert friend name '$nameText' in the right place") {
             getListItem(nameText).name.hasText(nameText)
         }
+    }
+
+    init {
+        this.action()
     }
 }

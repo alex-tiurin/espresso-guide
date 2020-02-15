@@ -9,6 +9,8 @@ object ContactRepositoty {
     fun getContact(id: Int) : Contact{
         return contacts.find { it.id == id }!!
     }
-
+    fun getContact(name: String) : Contact{
+        return contacts.find { it.name == name }!!
+    }
     private val contacts = CONTACTS
 }

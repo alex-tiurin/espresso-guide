@@ -13,7 +13,7 @@ import com.atiurin.espressoguide.data.entities.Message
 import com.atiurin.espressoguide.data.repositories.CURRENT_USER
 
 
-class MessageAdapter(private var messages: ArrayList<Message>, val listener: OnItemClickListener) :
+class MessageAdapter(private var messages: MutableList<Message>, val listener: OnItemClickListener) :
     RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
 
     interface OnItemClickListener {
@@ -22,7 +22,7 @@ class MessageAdapter(private var messages: ArrayList<Message>, val listener: OnI
     }
     class MessageViewHolder(val view: LinearLayout) : RecyclerView.ViewHolder(view)
 
-    open fun updateData(data: ArrayList<Message>) {
+    open fun updateData(data: MutableList<Message>) {
         messages = data
     }
 

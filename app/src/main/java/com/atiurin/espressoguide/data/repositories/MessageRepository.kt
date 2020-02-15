@@ -21,12 +21,12 @@ object MessageRepository {
         return messages[contactId]?.find { it.authorId == author &&  it.receiverId == recipient && it.text == text }
     }
 
-    fun getChatMessages(contactId: Int): ArrayList<Message>{
+    fun getChatMessages(contactId: Int): MutableList<Message>{
         val chatMessages = messages[contactId]
         if (chatMessages== null){
-            messages[contactId] = ArrayList()
+            messages[contactId] = emptyList()
         }
-        return messages[contactId] as ArrayList<Message>
+        return messages[contactId] as MutableList<Message>
     }
 
     fun clearChatMessages(contactId: Int){

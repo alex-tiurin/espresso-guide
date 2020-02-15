@@ -1,4 +1,4 @@
-package com.atiurin.espressoguide.framework
+package com.atiurin.espressoguide.framework.reporting
 
 import android.util.Log
 

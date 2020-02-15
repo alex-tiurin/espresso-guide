@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'jacoco'
+apply plugin: 'org.sonarqube'
 
 android {
     compileSdkVersion 28
@@ -29,6 +30,18 @@ android {
         unitTests {
             includeAndroidResources = true
         }
+    }
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "espressoguide"
+        property "sonar.projectBaseDir", "."
+        property "sonar.source","app/src/main/java"
+        property "sonar.tests", "app/src/test/java, app/src/androidTest/java"
+        property "sonar.java.test.binaries", "app/build/intermediates/class/debug"
+        property "sonar.jacoco.reportPath", "app/build/jacoco/testDebugUnitTest.exec"
+        property "sonar.java.coveragePlugin", "jacoco"
     }
 }
 jacoco {
@@ -78,7 +91,7 @@ dependencies {
     androidTestImplementation "io.qameta.allure:allure-espresso:2.0.0"
 
     //espresso-page-object
-    androidTestImplementation 'com.atiurin.espresso:espressopageobject:0.1.13'
+    androidTestImplementation 'com.atiurin.espresso:espressopageobject:0.1.14'
 }
 
 
@@ -89,20 +102,20 @@ dependencies {
 //tasks.withType(Test) {
 //    jacoco.includeNoLocationClasses = true
 //}
-//task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
-//
-//    reports {
-//        xml.enabled = true
-//        html.enabled = true
-//    }
-//
-//    def fileFilter = [ '**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*' ]
-//    def debugTree = fileTree(dir: "$project.buildDir/tmp/kotlin-classes/debug", excludes: fileFilter)
-//    def mainSrc = "$project.projectDir/src/main/java"
-//
-//    sourceDirectories = files([mainSrc])
-//    classDirectories = files([debugTree])
-//    executionData = fileTree(dir: project.buildDir, includes: [
-//            'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec'
-//    ])
-//}
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+    def fileFilter = [ '**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*' ]
+    def debugTree = fileTree(dir: "$project.buildDir/tmp/kotlin-classes/debug", excludes: fileFilter)
+    def mainSrc = "$project.projectDir/src/main/java"
+
+    sourceDirectories = files([mainSrc])
+    classDirectories = files([debugTree])
+    executionData = fileTree(dir: project.buildDir, includes: [
+            'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec'
+    ])
+}

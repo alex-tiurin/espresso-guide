@@ -7,6 +7,9 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.2'
@@ -14,10 +17,13 @@ buildscript {
         classpath 'org.codehaus.groovy:groovy-android-gradle-plugin:1.2.0'
         classpath 'me.tatarka:gradle-retrolambda:3.6.0'
         classpath 'org.jacoco:org.jacoco.core:0.8.0'
+        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
+
+
 
 allprojects {
     repositories {

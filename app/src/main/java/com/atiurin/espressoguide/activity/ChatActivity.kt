@@ -116,7 +116,7 @@ class ChatActivity : AppCompatActivity() {
         viewAdapter.notifyDataSetChanged()
     }
 
-    private fun updateAdapter(list: ArrayList<Message>) {
+    private fun updateAdapter(list: MutableList<Message>) {
         viewAdapter.updateData(list)
         viewAdapter.notifyDataSetChanged()
     }
