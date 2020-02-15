@@ -1,20 +1,21 @@
 package com.atiurin.espressoguide.tests
 
 import android.content.Intent
-import androidx.test.espresso.IdlingRegistry
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.rule.ActivityTestRule
 import com.atiurin.espressoguide.activity.MainActivity
 import com.atiurin.espressoguide.data.repositories.CURRENT_USER
-import com.atiurin.espressoguide.idlingresources.*
+import com.atiurin.espressoguide.data.repositories.ContactRepositoty
+import com.atiurin.espressoguide.framework.CustomActivityTestRule
 import com.atiurin.espressoguide.managers.AccountManager
 import com.atiurin.espressoguide.pages.ChatPage
 import com.atiurin.espressoguide.pages.FriendsListPage
 import com.atiurin.espressopageobject.core.action.ViewActionConfig
-import com.atiurin.espressopageobject.core.action.ViewActionLifecycle
 import com.atiurin.espressopageobject.core.assertion.ViewAssertionConfig
-import com.atiurin.espressopageobject.core.assertion.ViewAssertionLifecycle
-import org.junit.*
+import io.qameta.allure.android.annotations.DisplayName
+import org.junit.Before
+import org.junit.BeforeClass
+import org.junit.Rule
+import org.junit.Test
 
 class DemoEspressoTest : BaseTest() {
     companion object {
@@ -25,9 +26,15 @@ class DemoEspressoTest : BaseTest() {
             ViewAssertionConfig.allowedExceptions.clear()// disable failure handler
         }
     }
+    lateinit var chatPage: ChatPage
+    private val contact = ContactRepositoty.getContact("Chandler Bing")
 
     @get:Rule
-    val mActivityRule = ActivityTestRule(MainActivity::class.java, false, false)
+    val mActivityRule = CustomActivityTestRule(
+        MainActivity::class.java,
+        initialTouchMode = false,
+        launchActivity = false
+    )
 
     @Before
     fun backgroundLogin() {
@@ -50,18 +57,20 @@ class DemoEspressoTest : BaseTest() {
 
     @Test
     fun sendMessage() {
-        val chatPage = FriendsListPage().openChat("Ross Geller")
-        chatPage
-            .clearHistory()
-            .sendMessage("test message")
+        chatPage = FriendsListPage().openChat(contact)
+        chatPage {
+            clearHistory()
+            sendMessage("test message")
+        }
+
     }
 
     @Test
     fun checkMessagesPositionsInChat() {
         val firstMessage = "first message"
         val secondMessage = "second message"
-        FriendsListPage().openChat("Janice")
-        ChatPage {
+        val chatPage = FriendsListPage().openChat(contact)
+        chatPage {
             clearHistory()
             sendMessage(firstMessage)
             sendMessage(secondMessage)
@@ -73,14 +82,14 @@ class DemoEspressoTest : BaseTest() {
     /**
      * Test should fail
      */
+    @DisplayName("Special failed test for allure report demo")
     @Test
     fun specialFailedTestForAllureReport() {
         val firstMessage = "first message"
         val secondMessage = "second message"
-        FriendsListPage {
-            openChat("Janice")
-        }
-        ChatPage {
+        val janiceContact = ContactRepositoty.getContact("Janice")
+        FriendsListPage().openChat(janiceContact)
+        ChatPage(janiceContact) {
             clearHistory()
             sendMessage(firstMessage)
             sendMessage(secondMessage)
