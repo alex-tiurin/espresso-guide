@@ -1,8 +1,8 @@
 package com.atiurin.espressoguide.framework
 
 import android.app.Activity
-import android.util.Log
 import androidx.test.rule.ActivityTestRule
+import com.atiurin.espressoguide.Logger
 
 open class CustomActivityTestRule<T : Activity> : ActivityTestRule<T> {
     constructor(activityClass: Class<T>) : super(activityClass)
@@ -10,16 +10,16 @@ open class CustomActivityTestRule<T : Activity> : ActivityTestRule<T> {
 
     override fun beforeActivityLaunched() {
         super.beforeActivityLaunched()
-        Log.d("Life>>", "beforeActivityLaunched")
+        Logger.life("beforeActivityLaunched")
     }
 
     override fun afterActivityLaunched() {
         super.afterActivityLaunched()
-        Log.d("Life>>", "afterActivityLaunched")
+        Logger.life("afterActivityLaunched")
     }
 
     override fun finishActivity() {
         super.finishActivity()
-        Log.d("Life>>", "finishActivity")
+        Logger.life("finishActivity")
     }
 }

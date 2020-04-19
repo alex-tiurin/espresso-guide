@@ -30,6 +30,8 @@ android {
         unitTests {
             includeAndroidResources = true
         }
+
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
     }
 }
 
@@ -59,6 +61,7 @@ dependencies {
     implementation 'androidx.test.espresso:espresso-idling-resource:3.2.0'
     testImplementation 'junit:junit:4.12'
     implementation 'com.android.support:cardview-v7:28.0.0'
+    implementation "androidx.fragment:fragment-ktx:1.2.2"
     // AndroidJUnitRunner and JUnit Rules
 
     testImplementation "org.robolectric:robolectric:4.2"
@@ -83,7 +86,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-web:3.2.0'
     androidTestImplementation 'androidx.test.espresso.idling:idling-concurrent:3.2.0'
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
-    androidTestImplementation 'com.google.code.gson:gson:2.8.5'
+    androidTestImplementation 'com.google.code.gson:gson:2.8.6'
 
     //Allure
     androidTestImplementation "io.qameta.allure:allure-android-commons:2.0.0"
@@ -91,7 +94,10 @@ dependencies {
     androidTestImplementation "io.qameta.allure:allure-espresso:2.0.0"
 
     //espresso-page-object
-    androidTestImplementation 'com.atiurin.espresso:espressopageobject:0.1.14'
+    androidTestImplementation 'com.atiurin.espresso:espressopageobject:0.1.15'
+
+    //Android Test Orchestrator
+    androidTestUtil 'androidx.test:orchestrator:1.2.0'
 }
 
 

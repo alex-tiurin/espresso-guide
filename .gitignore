@@ -8,8 +8,10 @@
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
 /.idea
+.idea
 allure*
 .DS_Store
 /build
 /captures
 .externalNativeBuild
+/.idea/

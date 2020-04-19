@@ -4,47 +4,42 @@ import android.content.Intent
 import androidx.test.platform.app.InstrumentationRegistry
 import com.atiurin.espressoguide.activity.MainActivity
 import com.atiurin.espressoguide.data.repositories.CURRENT_USER
-import com.atiurin.espressoguide.data.repositories.ContactRepositoty
+import com.atiurin.espressoguide.data.repositories.ContactsRepositoty
 import com.atiurin.espressoguide.framework.CustomActivityTestRule
 import com.atiurin.espressoguide.managers.AccountManager
 import com.atiurin.espressoguide.pages.ChatPage
 import com.atiurin.espressoguide.pages.FriendsListPage
 import com.atiurin.espressopageobject.core.action.ViewActionConfig
 import com.atiurin.espressopageobject.core.assertion.ViewAssertionConfig
+import com.atiurin.espressopageobject.testlifecycle.setupteardown.SetUpTearDownRule
 import io.qameta.allure.android.annotations.DisplayName
-import org.junit.Before
-import org.junit.BeforeClass
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 
 class DemoEspressoTest : BaseTest() {
     companion object {
         @BeforeClass
         @JvmStatic
         fun switchOffFailureHandler() {
-            ViewActionConfig.allowedExceptions.clear()// disable failure handler
-            ViewAssertionConfig.allowedExceptions.clear()// disable failure handler
+//            ViewActionConfig.allowedExceptions.clear()// disable failure handler
+//            ViewAssertionConfig.allowedExceptions.clear()// disable failure handler
         }
     }
+
     lateinit var chatPage: ChatPage
-    private val contact = ContactRepositoty.getContact("Chandler Bing")
+    private val contact = ContactsRepositoty.getContact("Chandler Bing")
 
-    @get:Rule
-    val mActivityRule = CustomActivityTestRule(
-        MainActivity::class.java,
-        initialTouchMode = false,
-        launchActivity = false
-    )
-
-    @Before
-    fun backgroundLogin() {
-        //make login into app before test starts and activity is launched
-        //to make sure that user is logged in when test starts
-        AccountManager(InstrumentationRegistry.getInstrumentation().targetContext).login(
-            CURRENT_USER.login,
-            CURRENT_USER.password
-        )
-        mActivityRule.launchActivity(Intent())
+    init {
+        ruleSequence
+            .add(SetUpTearDownRule()
+                .addSetUp {
+                    //make login into app before test starts and activity is launched
+                    //to make sure that user is logged in when test starts
+                    AccountManager(InstrumentationRegistry.getInstrumentation().targetContext).login(
+                        CURRENT_USER.login,
+                        CURRENT_USER.password
+                    )
+                })
+            .addLast(CustomActivityTestRule(MainActivity::class.java))
     }
 
     @Test
@@ -66,6 +61,26 @@ class DemoEspressoTest : BaseTest() {
     }
 
     @Test
+    fun sendMessage2() {
+        chatPage = FriendsListPage().openChat(contact)
+        chatPage {
+            clearHistory()
+            sendMessage("test message2")
+        }
+
+    }
+
+    @Test
+    fun sendMessage3() {
+        chatPage = FriendsListPage().openChat(contact)
+        chatPage {
+            clearHistory()
+            sendMessage("test message3")
+        }
+
+    }
+
+    @Test
     fun checkMessagesPositionsInChat() {
         val firstMessage = "first message"
         val secondMessage = "second message"
@@ -82,12 +97,13 @@ class DemoEspressoTest : BaseTest() {
     /**
      * Test should fail
      */
+    @Ignore
     @DisplayName("Special failed test for allure report demo")
     @Test
     fun specialFailedTestForAllureReport() {
         val firstMessage = "first message"
         val secondMessage = "second message"
-        val janiceContact = ContactRepositoty.getContact("Janice")
+        val janiceContact = ContactsRepositoty.getContact("Janice")
         FriendsListPage().openChat(janiceContact)
         ChatPage(janiceContact) {
             clearHistory()

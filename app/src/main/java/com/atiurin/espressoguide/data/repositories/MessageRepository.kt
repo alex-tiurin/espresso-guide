@@ -24,7 +24,7 @@ object MessageRepository {
     fun getChatMessages(contactId: Int): MutableList<Message>{
         val chatMessages = messages[contactId]
         if (chatMessages== null){
-            messages[contactId] = emptyList()
+            messages[contactId] = mutableListOf()
         }
         return messages[contactId] as MutableList<Message>
     }

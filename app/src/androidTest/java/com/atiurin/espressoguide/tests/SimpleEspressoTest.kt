@@ -20,7 +20,7 @@ import org.junit.Test
 class SimpleEspressoTest : BaseTest() {
     @Rule
     @JvmField
-    val mActivityRule = ActivityTestRule(MainActivity::class.java, false, false)
+    val activityTestRule = ActivityTestRule(MainActivity::class.java, false, false)
 
     @Before
     fun backgroundLogin() {
@@ -30,8 +30,7 @@ class SimpleEspressoTest : BaseTest() {
             CURRENT_USER.login,
             CURRENT_USER.password
         )
-        mActivityRule.launchActivity(Intent())
-
+        activityTestRule.launchActivity(Intent())
     }
 
     /**

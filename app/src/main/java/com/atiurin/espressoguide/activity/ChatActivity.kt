@@ -1,5 +1,6 @@
 package com.atiurin.espressoguide.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -16,8 +17,9 @@ import com.atiurin.espressoguide.adapters.MessageAdapter
 import com.atiurin.espressoguide.data.entities.Contact
 import com.atiurin.espressoguide.data.entities.Message
 import com.atiurin.espressoguide.data.repositories.CURRENT_USER
-import com.atiurin.espressoguide.data.repositories.ContactRepositoty
+import com.atiurin.espressoguide.data.repositories.ContactsRepositoty
 import com.atiurin.espressoguide.data.repositories.MessageRepository
+import com.atiurin.espressoguide.managers.AccountManager
 import com.google.android.material.snackbar.Snackbar
 
 const val INTENT_CONTACT_ID_EXTRA_NAME = "contactId"
@@ -30,6 +32,11 @@ class ChatActivity : AppCompatActivity() {
     private val onItemClickListener: View.OnClickListener? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val accountManager = AccountManager(applicationContext)
+        if (!accountManager.isLogedIn()) {
+            val intent = Intent(applicationContext, LoginActivity::class.java)
+            startActivity(intent)
+        }
         setContentView(R.layout.activity_chat)
         val context = this
         //TOOLBAR
@@ -38,13 +45,13 @@ class ChatActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         window.statusBarColor = getColor(R.color.colorPrimaryDark)
-        val mIntent = intent
+        val intent = intent
+        val contactId = intent.getIntExtra(INTENT_CONTACT_ID_EXTRA_NAME, -1)
         val title = findViewById<TextView>(R.id.toolbar_title)
-        val contactId = mIntent.getIntExtra(INTENT_CONTACT_ID_EXTRA_NAME, -1)
         if (contactId < 0) {
             Log.d("EspressoGuide", "Something goes wrong!")
         }
-        contact = ContactRepositoty.getContact(contactId)
+        contact = ContactsRepositoty.getContact(contactId)
         title.text = contact.name
         val avatar = findViewById<CircleImageView>(R.id.toolbar_avatar)
         avatar.setImageDrawable(getDrawable(contact.avatar))
@@ -99,6 +106,10 @@ class ChatActivity : AppCompatActivity() {
             R.id.action_clear -> {
                 MessageRepository.clearChatMessages(contact.id)
                 updateAdapter(ArrayList())
+                true
+            }
+            R.id.action_add_blacklist -> {
+                ContactsRepositoty.addToBlacklist(contact.id)
                 true
             }
             else -> super.onOptionsItemSelected(item)

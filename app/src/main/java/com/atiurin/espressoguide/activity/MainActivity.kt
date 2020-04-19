@@ -19,12 +19,14 @@ import kotlin.collections.ArrayList
 import com.atiurin.espressoguide.MyApplication
 import android.view.View
 import android.widget.Toast
+import com.atiurin.espressoguide.Logger
 import com.atiurin.espressoguide.async.ContactsPresenter
 import com.atiurin.espressoguide.async.ContactsProvider
 import com.atiurin.espressoguide.data.Tags
 import com.atiurin.espressoguide.idlingresources.idling
 import com.atiurin.espressoguide.managers.AccountManager
 import com.atiurin.espressoguide.view.CircleImageView
+import java.lang.NullPointerException
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, ContactsProvider {
@@ -73,12 +75,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     intent.putExtra(INTENT_CONTACT_ID_EXTRA_NAME, contact.id)
                     startActivity(intent)
                 }
+                override fun onItemLongClick(contact: Contact) {
+                }
             })
         recyclerView = findViewById<RecyclerView>(R.id.recycler_friends).apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
         }
+
         recyclerView.tag = Tags.CONTACTS_LIST
         contactsPresenter.getAllContacts()
     }
@@ -92,7 +97,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    override fun onContactsLoaded(contacts: ArrayList<Contact>) {
+    override fun onResume() {
+        super.onResume()
+        contactsPresenter.getAllContacts()
+    }
+
+    override fun onContactsLoaded(contacts: List<Contact>) {
         viewAdapter.updateData(contacts)
         viewAdapter.notifyDataSetChanged()
         idling { contactsIdling.setIdleState(true) }
@@ -106,8 +116,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_settings -> {
-                Snackbar.make(recyclerView, "Settings not implemented", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+                Logger.error("Starting activity SettingsActivity")
+                startActivity(Intent(applicationContext, SettingsActivity::class.java))
             }
             R.id.nav_saved_messages -> {
                 Snackbar.make(recyclerView, "Saved messages not implemented", Snackbar.LENGTH_LONG)

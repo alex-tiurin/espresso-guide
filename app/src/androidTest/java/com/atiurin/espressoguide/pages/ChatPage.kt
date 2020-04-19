@@ -5,7 +5,9 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.atiurin.espressoguide.R
+import com.atiurin.espressoguide.badpracticies.TestData
 import com.atiurin.espressoguide.data.entities.Contact
+import com.atiurin.espressoguide.data.entities.User
 import com.atiurin.espressoguide.framework.*
 import com.atiurin.espressoguide.framework.reporting.step
 import com.atiurin.espressopageobject.extensions.click
@@ -97,5 +99,7 @@ class ChatPage(private val contact: Contact, block: ChatPage.() -> Unit = {}) : 
     init {
         this.block()
     }
+
+
 }
 

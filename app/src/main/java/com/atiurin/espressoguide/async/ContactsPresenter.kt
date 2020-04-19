@@ -25,6 +25,18 @@ class ContactsPresenter <T : ContactsProvider>(
             )
         }
     }
+
+    fun getBlacklist() {
+        idling { contactsIdling.setIdleState(false) }
+        scope = PresenterCoroutineScope(coroutineContext)
+        scope.launch {
+            GetBlacklist()(
+                UseCase.None,
+                onSuccess = { executor.onContactsLoaded(it) },
+                onFailure = { executor.onFailedToLoadContacts(it.message) }
+            )
+        }
+    }
 }
 
 class PresenterCoroutineScope(context: CoroutineContext) : CoroutineScope {
@@ -32,6 +44,6 @@ class PresenterCoroutineScope(context: CoroutineContext) : CoroutineScope {
 }
 
 interface ContactsProvider {
-    fun onContactsLoaded(contacts: ArrayList<Contact>)
+    fun onContactsLoaded(contacts: List<Contact>)
     fun onFailedToLoadContacts(message: String?)
 }
