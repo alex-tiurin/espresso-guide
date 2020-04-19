@@ -9,6 +9,7 @@ import com.atiurin.espressoguide.fragment.settings.SettingsFragmentNavigator
 import com.atiurin.espressoguide.pages.BlacklistPage
 import com.atiurin.espressopageobject.testlifecycle.setupteardown.SetUp
 import com.atiurin.espressopageobject.testlifecycle.setupteardown.SetUpTearDownRule
+import io.qameta.allure.android.annotations.DisplayName
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -21,7 +22,7 @@ class BlacklistTests : BaseTest() {
 
     val contact = ContactsRepositoty.getContact(2)
 
-    private val activityRule = ActivityTestRule(SettingsActivity::class.java, false, false)
+    private val activityRule = ActivityTestRule(SettingsActivity::class.java)
     private val setUpTearDownRule = SetUpTearDownRule()
         .addSetUp(CLEAR_BLACKLIST) {
             ContactsRepositoty.clearBlacklist()
@@ -29,21 +30,21 @@ class BlacklistTests : BaseTest() {
         .addSetUp(ADD_CONTACT_TO_BLACKLIST) {
             ContactsRepositoty.addToBlacklist(contact.id)
         }
-        .addSetUp {
-            activityRule.launchActivity(Intent())
-            activityRule.runOnUiThread {
-                SettingsFragmentNavigator.go(BlacklistFragment::class.java)
-            }
-        }
 
     init {
-        ruleSequence.add(activityRule, setUpTearDownRule)
+        ruleSequence
+            .add(setUpTearDownRule, activityRule)
+            .addLast(SetUpTearDownRule().addSetUp {
+                activityRule.runOnUiThread {
+                    SettingsFragmentNavigator.go(BlacklistFragment::class.java)
+                }
+            })
     }
 
-
+    @DisplayName("when contact in blacklist then it displayed in blacklist")
     @SetUp(CLEAR_BLACKLIST, ADD_CONTACT_TO_BLACKLIST)
     @Test
-    fun testItemDisplayed() {
+    fun testItemDisplayedInBlacklist() {
         BlacklistPage().assertContactDisplayed(contact.name)
     }
 }

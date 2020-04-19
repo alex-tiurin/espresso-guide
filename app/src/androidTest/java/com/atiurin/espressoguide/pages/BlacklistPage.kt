@@ -21,7 +21,7 @@ class BlacklistPage(block: ChatPage.() -> Unit = {}) : Page {
     }
 
     fun assertContactDisplayed(name: String) {
-        step("Assert contact with name $name is displayed") {
+        step("Assert contact with name $name is displayed in blacklist") {
             getListItem(name).isDisplayed()
         }
     }

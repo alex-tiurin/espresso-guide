@@ -13,6 +13,7 @@ import com.atiurin.espressoguide.managers.AccountManager
 import com.atiurin.espressoguide.pages.ChatPage
 import com.atiurin.espressopageobject.testlifecycle.setupteardown.SetUp
 import com.atiurin.espressopageobject.testlifecycle.setupteardown.SetUpTearDownRule
+import io.qameta.allure.android.annotations.DisplayName
 import org.junit.Before
 import org.junit.Test
 
@@ -23,11 +24,11 @@ class ChatPageTest : BaseTest() {
     }
 
     private val contact = ContactsRepositoty.getContact(2)
-    val simpleMessage = Message(CURRENT_USER.id, contact.id, "SimpleText")
-    val specialCharsMessage = Message(CURRENT_USER.id, contact.id, "!@#$%^&*(){}:\",./<>?_+±§`~][")
+    private val simpleMessage = Message(CURRENT_USER.id, contact.id, "SimpleText")
+    private val specialCharsMessage = Message(CURRENT_USER.id, contact.id, "!@#$%^&*(){}:\",./<>?_+±§`~][")
 
-    val activityTestRule = CustomActivityTestRule(ChatActivity::class.java, false, false)
-    val setUpTearDownRule = SetUpTearDownRule()
+    private val activityTestRule = CustomActivityTestRule(ChatActivity::class.java, false, false)
+    private val setUpTearDownRule = SetUpTearDownRule()
         .addSetUp(ADD_SIMPLE_MESSAGE) {
             MessageRepository.clearChatMessages(contact.id)
             MessageRepository.addChatMessage(contact.id, simpleMessage)
@@ -46,7 +47,7 @@ class ChatPageTest : BaseTest() {
         }
 
     init {
-        ruleSequence.add(activityTestRule, setUpTearDownRule)
+        ruleSequence.add(setUpTearDownRule, activityTestRule)
     }
 
     @SetUp(ADD_SIMPLE_MESSAGE)
