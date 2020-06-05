@@ -1,0 +1,16 @@
+Heisenbug 2020 Piter is a large technical conference that takes place this summer 2020.
+
+Heisenbug conference brings together more than 1000 professionals in the field of quality assurance. These professionals are testers, programmers developing tests for their code, engineers in automated and load testing, and team leads willing to improve testing efficiency in their projects. All speakers talk about the most important, practical and hardcore things on software testing:
+
+Automation testing;
+Manual testing;
+Load testing, performance testing, benchmarking;
+Testing of distributed systems;
+Testing of mobile applications;
+UX, Security, A/B testing;
+Code analysis and its tools;
+Tools and testing environment;
+Test frameworks best practices;
+Testing of compilers, nuclear power plants, and so on.
+Our focus is on technological aspect of testing, and if you are not that familiar with it yet, it's a valid reason to attend the conference. We guarantee that there's no Agile, Scrum and team management stuff.
+
