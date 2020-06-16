@@ -68,4 +68,28 @@ class ChatPageTest : BaseTest() {
     fun assertLongMessage() {
         ChatPage(contact).assertMessageDisplayed(longMessage.text)
     }
+
+    @Test
+    fun assertChatTitle() {
+        ChatPage(contact).assertPageDisplayed()
+    }
+
+    @Test
+    fun addNewMessage() {
+        val messageText = "new message"
+        ChatPage(contact) {
+            sendMessage(messageText)
+            assertMessageDisplayed(messageText)
+        }
+    }
+
+    @Test @SetUp(ADD_SIMPLE_MESSAGE, ADD_SPECIAL_CHARS_MESSAGE)
+    fun assertMessagePosition() {
+        val messageText = "position message"
+        val initialMaxPosition = MessageRepository.getChatMessagesCount(contact.id) - 1
+        ChatPage(contact) {
+            sendMessage(messageText)
+            assertMessageTextAtPosition(initialMaxPosition + 1, messageText)
+        }
+    }
 }

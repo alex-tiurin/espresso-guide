@@ -19,7 +19,7 @@ abstract class BaseTest {
     //attach logcat to allure report in case of failure
     @get:Rule
     val ruleSequence = RuleSequence(
-        FailshotRule(), LogcatClearRule(), LogcatDumpRule(),
+        FailshotRule(), LogcatDumpRule(),
         SetUpTearDownRule()
             .addSetUp {
                 Logger.life("SetUP in baseTest")
@@ -46,6 +46,12 @@ abstract class BaseTest {
         @JvmStatic
         fun afterClassBase() {
             Logger.life("AfterClass in baseTest")
+        }
+        val something = logmessage()
+
+        fun logmessage(): String {
+            Logger.life("companion init object")
+            return "HOHOHO"
         }
     }
 }

@@ -15,6 +15,11 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
+
+/**
+ * This test class was written to demonstrate a BAD approach. Don't use it in you project.
+ * To understand a good way of configuring test data look at [ChatPageTest]
+ */
 class BadDataPreparationTest : BaseTest() {
     companion object {
         private val contact = ContactsRepositoty.getContact(2)
