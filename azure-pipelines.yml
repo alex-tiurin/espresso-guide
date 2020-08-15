@@ -27,7 +27,13 @@ steps:
     appFile: 'app/build/outputs/apk/debug/app-debug.apk'
     artifactsDirectory: '$(Build.ArtifactStagingDirectory)/AppCenterTest'
     frameworkOption: 'espresso'
+    espressoBuildDirectory: 'app/build/outputs/apk/androidTest/debug'
+    credentialsOption: 'inputs'
+    username: $(USERNAME)
+    password: $(USERPASSWORD)
     appSlug: 'https://appcenter.ms/users/alexe_ytiurin/apps/EspressoGuide'
+    devices: '9c9a9823'
+    localeOption: 'en_US'
 
 - task: ShellScript@2
   inputs:
