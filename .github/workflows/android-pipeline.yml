@@ -8,15 +8,14 @@ on:
 
 jobs:
   test:
-    runs-on: macOS-10.15
-
+    runs-on: macos-latest
     steps:
-      - name: Execute Instrumentation Tests (gradlew connectedCheck - api 23)
-        
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 26
-          target: default
-          arch: x86
-          profile: Nexus 6
-          script: ./gradlew connectedCheck --stacktrace
+    - name: checkout
+      uses: actions/checkout@v2
+
+    - name: run tests
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 29
+        script: ./gradlew connectedCheck --stacktrace
+        profile: Nexus 6
