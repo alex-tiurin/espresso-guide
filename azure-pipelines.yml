@@ -27,7 +27,6 @@ steps:
     appFile: 'app/build/outputs/apk/debug/app-debug.apk'
     artifactsDirectory: '$(Build.ArtifactStagingDirectory)/AppCenterTest'
     frameworkOption: 'espresso'
-    espressoBuildDirectory: 'app/build/outputs/apk/androidTest/debug'
     espressoTestApkFile: 'app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk'
     credentialsOption: 'inputs'
     appSlug: 'https://appcenter.ms/users/alexe_ytiurin/apps/EspressoGuide'
