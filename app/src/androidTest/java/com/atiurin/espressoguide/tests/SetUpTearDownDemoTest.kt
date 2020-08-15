@@ -84,23 +84,4 @@ class SetUpTearDownDemoTest : BaseTest() {
             assertMessageTextAtPosition(1, secondMessage)
         }
     }
-
-    /**
-     * Test should fail
-     */
-    @Test
-    fun specialFailedTestForAllureReport() {
-        Logger.life("test specialFailedTestForAllureReport")
-        val firstMessage = "first message"
-        val secondMessage = "second message"
-        val janiceContact = ContactsRepositoty.getContact("Janice")
-        FriendsListPage().openChat(janiceContact)
-        ChatPage(janiceContact) {
-            clearHistory()
-            sendMessage(firstMessage)
-            sendMessage(secondMessage)
-            assertMessageTextAtPosition(0, secondMessage)
-            assertMessageTextAtPosition(1, firstMessage)
-        }
-    }
 }
