@@ -22,16 +22,7 @@ steps:
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'assembleDebugAndroidTest'
 
-- task: AppCenterTest@1
+- task: ShellScript@2
   inputs:
-    appFile: 'app/build/outputs/apk/debug/app-debug.apk'
-    artifactsDirectory: '$(Build.ArtifactStagingDirectory)/AppCenterTest'
-    frameworkOption: 'espresso'
-    espressoTestApkFile: 'app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk'
-    credentialsOption: 'inputs'
-    appSlug: 'https://appcenter.ms/users/alexe_ytiurin/apps/EspressoGuide'
-    devices: '9c9a9823'
-    localeOption: 'en_US'
-    loginOptions: appcenter login --token a0357d76e812fed47733821dc7113488dc51e0a9
-
-- bash: appcenter test run espresso --app "alexe_ytiurin/EspressoGuide" --devices 9c9a9823 --app-path "app/build/outputs/apk/debug/app-debug.apk" --test-series "master" --locale "en_US" --build-dir "app/build/outputs/apk/androidTest/debug" --token a0357d76e812fed47733821dc7113488dc51e0a9
+    scriptPath: | 
+       "appcenter test run espresso --app "alexe_ytiurin/EspressoGuide" --devices 9c9a9823 --app-path "app/build/outputs/apk/debug/app-debug.apk" --test-series "master" --locale "en_US" --build-dir "app/build/outputs/apk/androidTest/debug" --token a0357d76e812fed47733821dc7113488dc51e0a9"
