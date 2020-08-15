@@ -1,0 +1,41 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'macos-latest'
+
+steps:
+- task: Gradle@2
+  inputs:
+    workingDirectory: ''
+    gradleWrapperFile: 'gradlew'
+    gradleOptions: '-Xmx3072m'
+    publishJUnitResults: false
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'assembleDebug'
+- task: Gradle@2
+  inputs:
+    workingDirectory: ''
+    gradleWrapperFile: 'gradlew'
+    gradleOptions: '-Xmx3072m'
+    publishJUnitResults: false
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'assembleDebugAndroidTest'
+- task: ShellScript@2
+  inputs:
+    scriptPath: |
+        adb install app-debug.apk 
+        adb install app-debug-androidTest.apk 
+        adb shell am instrument -w -r -e debug false -e class 'com.atiurin.espressoguide.tests.ChatPageTest' com.atiurin.espressoguide.test/androidx.test.runner.AndroidJUnitRunner
+- task: AppCenterTest@1
+  inputs:
+    appFile: 'app/build/outputs/apk/debug/app-debug.apk'
+    artifactsDirectory: '$(Build.ArtifactStagingDirectory)/AppCenterTest'
+    frameworkOption: 'espresso'
+    espressoBuildDirectory: 'app/build/outputs/apk/androidTest/debug'
+    credentialsOption: 'inputs'
+    username: $(USERNAME)
+    password: $(USERPASSWORD)
+    appSlug: 'https://appcenter.ms/users/alexe_ytiurin/apps/EspressoGuide'
+    devices: '9c9a9823'
+    localeOption: 'en_US'
