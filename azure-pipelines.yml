@@ -32,6 +32,6 @@ steps:
     appSlug: 'https://appcenter.ms/users/alexe_ytiurin/apps/EspressoGuide'
     devices: '9c9a9823'
     localeOption: 'en_US'
-    loginOptions: appcenter apps list --token a0357d76e812fed47733821dc7113488dc51e0a9
+    loginOptions: appcenter login --token a0357d76e812fed47733821dc7113488dc51e0a9
 
 - bash: appcenter test run espresso --app "alexe_ytiurin/EspressoGuide" --devices 9c9a9823 --app-path "app/build/outputs/apk/debug/app-debug.apk" --test-series "master" --locale "en_US" --build-dir "app/build/outputs/apk/androidTest/debug" --token a0357d76e812fed47733821dc7113488dc51e0a9
