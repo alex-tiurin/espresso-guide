@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  test:
+  reactivecircus_test:
     runs-on: macos-latest
     steps:
     - name: checkout
@@ -19,3 +19,21 @@ jobs:
         api-level: 29
         script: ./gradlew connectedCheck --stacktrace
         profile: Nexus 6
+  
+  malinsky_test:
+    runs-on: macOS-10.15
+    steps:
+      - uses: actions/checkout@v1
+      - uses: malinskiy/action-android/emulator-run-cmd@release/0.0.7
+        with:
+          cmd: ./gradlew connectedCheck
+          api: 25
+          tag: default
+          abi: x86
+          
+      - name: Save logcat output
+        uses: actions/upload-artifact@master
+        if: failure()
+        with:
+          name: logcat
+          path: artifacts/logcat.log
