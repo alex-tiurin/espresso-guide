@@ -87,7 +87,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso.idling:idling-concurrent:3.2.0'
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
     androidTestImplementation 'com.google.code.gson:gson:2.8.6'
-
+    androidTestImplementation 'com.microsoft.appcenter:espresso-test-extension:1.4'
     //Allure
     androidTestImplementation "io.qameta.allure:allure-android-commons:2.0.0"
     androidTestImplementation "io.qameta.allure:allure-android-model:2.0.0"
