@@ -38,4 +38,5 @@ steps:
 - task: ShellScript@2
   inputs:
     scriptPath: |
+     npm install -g appcenter-cli
      appcenter test run espresso --app "alexe_ytiurin/EspressoGuide" --devices 9c9a9823 --app-path "app/build/outputs/apk/debug/app-debug.apk" --test-series "master" --locale "en_US" --build-dir "app/build/outputs/apk/androidTest/debug"     
