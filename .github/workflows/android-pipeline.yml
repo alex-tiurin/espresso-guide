@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  run tests on Api 29:
+  run_tests_on_Api_29:
     runs-on: macos-latest
     steps:
     - name: checkout
@@ -20,7 +20,7 @@ jobs:
         script: ./gradlew connectedCheck --stacktrace
         profile: Nexus 6
 
-  run tests on Api 28:
+  run_tests_on_Api_28:
     runs-on: macos-latest
     steps:
     - name: checkout
