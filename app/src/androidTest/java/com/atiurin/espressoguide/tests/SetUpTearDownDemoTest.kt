@@ -60,7 +60,7 @@ class SetUpTearDownDemoTest : BaseTest() {
     @Test
     fun sendMessage() {
         Logger.life("test sendMessage")
-        chatPage = FriendsListPage().openChat(contact)
+        chatPage = FriendsListPage.openChat(contact)
         chatPage {
             clearHistory()
             sendMessage("test message")
@@ -75,7 +75,7 @@ class SetUpTearDownDemoTest : BaseTest() {
         Logger.life("test checkMessagesPositionsInChat")
         val firstMessage = "first message"
         val secondMessage = "second message"
-        val chatPage = FriendsListPage().openChat(contact)
+        val chatPage = FriendsListPage.openChat(contact)
         chatPage {
             clearHistory()
             sendMessage(firstMessage)

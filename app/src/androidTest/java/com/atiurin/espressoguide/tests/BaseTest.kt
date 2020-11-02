@@ -6,7 +6,8 @@ import com.atiurin.espressoguide.framework.getDefaultIdlingScope
 import com.atiurin.espressoguide.Logger
 import com.atiurin.espressoguide.idlingresources.idling
 import com.atiurin.espressoguide.idlingresources.idlingContainer
-import com.atiurin.espressopageobject.core.assertion.ViewAssertionLifecycle
+import com.atiurin.espressopageobject.core.espresso.action.ViewActionLifecycle
+import com.atiurin.espressopageobject.core.espresso.assertion.ViewAssertionLifecycle
 import com.atiurin.espressopageobject.testlifecycle.rulesequence.RuleSequence
 import com.atiurin.espressopageobject.testlifecycle.setupteardown.SetUpTearDownRule
 import io.qameta.allure.espresso.FailshotRule
@@ -38,7 +39,7 @@ abstract class BaseTest {
         fun beforeClassBase() {
             Logger.life("BeforeClass in baseTest")
             val listener = ScreenshotLifecycleListener()
-//            ViewActionLifecycle.addListener(listener)
+            ViewActionLifecycle.addListener(listener)
             ViewAssertionLifecycle.addListener(listener)
         }
 
