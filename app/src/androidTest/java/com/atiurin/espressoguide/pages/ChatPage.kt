@@ -13,21 +13,17 @@ import com.atiurin.espressopageobject.extensions.hasText
 import com.atiurin.espressopageobject.extensions.isDisplayed
 import com.atiurin.espressopageobject.extensions.typeText
 import com.atiurin.espressopageobject.recyclerview.RecyclerViewItem
+import io.qameta.allure.android.step
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 
-class ChatPage(private val contact: Contact, block: ChatPage.() -> Unit = {}) : Page {
-
-    inline operator fun invoke(crossinline block: ChatPage.() -> Unit) {
-        this.block()
-    }
-
+object ChatPage : BasePage<ChatPage>() {
     private val list = withId(R.id.messages_list)
     private val clearHistoryBtn = withText("Clear history")
     private val inputMessageText = withId(R.id.message_input_text)
     private val sendMessageBtn = withId(R.id.send_button)
 
-    private fun getListItem(text: String): ChatRecyclerItem {
+    private fun getMessageListItem(text: String): ChatRecyclerItem {
         return ChatRecyclerItem(
             list,
             ViewMatchers.hasDescendant(
@@ -39,7 +35,7 @@ class ChatPage(private val contact: Contact, block: ChatPage.() -> Unit = {}) : 
         )
     }
 
-    private fun getListItemAtPosition(position: Int): ChatRecyclerItem {
+    private fun getMessageListItemAtPosition(position: Int): ChatRecyclerItem {
         return ChatRecyclerItem(list, position)
     }
 
@@ -55,9 +51,15 @@ class ChatPage(private val contact: Contact, block: ChatPage.() -> Unit = {}) : 
     }
 
     override fun assertPageDisplayed() = apply {
-        step("Assert chat with contact '${contact.name}' is displayed") {
-            getTitle(contact.name).isDisplayed()
+        step("Assert chat page is displayed") {
             list.isDisplayed()
+            inputMessageText.isDisplayed()
+        }
+    }
+
+    fun assertChatTitle(contact: Contact) = apply {
+        step("Assert chat with contact '${contact.name}' has correct title") {
+            getTitle(contact.name).isDisplayed()
         }
     }
 
@@ -65,7 +67,7 @@ class ChatPage(private val contact: Contact, block: ChatPage.() -> Unit = {}) : 
         step("Send message with text '$text'") {
             inputMessageText.typeText(text)
             sendMessageBtn.click()
-            getListItem(text).text
+            getMessageListItem(text).text
                 .isDisplayed()
                 .hasText(text)
         }
@@ -80,7 +82,7 @@ class ChatPage(private val contact: Contact, block: ChatPage.() -> Unit = {}) : 
 
     fun assertMessageDisplayed(text: String) = apply {
         step("Assert message with text is displayed") {
-            getListItem(text).text
+            getMessageListItem(text).text
                 .isDisplayed()
                 .hasText(text)
         }
@@ -88,16 +90,10 @@ class ChatPage(private val contact: Contact, block: ChatPage.() -> Unit = {}) : 
 
     fun assertMessageTextAtPosition(position: Int, text: String) = apply {
         step("Assert message at position $position has text '$text' and displayed") {
-            getListItemAtPosition(position).text
+            getMessageListItemAtPosition(position).text
                 .hasText(text)
                 .isDisplayed()
         }
     }
-
-    init {
-        this.block()
-    }
-
-
 }
 

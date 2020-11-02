@@ -1,10 +1,11 @@
 package com.atiurin.espressoguide.framework.reporting
 
 import android.util.Log
+import com.atiurin.espressoguide.framework.Page
 
-fun step(description: String, action: () -> Unit){
+inline fun <T> step (description: String, action: () -> T): T {
     Log.d("Espresso step", "------------ $description ------------ ")
-    io.qameta.allure.android.step(description){
+    return io.qameta.allure.android.step(description) {
         action()
     }
 }

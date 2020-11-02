@@ -49,15 +49,15 @@ class BadDataPreparationTest : BaseTest() {
 
     @Test
     fun assertSimpleMessage() {
-        ChatPage(contact).assertMessageDisplayed(simpleMessage.text)
+        ChatPage.assertMessageDisplayed(simpleMessage.text)
     }
 
     @Test
     fun assertSpecialMessage() {
-        ChatPage(contact).assertMessageDisplayed(specialCharsMessage.text)
+        ChatPage.assertMessageDisplayed(specialCharsMessage.text)
     }
     @Test
     fun assertLongMessage() {
-        ChatPage(contact).assertMessageDisplayed(longMessage.text)
+        ChatPage.assertMessageDisplayed(longMessage.text)
     }
 }

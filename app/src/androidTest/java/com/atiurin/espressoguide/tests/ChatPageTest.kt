@@ -12,6 +12,7 @@ import com.atiurin.espressoguide.data.repositories.MessageRepository
 import com.atiurin.espressoguide.framework.CustomActivityTestRule
 import com.atiurin.espressoguide.managers.AccountManager
 import com.atiurin.espressoguide.pages.ChatPage
+import com.atiurin.espressoguide.pages.ChatPage.sendMessage
 import com.atiurin.espressopageobject.testlifecycle.setupteardown.SetUp
 import com.atiurin.espressopageobject.testlifecycle.setupteardown.SetUpTearDownRule
 import io.qameta.allure.android.annotations.DisplayName
@@ -56,28 +57,28 @@ class ChatPageTest : BaseTest() {
 
     @Test @SetUp(ADD_SIMPLE_MESSAGE)
     fun assertSimpleMessage() {
-        ChatPage(contact).assertMessageDisplayed(simpleMessage.text)
+        ChatPage.assertMessageDisplayed(simpleMessage.text)
     }
 
     @Test @SetUp(ADD_SPECIAL_CHARS_MESSAGE)
     fun assertSpecialCharsMessage() {
-        ChatPage(contact).assertMessageDisplayed(specialCharsMessage.text)
+        ChatPage.assertMessageDisplayed(specialCharsMessage.text)
     }
 
     @Test @SetUp(ADD_LONG_MESSAGE)
     fun assertLongMessage() {
-        ChatPage(contact).assertMessageDisplayed(longMessage.text)
+        ChatPage.assertMessageDisplayed(longMessage.text)
     }
 
     @Test
     fun assertChatTitle() {
-        ChatPage(contact).assertPageDisplayed()
+        ChatPage.assertChatTitle(contact)
     }
 
     @Test
     fun addNewMessage() {
         val messageText = "new message"
-        ChatPage(contact) {
+        ChatPage {
             sendMessage(messageText)
             assertMessageDisplayed(messageText)
         }
@@ -87,7 +88,7 @@ class ChatPageTest : BaseTest() {
     fun assertMessagePosition() {
         val messageText = "position message"
         val initialMaxPosition = MessageRepository.getChatMessagesCount(contact.id) - 1
-        ChatPage(contact) {
+        ChatPage {
             sendMessage(messageText)
             assertMessageTextAtPosition(initialMaxPosition + 1, messageText)
         }

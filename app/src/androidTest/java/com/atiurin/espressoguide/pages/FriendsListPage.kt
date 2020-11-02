@@ -14,12 +14,10 @@ import org.hamcrest.Matcher
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
 
-class FriendsListPage(action: FriendsListPage.() -> Unit = {}) : Page {
-    lateinit var chatPage: ChatPage
-
+object FriendsListPage : BasePage<FriendsListPage>() {
     private val list = withTagValue(`is`(Tags.CONTACTS_LIST))
 
-    private fun getListItem(title: String): FriendRecyclerItem {
+    private fun getFriendListItem(title: String): FriendRecyclerItem {
         return FriendRecyclerItem(
             list,
             hasDescendant(
@@ -41,26 +39,24 @@ class FriendsListPage(action: FriendsListPage.() -> Unit = {}) : Page {
     }
 
     fun openChat(contact: Contact): ChatPage {
-        step("Open chat with friend '${contact.name}'") {
-            getListItem(contact.name).click()
-            chatPage = ChatPage(contact).assertPageDisplayed()
+        return step("Open chat with friend '${contact.name}'") {
+            getFriendListItem(contact.name).click()
+            ChatPage {
+                assertPageDisplayed()
+                assertChatTitle(contact)
+            }
         }
-        return chatPage
     }
 
     fun assertStatus(name: String, status: String) = apply {
         step("Assert friend with name '$name' has status '$status'") {
-            getListItem(name).status.hasText(status)
+            getFriendListItem(name).status.hasText(status)
         }
     }
 
     fun assertName(nameText: String) = apply {
         step("Assert friend name '$nameText' in the right place") {
-            getListItem(nameText).name.hasText(nameText)
+            getFriendListItem(nameText).name.hasText(nameText)
         }
-    }
-
-    init {
-        this.action()
     }
 }
