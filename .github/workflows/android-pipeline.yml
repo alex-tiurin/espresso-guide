@@ -7,8 +7,11 @@ on:
     branches: [ master ]
 
 jobs:
-  test:
+  run_androidTests:
     runs-on: macos-latest
+    strategy:
+      matrix:
+        api-level: [23, 24]
     steps:
     - name: checkout
       uses: actions/checkout@v2
@@ -16,6 +19,6 @@ jobs:
     - name: run tests
       uses: reactivecircus/android-emulator-runner@v2
       with:
-        api-level: 29
+        api-level: ${{ matrix.api-level }}
         script: ./gradlew connectedCheck --stacktrace
-        profile: Nexus 6
+        profile: pixel
