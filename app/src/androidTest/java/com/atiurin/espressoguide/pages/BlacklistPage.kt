@@ -4,14 +4,14 @@ import android.view.View
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.atiurin.espressoguide.R
-import com.atiurin.espressoguide.framework.Page
+import com.atiurin.espressoguide.framework.BasePage
 import com.atiurin.espressoguide.framework.reporting.step
 import com.atiurin.espressopageobject.extensions.isDisplayed
 import com.atiurin.espressopageobject.recyclerview.RecyclerViewItem
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Matcher
 
-class BlacklistPage(block: ChatPage.() -> Unit = {}) : Page {
+object BlacklistPage : BasePage<BlacklistPage>() {
     private val itemsList = withId(R.id.recycler_blacklist)
 
     override fun assertPageDisplayed() = apply {

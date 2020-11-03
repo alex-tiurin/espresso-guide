@@ -45,6 +45,7 @@ class DemoEspressoTest : BaseTest() {
                         CURRENT_USER.login,
                         CURRENT_USER.password
                     )
+                    ChatPage.contact = contact
                 })
             .addLast(CustomActivityTestRule(MainActivity::class.java))
     }
