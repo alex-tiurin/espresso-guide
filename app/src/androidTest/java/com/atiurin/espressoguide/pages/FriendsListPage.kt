@@ -2,6 +2,7 @@ package com.atiurin.espressoguide.pages
 
 import android.view.View
 import androidx.test.espresso.matcher.ViewMatchers.*
+import com.atiurin.espressoguide.Logger
 import com.atiurin.espressoguide.R
 import com.atiurin.espressoguide.data.Tags
 import com.atiurin.espressoguide.data.entities.Contact
@@ -15,6 +16,9 @@ import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
 
 object FriendsListPage : BasePage<FriendsListPage>() {
+    init {
+        Logger.debug(">>>>>FriendsListPage  inited")
+    }
     private val list = withTagValue(`is`(Tags.CONTACTS_LIST))
 
     private fun getFriendListItem(title: String): FriendRecyclerItem {
@@ -38,12 +42,12 @@ object FriendsListPage : BasePage<FriendsListPage>() {
         }
     }
 
-    fun openChat(contact: Contact): ChatPage {
-        return step("Open chat with friend '${contact.name}'") {
+    fun openChat(contact: Contact) : ChatPage {
+         return step("Open chat with friend '${contact.name}'") {
             getFriendListItem(contact.name).click()
             ChatPage {
                 assertPageDisplayed()
-                assertChatTitle(contact)
+                assertChatTitle()
             }
         }
     }

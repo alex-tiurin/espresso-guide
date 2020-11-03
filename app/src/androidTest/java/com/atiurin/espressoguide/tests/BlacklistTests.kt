@@ -45,6 +45,6 @@ class BlacklistTests : BaseTest() {
     @SetUp(CLEAR_BLACKLIST, ADD_CONTACT_TO_BLACKLIST)
     @Test
     fun testItemDisplayedInBlacklist() {
-        BlacklistPage().assertContactDisplayed(contact.name)
+        BlacklistPage.assertContactDisplayed(contact.name)
     }
 }

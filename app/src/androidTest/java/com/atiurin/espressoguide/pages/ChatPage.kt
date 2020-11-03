@@ -4,6 +4,7 @@ import android.view.View
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import com.atiurin.espressoguide.Logger
 import com.atiurin.espressoguide.R
 import com.atiurin.espressoguide.data.entities.Contact
 import com.atiurin.espressoguide.framework.*
@@ -12,12 +13,16 @@ import com.atiurin.espressopageobject.extensions.click
 import com.atiurin.espressopageobject.extensions.hasText
 import com.atiurin.espressopageobject.extensions.isDisplayed
 import com.atiurin.espressopageobject.extensions.typeText
+import com.atiurin.espressopageobject.page.Page
 import com.atiurin.espressopageobject.recyclerview.RecyclerViewItem
-import io.qameta.allure.android.step
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 
 object ChatPage : BasePage<ChatPage>() {
+    init {
+        Logger.debug(">>>>>Chat page inited")
+    }
+    lateinit var contact: Contact
     private val list = withId(R.id.messages_list)
     private val clearHistoryBtn = withText("Clear history")
     private val inputMessageText = withId(R.id.message_input_text)
@@ -57,7 +62,7 @@ object ChatPage : BasePage<ChatPage>() {
         }
     }
 
-    fun assertChatTitle(contact: Contact) = apply {
+    fun assertChatTitle() = apply {
         step("Assert chat with contact '${contact.name}' has correct title") {
             getTitle(contact.name).isDisplayed()
         }

@@ -1,13 +1,13 @@
 package com.atiurin.espressoguide.framework
 
-abstract class BasePage<out T : BasePage<T>> : Page{
-    inline fun <reified T : BasePage<T>> doOnPage(noinline function: T.() -> Unit): T {
-        return T::class.java
-            .newInstance()
-            .apply { this(function) }
-    }
+import androidx.test.espresso.Espresso
+import androidx.test.platform.app.InstrumentationRegistry
+import com.atiurin.espressopageobject.page.Page
 
-    inline operator fun <R> invoke(block: T.() -> R): R {
-        return block.invoke(this as T)
+abstract class BasePage<out T : Page<T>> : Page<T>() {
+    abstract fun assertPageDisplayed() : T
+
+    fun openOptionsMenu() = apply {
+        Espresso.openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getInstrumentation().context)
     }
 }

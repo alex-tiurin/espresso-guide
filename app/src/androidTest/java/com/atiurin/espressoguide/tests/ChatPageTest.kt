@@ -13,6 +13,8 @@ import com.atiurin.espressoguide.framework.CustomActivityTestRule
 import com.atiurin.espressoguide.managers.AccountManager
 import com.atiurin.espressoguide.pages.ChatPage
 import com.atiurin.espressoguide.pages.ChatPage.sendMessage
+import com.atiurin.espressoguide.tests.ChatPageTest.Companion.ADD_SIMPLE_MESSAGE
+import com.atiurin.espressoguide.tests.ChatPageTest.Companion.ADD_SPECIAL_CHARS_MESSAGE
 import com.atiurin.espressopageobject.testlifecycle.setupteardown.SetUp
 import com.atiurin.espressopageobject.testlifecycle.setupteardown.SetUpTearDownRule
 import io.qameta.allure.android.annotations.DisplayName
@@ -25,10 +27,17 @@ class ChatPageTest : BaseTest() {
         const val ADD_SPECIAL_CHARS_MESSAGE = "special_chars_message"
         const val ADD_LONG_MESSAGE = "long_message"
     }
+
     private val contact = ContactsRepositoty.getContact(2)
     private val simpleMessage = Message(CURRENT_USER.id, contact.id, "SimpleText")
-    private val specialCharsMessage = Message(CURRENT_USER.id, contact.id, "!@#$%^&*(){}:\",./<>?_+±§`~][")
-    private val longMessage = Message(CURRENT_USER.id, contact.id, InstrumentationRegistry.getInstrumentation().context.assets.open("long_message.txt").reader().readText())
+    private val specialCharsMessage =
+        Message(CURRENT_USER.id, contact.id, "!@#$%^&*(){}:\",./<>?_+±§`~][")
+    private val longMessage = Message(
+        CURRENT_USER.id,
+        contact.id,
+        InstrumentationRegistry.getInstrumentation().context.assets.open("long_message.txt")
+            .reader().readText()
+    )
 
     private val activityTestRule = ActivityTestRule(ChatActivity::class.java, false, false)
     private val setUpTearDownRule = SetUpTearDownRule()
@@ -53,26 +62,30 @@ class ChatPageTest : BaseTest() {
 
     init {
         ruleSequence.add(setUpTearDownRule, activityTestRule)
+        ChatPage.contact = contact
     }
 
-    @Test @SetUp(ADD_SIMPLE_MESSAGE)
+    @Test
+    @SetUp(ADD_SIMPLE_MESSAGE)
     fun assertSimpleMessage() {
         ChatPage.assertMessageDisplayed(simpleMessage.text)
     }
 
-    @Test @SetUp(ADD_SPECIAL_CHARS_MESSAGE)
+    @Test
+    @SetUp(ADD_SPECIAL_CHARS_MESSAGE)
     fun assertSpecialCharsMessage() {
         ChatPage.assertMessageDisplayed(specialCharsMessage.text)
     }
 
-    @Test @SetUp(ADD_LONG_MESSAGE)
+    @Test
+    @SetUp(ADD_LONG_MESSAGE)
     fun assertLongMessage() {
         ChatPage.assertMessageDisplayed(longMessage.text)
     }
 
     @Test
     fun assertChatTitle() {
-        ChatPage.assertChatTitle(contact)
+        ChatPage.assertChatTitle()
     }
 
     @Test
@@ -84,7 +97,8 @@ class ChatPageTest : BaseTest() {
         }
     }
 
-    @Test @SetUp(ADD_SIMPLE_MESSAGE, ADD_SPECIAL_CHARS_MESSAGE)
+    @Test
+    @SetUp(ADD_SIMPLE_MESSAGE, ADD_SPECIAL_CHARS_MESSAGE)
     fun assertMessagePosition() {
         val messageText = "position message"
         val initialMaxPosition = MessageRepository.getChatMessagesCount(contact.id) - 1
