@@ -46,6 +46,7 @@ object FriendsListPage : BasePage<FriendsListPage>() {
          return step("Open chat with friend '${contact.name}'") {
             getFriendListItem(contact.name).click()
             ChatPage {
+                this.contact = contact
                 assertPageDisplayed()
                 assertChatTitle()
             }
