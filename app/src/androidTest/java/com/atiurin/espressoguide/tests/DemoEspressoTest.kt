@@ -8,14 +8,10 @@ import com.atiurin.espressoguide.framework.CustomActivityTestRule
 import com.atiurin.espressoguide.managers.AccountManager
 import com.atiurin.espressoguide.pages.ChatPage
 import com.atiurin.espressoguide.pages.FriendsListPage
-import com.atiurin.espressopageobject.core.espresso.action.ViewActionConfig
-import com.atiurin.espressopageobject.core.espresso.assertion.ViewAssertionConfig
-//import com.atiurin.espressopageobject.core.espresso.action.ViewActionConfig
-//import com.atiurin.espressopageobject.core.espresso.assertion.ViewAssertionConfig
-import com.atiurin.espressopageobject.testlifecycle.setupteardown.SetUpTearDownRule
+import com.atiurin.espressoguide.pages.FriendsListPage.assertName
+import com.atiurin.ultron.testlifecycle.setupteardown.SetUpRule
 import io.qameta.allure.android.annotations.DisplayName
 import org.junit.BeforeClass
-import org.junit.Ignore
 import org.junit.Test
 
 
@@ -28,8 +24,6 @@ class DemoEspressoTest : BaseTest() {
         @BeforeClass
         @JvmStatic
         fun switchOffFailureHandler() {
-            ViewActionConfig.allowedExceptions.clear()// disable failure handler
-            ViewAssertionConfig.allowedExceptions.clear()// disable failure handler
         }
     }
 
@@ -37,8 +31,9 @@ class DemoEspressoTest : BaseTest() {
 
     init {
         ruleSequence
-            .add(SetUpTearDownRule()
-                .addSetUp {
+            .add(
+                SetUpRule()
+                .add {
                     //make login into app before test starts and activity is launched
                     //to make sure that user is logged in when test starts
                     AccountManager(InstrumentationRegistry.getInstrumentation().targetContext).login(

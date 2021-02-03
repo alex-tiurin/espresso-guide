@@ -8,44 +8,42 @@ import com.atiurin.espressoguide.data.Tags
 import com.atiurin.espressoguide.data.entities.Contact
 import com.atiurin.espressoguide.framework.*
 import com.atiurin.espressoguide.framework.reporting.step
-import com.atiurin.espressopageobject.extensions.hasText
-import com.atiurin.espressopageobject.extensions.isDisplayed
-import com.atiurin.espressopageobject.recyclerview.RecyclerViewItem
+import com.atiurin.ultron.extensions.hasText
+import com.atiurin.ultron.extensions.isDisplayed
+import com.atiurin.ultron.page.Page
+import com.atiurin.ultron.recyclerview.UltronRecyclerViewItem
+import com.atiurin.ultron.recyclerview.withRecyclerView
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
 
-object FriendsListPage : BasePage<FriendsListPage>() {
+object FriendsListPage : Page<FriendsListPage>() {
     init {
         Logger.debug(">>>>>FriendsListPage  inited")
     }
-    private val list = withTagValue(`is`(Tags.CONTACTS_LIST))
+
+    private val list = withRecyclerView(withTagValue(`is`(Tags.CONTACTS_LIST)))
 
     private fun getFriendListItem(title: String): FriendRecyclerItem {
-        return FriendRecyclerItem(
-            list,
-            hasDescendant(
-                allOf(withId(R.id.tv_name), withText(title))
-            )
-        )
+        return list.getItem(hasDescendant(allOf(withId(R.id.tv_name), withText(title))))
     }
 
-    private class FriendRecyclerItem(list: Matcher<View>, item: Matcher<View>) :
-        RecyclerViewItem(list, item) {
-        val name = getChildMatcher(withId(R.id.tv_name))
-        val status = getChildMatcher(withId(R.id.tv_status))
+    class FriendRecyclerItem : UltronRecyclerViewItem() {
+        val name by lazy { getChild(withId(R.id.tv_name)) }
+        val status by lazy { getChild(withId(R.id.tv_status)) }
     }
 
-    override fun assertPageDisplayed() = apply {
+    fun assertPageDisplayed() = apply {
         step("Assert friends list page displayed") {
             list.isDisplayed()
         }
     }
 
-    fun openChat(contact: Contact) : ChatPage {
-         return step("Open chat with friend '${contact.name}'") {
+    fun openChat(contact: Contact): ChatPage {
+        return step("Open chat with friend '${contact.name}'") {
             getFriendListItem(contact.name).click()
             ChatPage {
+                this.contact = contact
                 assertPageDisplayed()
                 assertChatTitle()
             }
