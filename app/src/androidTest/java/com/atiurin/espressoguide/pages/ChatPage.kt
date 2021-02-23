@@ -9,20 +9,17 @@ import com.atiurin.espressoguide.data.entities.Contact
 import com.atiurin.espressoguide.framework.*
 import com.atiurin.espressoguide.framework.reporting.step
 import com.atiurin.ultron.core.espresso.UltronEspresso
+import com.atiurin.ultron.core.espresso.recyclerview.UltronRecyclerViewItem
+import com.atiurin.ultron.core.espresso.recyclerview.withRecyclerView
 import com.atiurin.ultron.extensions.click
 import com.atiurin.ultron.extensions.hasText
 import com.atiurin.ultron.extensions.isDisplayed
 import com.atiurin.ultron.extensions.typeText
 import com.atiurin.ultron.page.Page
-import com.atiurin.ultron.recyclerview.UltronRecyclerViewItem
-import com.atiurin.ultron.recyclerview.withRecyclerView
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 
 object ChatPage : Page<ChatPage>() {
-    init {
-        Logger.debug(">>>>>Chat page inited")
-    }
     lateinit var contact: Contact
     private val list = withRecyclerView(R.id.messages_list)
     private val clearHistoryBtn = withText("Clear history")

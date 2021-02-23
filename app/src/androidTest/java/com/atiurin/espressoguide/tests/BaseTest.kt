@@ -7,7 +7,7 @@ import com.atiurin.espressoguide.Logger
 import com.atiurin.espressoguide.idlingresources.idling
 import com.atiurin.espressoguide.idlingresources.idlingContainer
 import com.atiurin.ultron.core.config.UltronConfig
-import com.atiurin.ultron.core.espresso.EspressoOperationLifecycle
+import com.atiurin.ultron.core.espresso.UltronEspressoOperationLifecycle
 import com.atiurin.ultron.testlifecycle.rulesequence.RuleSequence
 import com.atiurin.ultron.testlifecycle.setupteardown.SetUpRule
 import com.atiurin.ultron.testlifecycle.setupteardown.TearDownRule
@@ -25,7 +25,7 @@ abstract class BaseTest {
         FailshotRule(),LogcatClearRule(), LogcatDumpRule(),WindowHierarchyRule(),
         SetUpRule()
             .add {
-                UltronConfig.Espresso.ESPRESSO_OPERATION_POLLING_TIMEOUT = 50
+                UltronConfig.Espresso.ESPRESSO_OPERATION_POLLING_TIMEOUT = 0L
                 Logger.life("SetUP in baseTest")
                 idlingContainer.set(getDefaultIdlingScope())
                 IdlingRegistry.getInstance().register(idlingContainer.get().contactsIdling)
@@ -43,7 +43,7 @@ abstract class BaseTest {
         fun beforeClassBase() {
             Logger.life("BeforeClass in baseTest")
             val listener = ScreenshotLifecycleListener()
-            EspressoOperationLifecycle.addListener(listener)
+//            UltronEspressoOperationLifecycle.addListener(listener)
         }
 
         @AfterClass

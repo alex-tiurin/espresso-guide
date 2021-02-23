@@ -1,6 +1,5 @@
 package com.atiurin.espressoguide.pages
 
-import android.view.View
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.atiurin.espressoguide.Logger
 import com.atiurin.espressoguide.R
@@ -8,12 +7,10 @@ import com.atiurin.espressoguide.data.Tags
 import com.atiurin.espressoguide.data.entities.Contact
 import com.atiurin.espressoguide.framework.*
 import com.atiurin.espressoguide.framework.reporting.step
+import com.atiurin.ultron.core.espresso.recyclerview.UltronRecyclerViewItem
+import com.atiurin.ultron.core.espresso.recyclerview.withRecyclerView
 import com.atiurin.ultron.extensions.hasText
-import com.atiurin.ultron.extensions.isDisplayed
 import com.atiurin.ultron.page.Page
-import com.atiurin.ultron.recyclerview.UltronRecyclerViewItem
-import com.atiurin.ultron.recyclerview.withRecyclerView
-import org.hamcrest.Matcher
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
 

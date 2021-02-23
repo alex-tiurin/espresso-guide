@@ -1,6 +1,7 @@
 package com.atiurin.espressoguide.tests
 
 import android.content.Intent
+import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import com.atiurin.espressoguide.activity.ChatActivity
@@ -32,8 +33,6 @@ class ChatPageTest : BaseTest() {
         InstrumentationRegistry.getInstrumentation().context.assets.open("long_message.txt")
             .reader().readText()
     )
-
-    private val activityTestRule = ActivityTestRule(ChatActivity::class.java, false, false)
     private val setUpTearDownRule = SetUpRule()
         .add { MessageRepository.clearChatMessages(contact.id) }
         .add(ADD_SIMPLE_MESSAGE) {
@@ -50,12 +49,12 @@ class ChatPageTest : BaseTest() {
                 CURRENT_USER.login,
                 CURRENT_USER.password
             )
-            val intent = Intent().putExtra(INTENT_CONTACT_ID_EXTRA_NAME, contact.id)
-            activityTestRule.launchActivity(intent)
+            val intent = Intent(InstrumentationRegistry.getInstrumentation().targetContext, ChatActivity::class.java).putExtra(INTENT_CONTACT_ID_EXTRA_NAME, contact.id)
+            ActivityScenario.launch<ChatActivity>(intent)
         }
 
     init {
-        ruleSequence.add(setUpTearDownRule, activityTestRule)
+        ruleSequence.add(setUpTearDownRule)
         ChatPage.contact = contact
     }
 
