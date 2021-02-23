@@ -11,7 +11,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val accountManager = AccountManager(applicationContext)
-        if (accountManager.isLogedIn()){
+        if (accountManager.isLoggedIn()){
             val intent = Intent(applicationContext, MainActivity::class.java)
             startActivity(intent)
         }else{

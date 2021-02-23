@@ -14,7 +14,15 @@ val CONTACTS = arrayListOf(
     Contact(5, "Phoebe Buffay", "Smelly cat, smelly cat..", Avatars.PHOEBE.drawable),
     Contact(6, "Monica Geller", "I need to clean up", Avatars.MONICA.drawable),
     Contact(7, "Gunther", "They were on break :(", Avatars.GUNTHER.drawable),
-    Contact(8, "Janice", "Oh. My. God", Avatars.JANICE.drawable)
+    Contact(8, "Janice", "Oh. My. God", Avatars.JANICE.drawable),
+    Contact(9, "Bob", "I wanna drink", Avatars.DEFAULT.drawable),
+    Contact(10, "Marty McFly", "Back to the ...", Avatars.DEFAULT.drawable),
+    Contact(12, "Emmet Brown", "Time fluid capacitor", Avatars.DEFAULT.drawable),
+    Contact(13, "Friend_1", "I'm a friend", Avatars.DEFAULT.drawable),
+    Contact(14, "Friend_2", "I'm a friend", Avatars.DEFAULT.drawable),
+    Contact(15, "Friend_3", "I'm a friend", Avatars.DEFAULT.drawable),
+    Contact(16, "Friend_4", "I'm a friend", Avatars.DEFAULT.drawable),
+    Contact(17, "Friend_5", "I'm a friend", Avatars.DEFAULT.drawable)
 )
 
 enum class Avatars(val drawable: Int) {
@@ -25,7 +33,8 @@ enum class Avatars(val drawable: Int) {
     PHOEBE(R.drawable.phoebe),
     GUNTHER(R.drawable.gunther),
     JOEY(R.drawable.joey),
-    JANICE(R.drawable.janice)
+    JANICE(R.drawable.janice),
+    DEFAULT(R.drawable.default_avatar)
 }
 
 
