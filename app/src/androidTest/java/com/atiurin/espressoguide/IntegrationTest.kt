@@ -16,6 +16,6 @@ class IntegrationTest{
         val manager = AccountManager(context)
         manager.logout()
         manager.login(validUserName, validPassword)
-        Assert.assertTrue(manager.isLogedIn())
+        Assert.assertTrue(manager.isLoggedIn())
     }
 }

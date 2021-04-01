@@ -9,9 +9,10 @@ import com.atiurin.espressoguide.Logger
 import com.atiurin.espressoguide.managers.AccountManager
 import com.atiurin.espressoguide.pages.ChatPage
 import com.atiurin.espressoguide.pages.FriendsListPage
-import com.atiurin.espressopageobject.testlifecycle.setupteardown.SetUp
-import com.atiurin.espressopageobject.testlifecycle.setupteardown.SetUpTearDownRule
-import com.atiurin.espressopageobject.testlifecycle.setupteardown.TearDown
+import com.atiurin.ultron.testlifecycle.setupteardown.SetUp
+import com.atiurin.ultron.testlifecycle.setupteardown.SetUpRule
+import com.atiurin.ultron.testlifecycle.setupteardown.TearDown
+import com.atiurin.ultron.testlifecycle.setupteardown.TearDownRule
 import org.junit.*
 
 class SetUpTearDownDemoTest : BaseTest() {
@@ -28,8 +29,8 @@ class SetUpTearDownDemoTest : BaseTest() {
     init {
         ruleSequence
             .addFirst(
-                SetUpTearDownRule()
-                    .addSetUp {
+                SetUpRule()
+                    .add {
                         Logger.life("common setup")
                         //make login into app before test starts and activity is launched
                         //to make sure that user is logged in when test starts
@@ -38,11 +39,12 @@ class SetUpTearDownDemoTest : BaseTest() {
                             CURRENT_USER.password
                         )
                     }
-                    .addSetUp(FIRST_SETUP) { Logger.life("first setup") }
-                    .addSetUp(SECOND_SETUP) { Logger.life("second setup") }
-                    .addTearDown { Logger.life("common tear down") }
-                    .addTearDown(FIRST_TEARDOWN) { Logger.life("first tear down") }
-                    .addTearDown(SECOND_TEARDOWN) { Logger.life("second tear down") })
+                    .add(FIRST_SETUP) { Logger.life("first setup") }
+                    .add(SECOND_SETUP) { Logger.life("second setup") } ,
+                TearDownRule()
+                    .add { Logger.life("common tear down") }
+                    .add(FIRST_TEARDOWN) { Logger.life("first tear down") }
+                    .add(SECOND_TEARDOWN) { Logger.life("second tear down") })
             .addLast(CustomActivityTestRule(MainActivity::class.java))
     }
 

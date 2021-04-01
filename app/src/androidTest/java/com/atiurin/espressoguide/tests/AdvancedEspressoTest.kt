@@ -15,7 +15,6 @@ import com.atiurin.espressoguide.R
 import com.atiurin.espressoguide.activity.MainActivity
 import com.atiurin.espressoguide.data.repositories.CURRENT_USER
 import com.atiurin.espressoguide.managers.AccountManager
-import com.atiurin.espressopageobject.recyclerview.withRecyclerView
 import io.qameta.allure.android.step
 import org.hamcrest.Matchers.allOf
 import org.junit.Before
@@ -67,15 +66,5 @@ class AdvancedEspressoTest : BaseTest() {
                 withId(R.id.message_text)
             )
         ).check(matches(isDisplayed()))
-    }
-
-    @Ignore
-    @Test
-    fun ignoredTest() {
-        step("fail step") {
-            onView(withRecyclerView(withId(R.id.recycler_friends)).atItem(hasDescendant(withText("Failed test")))).perform(
-                click()
-            )
-        }
     }
 }
