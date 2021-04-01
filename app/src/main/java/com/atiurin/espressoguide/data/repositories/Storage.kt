@@ -21,6 +21,7 @@ val CONTACTS = arrayListOf(
     Contact(13, "Friend_1", "I'm a friend", Avatars.DEFAULT.drawable),
     Contact(14, "Friend_2", "I'm a friend", Avatars.DEFAULT.drawable),
     Contact(15, "Friend_3", "I'm a friend", Avatars.DEFAULT.drawable),
+
     Contact(16, "Friend_4", "I'm a friend", Avatars.DEFAULT.drawable),
     Contact(17, "Friend_5", "I'm a friend", Avatars.DEFAULT.drawable)
 )
@@ -44,6 +45,11 @@ val MESSAGES = hashMapOf<Int, List<Message>>(
         Message(2, 1, "Hi Joey"),
         Message(1, 2, "Let's drink coffee"),
         Message(2, 1, "Ok")
+    ),
+    4 to arrayListOf(
+        Message(1, 3, "How u doing?"),
+        Message(3, 1, "Better"),
+        Message(1, 3, "Come with me"),
     ),
     3 to arrayListOf(
         Message(1, 3, "Do u wanna coffee?"),

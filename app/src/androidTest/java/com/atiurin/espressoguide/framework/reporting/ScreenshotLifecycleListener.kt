@@ -4,10 +4,10 @@ package com.atiurin.espressoguide.framework.reporting
 import android.util.Log
 import com.atiurin.ultron.core.common.Operation
 import com.atiurin.ultron.core.common.OperationResult
-import com.atiurin.ultron.listeners.AbstractLifecycleListener
+import com.atiurin.ultron.listeners.UltronLifecycleListener
 import io.qameta.allure.espresso.deviceScreenshot
 
-class ScreenshotLifecycleListener : AbstractLifecycleListener() {
+class ScreenshotLifecycleListener : UltronLifecycleListener() {
     override fun before(operation: Operation) {
         Log.d(
             "EspressoScreenshot",

@@ -15,10 +15,6 @@ import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
 
 object FriendsListPage : Page<FriendsListPage>() {
-    init {
-        Logger.debug(">>>>>FriendsListPage  inited")
-    }
-
     private val list = withRecyclerView(withTagValue(`is`(Tags.CONTACTS_LIST)))
 
     private fun getFriendListItem(title: String): FriendRecyclerItem {
