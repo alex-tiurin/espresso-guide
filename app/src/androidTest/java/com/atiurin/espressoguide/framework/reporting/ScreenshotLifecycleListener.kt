@@ -2,12 +2,12 @@
 package com.atiurin.espressoguide.framework.reporting
 
 import android.util.Log
-import com.atiurin.espressopageobject.core.common.Operation
-import com.atiurin.espressopageobject.core.common.OperationResult
-import com.atiurin.espressopageobject.listeners.AbstractLifecycleListener
+import com.atiurin.ultron.core.common.Operation
+import com.atiurin.ultron.core.common.OperationResult
+import com.atiurin.ultron.listeners.UltronLifecycleListener
 import io.qameta.allure.espresso.deviceScreenshot
 
-class ScreenshotLifecycleListener : AbstractLifecycleListener() {
+class ScreenshotLifecycleListener : UltronLifecycleListener() {
     override fun before(operation: Operation) {
         Log.d(
             "EspressoScreenshot",
@@ -19,7 +19,7 @@ class ScreenshotLifecycleListener : AbstractLifecycleListener() {
     /**
      * Will use allure [FailshotRule] instead of capturing screenshot here
      */
-    override fun after(operationResult: OperationResult) {
+    override fun after(operationResult: OperationResult<Operation>) {
         super.after(operationResult)
     }
 }

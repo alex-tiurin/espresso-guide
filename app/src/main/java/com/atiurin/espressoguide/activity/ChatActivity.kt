@@ -33,7 +33,7 @@ class ChatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val accountManager = AccountManager(applicationContext)
-        if (!accountManager.isLogedIn()) {
+        if (!accountManager.isLoggedIn()) {
             val intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
         }

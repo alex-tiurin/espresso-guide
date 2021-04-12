@@ -16,7 +16,6 @@ import com.atiurin.espressoguide.adapters.ContactAdapter
 import com.atiurin.espressoguide.data.entities.Contact
 import com.atiurin.espressoguide.R
 import kotlin.collections.ArrayList
-import com.atiurin.espressoguide.MyApplication
 import android.view.View
 import android.widget.Toast
 import com.atiurin.espressoguide.Logger
@@ -26,7 +25,6 @@ import com.atiurin.espressoguide.data.Tags
 import com.atiurin.espressoguide.idlingresources.idling
 import com.atiurin.espressoguide.managers.AccountManager
 import com.atiurin.espressoguide.view.CircleImageView
-import java.lang.NullPointerException
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, ContactsProvider {
@@ -42,7 +40,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         accountManager = AccountManager(applicationContext)
-        if (!accountManager.isLogedIn()) {
+        if (!accountManager.isLoggedIn()) {
             val intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
         }

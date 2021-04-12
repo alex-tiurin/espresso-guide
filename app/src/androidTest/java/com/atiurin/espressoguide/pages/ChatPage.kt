@@ -2,36 +2,32 @@ package com.atiurin.espressoguide.pages
 
 import android.view.View
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.espresso.matcher.ViewMatchers.*
 import com.atiurin.espressoguide.Logger
 import com.atiurin.espressoguide.R
 import com.atiurin.espressoguide.data.entities.Contact
 import com.atiurin.espressoguide.framework.*
 import com.atiurin.espressoguide.framework.reporting.step
-import com.atiurin.espressopageobject.extensions.click
-import com.atiurin.espressopageobject.extensions.hasText
-import com.atiurin.espressopageobject.extensions.isDisplayed
-import com.atiurin.espressopageobject.extensions.typeText
-import com.atiurin.espressopageobject.page.Page
-import com.atiurin.espressopageobject.recyclerview.RecyclerViewItem
+import com.atiurin.ultron.core.espresso.UltronEspresso
+import com.atiurin.ultron.core.espresso.recyclerview.UltronRecyclerViewItem
+import com.atiurin.ultron.core.espresso.recyclerview.withRecyclerView
+import com.atiurin.ultron.extensions.click
+import com.atiurin.ultron.extensions.hasText
+import com.atiurin.ultron.extensions.isDisplayed
+import com.atiurin.ultron.extensions.typeText
+import com.atiurin.ultron.page.Page
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 
-object ChatPage : BasePage<ChatPage>() {
-    init {
-        Logger.debug(">>>>>Chat page inited")
-    }
+object ChatPage : Page<ChatPage>() {
     lateinit var contact: Contact
-    private val list = withId(R.id.messages_list)
+    private val list = withRecyclerView(R.id.messages_list)
     private val clearHistoryBtn = withText("Clear history")
     private val inputMessageText = withId(R.id.message_input_text)
     private val sendMessageBtn = withId(R.id.send_button)
 
     private fun getMessageListItem(text: String): ChatRecyclerItem {
-        return ChatRecyclerItem(
-            list,
-            ViewMatchers.hasDescendant(
+        return list.getItem(hasDescendant(
                 allOf(
                     withId(R.id.message_text),
                     withText(text)
@@ -41,21 +37,18 @@ object ChatPage : BasePage<ChatPage>() {
     }
 
     private fun getMessageListItemAtPosition(position: Int): ChatRecyclerItem {
-        return ChatRecyclerItem(list, position)
+        return list.getItem(position)
     }
 
     private fun getTitle(title: String): Matcher<View> {
         return allOf(withId(R.id.toolbar_title), withText(title))
     }
 
-    private class ChatRecyclerItem : RecyclerViewItem {
-        constructor(list: Matcher<View>, item: Matcher<View>) : super(list, item)
-        constructor(list: Matcher<View>, position: Int) : super(list, position)
-
-        val text = getChildMatcher(withId(R.id.message_text))
+    class ChatRecyclerItem : UltronRecyclerViewItem() {
+        val text by lazy { getChild(withId(R.id.message_text)) }
     }
 
-    override fun assertPageDisplayed() = apply {
+    fun assertPageDisplayed() = apply {
         step("Assert chat page is displayed") {
             list.isDisplayed()
             inputMessageText.isDisplayed()
@@ -80,7 +73,7 @@ object ChatPage : BasePage<ChatPage>() {
 
     fun clearHistory() = apply {
         step("Clear chat history") {
-            openOptionsMenu()
+            UltronEspresso.openContextualActionModeOverflowMenu()
             clearHistoryBtn.click()
         }
     }

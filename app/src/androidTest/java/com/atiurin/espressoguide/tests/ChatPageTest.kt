@@ -1,6 +1,7 @@
 package com.atiurin.espressoguide.tests
 
 import android.content.Intent
+import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import com.atiurin.espressoguide.activity.ChatActivity
@@ -9,16 +10,10 @@ import com.atiurin.espressoguide.data.entities.Message
 import com.atiurin.espressoguide.data.repositories.CURRENT_USER
 import com.atiurin.espressoguide.data.repositories.ContactsRepositoty
 import com.atiurin.espressoguide.data.repositories.MessageRepository
-import com.atiurin.espressoguide.framework.CustomActivityTestRule
 import com.atiurin.espressoguide.managers.AccountManager
 import com.atiurin.espressoguide.pages.ChatPage
-import com.atiurin.espressoguide.pages.ChatPage.sendMessage
-import com.atiurin.espressoguide.tests.ChatPageTest.Companion.ADD_SIMPLE_MESSAGE
-import com.atiurin.espressoguide.tests.ChatPageTest.Companion.ADD_SPECIAL_CHARS_MESSAGE
-import com.atiurin.espressopageobject.testlifecycle.setupteardown.SetUp
-import com.atiurin.espressopageobject.testlifecycle.setupteardown.SetUpTearDownRule
-import io.qameta.allure.android.annotations.DisplayName
-import org.junit.Before
+import com.atiurin.ultron.testlifecycle.setupteardown.SetUp
+import com.atiurin.ultron.testlifecycle.setupteardown.SetUpRule
 import org.junit.Test
 
 class ChatPageTest : BaseTest() {
@@ -38,30 +33,28 @@ class ChatPageTest : BaseTest() {
         InstrumentationRegistry.getInstrumentation().context.assets.open("long_message.txt")
             .reader().readText()
     )
-
-    private val activityTestRule = ActivityTestRule(ChatActivity::class.java, false, false)
-    private val setUpTearDownRule = SetUpTearDownRule()
-        .addSetUp { MessageRepository.clearChatMessages(contact.id) }
-        .addSetUp(ADD_SIMPLE_MESSAGE) {
+    private val setUpTearDownRule = SetUpRule()
+        .add { MessageRepository.clearChatMessages(contact.id) }
+        .add(ADD_SIMPLE_MESSAGE) {
             MessageRepository.addChatMessage(contact.id, simpleMessage)
         }
-        .addSetUp(ADD_SPECIAL_CHARS_MESSAGE) {
+        .add(ADD_SPECIAL_CHARS_MESSAGE) {
             MessageRepository.addChatMessage(contact.id, specialCharsMessage)
         }
-        .addSetUp(ADD_LONG_MESSAGE) {
+        .add(ADD_LONG_MESSAGE) {
             MessageRepository.addChatMessage(contact.id, longMessage)
         }
-        .addSetUp {
+        .add {
             AccountManager(InstrumentationRegistry.getInstrumentation().targetContext).login(
                 CURRENT_USER.login,
                 CURRENT_USER.password
             )
-            val intent = Intent().putExtra(INTENT_CONTACT_ID_EXTRA_NAME, contact.id)
-            activityTestRule.launchActivity(intent)
+            val intent = Intent(InstrumentationRegistry.getInstrumentation().targetContext, ChatActivity::class.java).putExtra(INTENT_CONTACT_ID_EXTRA_NAME, contact.id)
+            ActivityScenario.launch<ChatActivity>(intent)
         }
 
     init {
-        ruleSequence.add(setUpTearDownRule, activityTestRule)
+        ruleSequence.add(setUpTearDownRule)
         ChatPage.contact = contact
     }
 
