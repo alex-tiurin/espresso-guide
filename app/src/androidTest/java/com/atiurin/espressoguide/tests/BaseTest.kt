@@ -4,6 +4,8 @@ import androidx.test.espresso.IdlingRegistry
 import com.atiurin.espressoguide.framework.reporting.ScreenshotLifecycleListener
 import com.atiurin.espressoguide.framework.getDefaultIdlingScope
 import com.atiurin.espressoguide.Logger
+import com.atiurin.espressoguide.framework.idlingresource.BaseIdlingResource
+import com.atiurin.espressoguide.framework.reporting.WindowHierarchyDumpListener
 import com.atiurin.espressoguide.idlingresources.idling
 import com.atiurin.espressoguide.idlingresources.idlingContainer
 import com.atiurin.ultron.core.config.UltronConfig
@@ -22,34 +24,23 @@ abstract class BaseTest {
     //attach logcat to allure report in case of failure
     @get:Rule
     val ruleSequence = RuleSequence(
-        FailshotRule(),LogcatClearRule(), LogcatDumpRule(),WindowHierarchyRule(),
-        SetUpRule()
-            .add {
-                UltronConfig.Espresso.ESPRESSO_OPERATION_POLLING_TIMEOUT = 0L
-                Logger.life("SetUP in baseTest")
-                idlingContainer.set(getDefaultIdlingScope())
-                IdlingRegistry.getInstance().register(idlingContainer.get().contactsIdling)
-            },
+        LogcatClearRule(), LogcatDumpRule(),
+        SetUpRule().add {
+            UltronConfig.Espresso.ESPRESSO_OPERATION_POLLING_TIMEOUT = 0L
+            idlingContainer.set(getDefaultIdlingScope())
+            idling { IdlingRegistry.getInstance().register(BaseIdlingResource(contactsIdling)) }
+        },
         TearDownRule().add {
-                Logger.life("TearDown in baseTest")
-                // you can get `contactsIdling` object in 2 ways
-                idling { IdlingRegistry.getInstance().unregister(contactsIdling) }
-            }
+            idling { IdlingRegistry.getInstance().unregister(BaseIdlingResource(contactsIdling)) }
+        }
     )
 
     companion object {
         @BeforeClass
         @JvmStatic
         fun beforeClassBase() {
-            Logger.life("BeforeClass in baseTest")
-            val listener = ScreenshotLifecycleListener()
-//            UltronEspressoOperationLifecycle.addListener(listener)
-        }
-
-        @AfterClass
-        @JvmStatic
-        fun afterClassBase() {
-            Logger.life("AfterClass in baseTest")
+            UltronConfig.addGlobalListener(ScreenshotLifecycleListener())
+            UltronConfig.addGlobalListener(WindowHierarchyDumpListener())
         }
     }
 }

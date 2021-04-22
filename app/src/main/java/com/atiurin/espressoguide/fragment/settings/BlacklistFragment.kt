@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.atiurin.espressoguide.Logger
@@ -75,7 +74,7 @@ class BlacklistFragment(
     override fun onContactsLoaded(contacts: List<Contact>) {
         viewAdapter.updateData(contacts)
         viewAdapter.notifyDataSetChanged()
-        idling { contactsIdling.setIdleState(true) }
+        idling { contactsIdling.onDataLoaded()}
     }
 
     override fun onFailedToLoadContacts(message: String?) {

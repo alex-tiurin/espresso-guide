@@ -15,10 +15,7 @@ import com.atiurin.ultron.testlifecycle.setupteardown.SetUpRule
 import com.atiurin.ultron.testlifecycle.setupteardown.TearDown
 import com.atiurin.ultron.testlifecycle.setupteardown.TearDownRule
 import io.qameta.allure.android.annotations.DisplayName
-import org.junit.After
-import org.junit.Before
-import org.junit.BeforeClass
-import org.junit.Test
+import org.junit.*
 
 
 /**
@@ -76,6 +73,7 @@ class DemoEspressoTest : BaseTest() {
     /**
      * Test should fail
      */
+    @Ignore
     @DisplayName("Special failed test for allure report demo")
     @Test
     fun specialFailedTestForAllureReport() {

@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onContactsLoaded(contacts: List<Contact>) {
         viewAdapter.updateData(contacts)
         viewAdapter.notifyDataSetChanged()
-        idling { contactsIdling.setIdleState(true) }
+        idling { contactsIdling.onDataLoaded() }
     }
 
     override fun onFailedToLoadContacts(message: String?) {

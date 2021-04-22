@@ -15,7 +15,7 @@ class ContactsPresenter <T : ContactsProvider>(
     protected lateinit var scope: PresenterCoroutineScope
 
     fun getAllContacts() {
-        idling { contactsIdling.setIdleState(false) }
+        idling { contactsIdling.onLoadStarted() }
         scope = PresenterCoroutineScope(coroutineContext)
         scope.launch {
             GetContacts()(
@@ -27,7 +27,7 @@ class ContactsPresenter <T : ContactsProvider>(
     }
 
     fun getBlacklist() {
-        idling { contactsIdling.setIdleState(false) }
+        idling { contactsIdling.onLoadStarted() }
         scope = PresenterCoroutineScope(coroutineContext)
         scope.launch {
             GetBlacklist()(

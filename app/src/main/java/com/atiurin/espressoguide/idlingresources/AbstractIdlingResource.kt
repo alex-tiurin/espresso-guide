@@ -1,31 +1,32 @@
 package com.atiurin.espressoguide.idlingresources
 
 import androidx.annotation.Nullable
-import androidx.test.espresso.IdlingResource
 import java.util.concurrent.atomic.AtomicBoolean
-import androidx.test.espresso.IdlingResource.ResourceCallback
 
-abstract class AbstractIdlingResource : IdlingResource {
+abstract class AbstractIdlingResource : AppIdlingResource {
     @Nullable
     @Volatile
-    private var resourceCallback: ResourceCallback? = null
+    private var resourceCallback: AppIdlingResource.AppResourceCallback? = null
     private val idleNow = AtomicBoolean(true)
     override fun getName(): String {
         return this.javaClass.name
     }
 
-    override fun isIdleNow(): Boolean {
+    override fun isIdle(): Boolean {
         return idleNow.get()
     }
 
-    override fun registerIdleTransitionCallback(callback: ResourceCallback?) {
-        resourceCallback = callback
+    override fun registerIdleTransitionCallback(resourceCallback: AppIdlingResource.AppResourceCallback) {
+        this.resourceCallback = resourceCallback
     }
 
-    fun setIdleState(isIdleNow: Boolean) {
+    private fun setIdleState(isIdleNow: Boolean) {
         idleNow.set(isIdleNow)
         if (isIdleNow && resourceCallback != null) {
-            resourceCallback?.onTransitionToIdle()
+            resourceCallback?.onTransitionToIdleState()
         }
     }
+
+    fun onLoadStarted() = setIdleState(false)
+    fun onDataLoaded() = setIdleState(true)
 }
