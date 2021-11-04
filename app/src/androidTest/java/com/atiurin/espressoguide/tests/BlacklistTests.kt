@@ -8,7 +8,7 @@ import com.atiurin.espressoguide.fragment.settings.SettingsFragmentNavigator
 import com.atiurin.espressoguide.pages.BlacklistPage
 import com.atiurin.ultron.testlifecycle.setupteardown.SetUp
 import com.atiurin.ultron.testlifecycle.setupteardown.SetUpRule
-import io.qameta.allure.android.annotations.DisplayName
+import io.qameta.allure.kotlin.junit4.DisplayName
 import org.junit.Test
 
 class BlacklistTests : BaseTest() {

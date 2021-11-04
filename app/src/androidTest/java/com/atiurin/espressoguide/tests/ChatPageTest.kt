@@ -3,7 +3,6 @@ package com.atiurin.espressoguide.tests
 import android.content.Intent
 import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.rule.ActivityTestRule
 import com.atiurin.espressoguide.activity.ChatActivity
 import com.atiurin.espressoguide.activity.INTENT_CONTACT_ID_EXTRA_NAME
 import com.atiurin.espressoguide.data.entities.Message

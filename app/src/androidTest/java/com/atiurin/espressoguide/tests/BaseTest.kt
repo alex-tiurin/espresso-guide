@@ -1,22 +1,16 @@
 package com.atiurin.espressoguide.tests
 
 import androidx.test.espresso.IdlingRegistry
-import com.atiurin.espressoguide.framework.reporting.ScreenshotLifecycleListener
 import com.atiurin.espressoguide.framework.getDefaultIdlingScope
-import com.atiurin.espressoguide.Logger
 import com.atiurin.espressoguide.framework.idlingresource.BaseIdlingResource
+import com.atiurin.espressoguide.framework.reporting.ScreenshotLifecycleListener
 import com.atiurin.espressoguide.framework.reporting.WindowHierarchyDumpListener
 import com.atiurin.espressoguide.idlingresources.idling
 import com.atiurin.espressoguide.idlingresources.idlingContainer
 import com.atiurin.ultron.core.config.UltronConfig
-import com.atiurin.ultron.core.espresso.UltronEspressoOperationLifecycle
 import com.atiurin.ultron.testlifecycle.rulesequence.RuleSequence
 import com.atiurin.ultron.testlifecycle.setupteardown.SetUpRule
 import com.atiurin.ultron.testlifecycle.setupteardown.TearDownRule
-import io.qameta.allure.espresso.FailshotRule
-import io.qameta.allure.espresso.LogcatClearRule
-import io.qameta.allure.espresso.LogcatDumpRule
-import io.qameta.allure.espresso.WindowHierarchyRule
 import org.junit.*
 
 abstract class BaseTest {
@@ -24,7 +18,6 @@ abstract class BaseTest {
     //attach logcat to allure report in case of failure
     @get:Rule
     val ruleSequence = RuleSequence(
-        LogcatClearRule(), LogcatDumpRule(),
         SetUpRule().add {
             UltronConfig.Espresso.ESPRESSO_OPERATION_POLLING_TIMEOUT = 0L
             idlingContainer.set(getDefaultIdlingScope())

@@ -4,7 +4,6 @@ buildscript {
     ext.kotlin_version = '1.4.21'
     ext.coroutine_version = "1.2.1"
     repositories {
-        jcenter()
         google()
         mavenCentral()
         maven {
@@ -28,9 +27,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
         mavenCentral()
-        maven { url 'https://dl.bintray.com/qameta/maven' }
     }
 }
 

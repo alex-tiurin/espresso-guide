@@ -2,19 +2,14 @@ package com.atiurin.espressoguide.tests
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
-import com.atiurin.espressoguide.Logger
 import com.atiurin.espressoguide.activity.MainActivity
 import com.atiurin.espressoguide.data.repositories.CURRENT_USER
 import com.atiurin.espressoguide.data.repositories.ContactsRepositoty
-import com.atiurin.espressoguide.framework.CustomActivityTestRule
 import com.atiurin.espressoguide.managers.AccountManager
 import com.atiurin.espressoguide.pages.ChatPage
 import com.atiurin.espressoguide.pages.FriendsListPage
-import com.atiurin.espressoguide.pages.FriendsListPage.assertName
 import com.atiurin.ultron.testlifecycle.setupteardown.SetUpRule
-import com.atiurin.ultron.testlifecycle.setupteardown.TearDown
-import com.atiurin.ultron.testlifecycle.setupteardown.TearDownRule
-import io.qameta.allure.android.annotations.DisplayName
+import io.qameta.allure.kotlin.junit4.DisplayName
 import org.junit.*
 
 

@@ -15,7 +15,6 @@ import com.atiurin.espressoguide.R
 import com.atiurin.espressoguide.activity.MainActivity
 import com.atiurin.espressoguide.data.repositories.CURRENT_USER
 import com.atiurin.espressoguide.managers.AccountManager
-import io.qameta.allure.android.step
 import org.hamcrest.Matchers.allOf
 import org.junit.Before
 import org.junit.Ignore
