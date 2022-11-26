@@ -5,14 +5,27 @@ apply plugin: 'jacoco'
 apply plugin: 'org.sonarqube'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     defaultConfig {
         applicationId "com.atiurin.espressoguide"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "io.qameta.allure.android.runners.AllureAndroidJUnitRunner"
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
+        exclude("META-INF/*.kotlin_module")
     }
 
     buildTypes {
@@ -30,8 +43,15 @@ android {
         unitTests {
             includeAndroidResources = true
         }
-
-//        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    // For Kotlin projects
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 
@@ -39,7 +59,7 @@ sonarqube {
     properties {
         property "sonar.projectName", "espressoguide"
         property "sonar.projectBaseDir", "."
-        property "sonar.source","app/src/main/java"
+        property "sonar.source", "app/src/main/java"
         property "sonar.tests", "app/src/test/java, app/src/androidTest/java"
         property "sonar.java.test.binaries", "app/build/intermediates/class/debug"
         property "sonar.jacoco.reportPath", "app/build/jacoco/testDebugUnitTest.exec"
@@ -79,17 +99,17 @@ dependencies {
 
     // Espresso dependencies
     androidTestImplementation fileTree(dir: 'libs', include: ['*.jar', '*.aar']) // allure artifacts
-    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.3.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.3.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-accessibility:3.3.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-web:3.3.0'
-    androidTestImplementation 'androidx.test.espresso.idling:idling-concurrent:3.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.4.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.4.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-accessibility:3.4.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-web:3.4.0'
+    androidTestImplementation 'androidx.test.espresso.idling:idling-concurrent:3.4.0'
     androidTestImplementation 'com.google.code.gson:gson:2.8.6'
     androidTestImplementation 'com.microsoft.appcenter:espresso-test-extension:1.4'
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
 
     //ultron
-    androidTestImplementation "com.atiurin:ultron:1.0.7"
+    androidTestImplementation "com.atiurin:ultron:2.0.0-alpha02"
     //Allure
     androidTestImplementation "io.qameta.allure:allure-kotlin-model:2.2.6"
     androidTestImplementation "io.qameta.allure:allure-kotlin-commons:2.2.6"
@@ -105,7 +125,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'crea
         html.enabled = true
     }
 
-    def fileFilter = [ '**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*' ]
+    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
     getSourceDirectories().setFrom("$project.projectDir/src/main/java")
     getClassDirectories().setFrom(fileTree(dir: "$project.buildDir/tmp/kotlin-classes/debug", excludes: fileFilter))
     getExecutionData().setFrom(fileTree(dir: project.buildDir, includes: [
