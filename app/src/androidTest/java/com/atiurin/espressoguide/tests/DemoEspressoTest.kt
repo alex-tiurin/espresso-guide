@@ -68,7 +68,6 @@ class DemoEspressoTest : BaseTest() {
     /**
      * Test should fail
      */
-    @Ignore
     @DisplayName("Special failed test for allure report demo")
     @Test
     fun specialFailedTestForAllureReport() {
